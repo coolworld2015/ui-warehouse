@@ -5,24 +5,24 @@
         .module('app')
         .controller('GoodsCtrl', GoodsCtrl);
 
-    GoodsCtrl.$inject = ['$scope', '$state', '$timeout', 'goods'];
+    GoodsCtrl.$inject = ['$scope', '$rootScope', '$state', '$timeout', 'GoodsService'];
 
-    function GoodsCtrl($scope, $state, $timeout, goods) {
-        $scope.$watch('numPerPage', numPerPageWatcher);			
-        $scope.$watch('currentPage', currentPageWatcher);
+    function GoodsCtrl($scope, $rootScope, $state, $timeout, GoodsService) {
+        $scope.$watch('numPerPage', currentPage);			
+        $scope.$watch('currentPage', currentPage);
         var vm = this;
 
         angular.extend(vm, {
             init: init,
-			numPerPageWatcher: numPerPageWatcher,			
-            currentPageWatcher: currentPageWatcher,
+            currentPage: currentPage,
             numPages: numPages,
             goodsSort: goodsSort,
             goodsEditForm: goodsEditForm,
             goodsAdd: goodsAdd,
             goToBack: goToBack,
 			goToHead: goToHead,			
-            goodsBack: goodsBack
+            goodsBack: goodsBack,
+			_errorHandler: errorHandler			
         });
 
         init();
@@ -32,28 +32,30 @@
         });
 
         function init() {
-            $scope.currentPage = 1;
-            $scope.numPerPage = 10;//GoodsService.numPerPage;
-            $scope.maxSize = 5;
-
             vm.title = 'Commodities';
             vm.sort = 'name';
-            vm.goods = goods;
+            $scope.currentPage = 1;
+            $scope.numPerPage = 10;
+            $scope.maxSize = 5;
+			
+            GoodsService.getGoods()
+				.then(function(data){
+					$scope.filteredClients = [];
+					vm.goods = data.data;
+					currentPage();
+					$rootScope.myError = false;
+					$rootScope.loading = false;
+				})
+				.catch(errorHandler);
         }
-		
-        function numPerPageWatcher() {
-            var begin = (($scope.currentPage - 1) * $scope.numPerPage);
-            var end = parseInt(begin) + parseInt($scope.numPerPage);
-            $scope.filteredGoods = vm.goods.slice(begin, end);
-            $scope.totalItems = vm.goods.length;
-			//GoodsService.numPerPage = $scope.numPerPage;
-        }
-		
-        function currentPageWatcher() {
-            var begin = (($scope.currentPage - 1) * $scope.numPerPage);
-            var end = parseInt(begin) + parseInt($scope.numPerPage);
-            $scope.filteredGoods = vm.goods.slice(begin, end);
-            $scope.totalItems = vm.goods.length;
+		 	
+        function currentPage() {
+            if (Object.prototype.toString.call(vm.goods) == '[object Array]') {
+				var begin = (($scope.currentPage - 1) * $scope.numPerPage);
+				var end = parseInt(begin) + parseInt($scope.numPerPage);
+				$scope.filteredGoods = vm.goods.slice(begin, end);
+				$scope.totalItems = vm.goods.length;
+			}
         }
 
         function numPages() {
@@ -88,6 +90,11 @@
 		
         function goodsBack() {
             $state.go('main');
+        }
+		
+		function errorHandler() {
+            $rootScope.loading = false;
+            $rootScope.myError = true;
         }
     }
 })();

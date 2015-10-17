@@ -11,12 +11,23 @@
 		var webUrl = $rootScope.myConfig.webUrl;
 		
         return {
+			getGoods: getGoods,
             addItem: addItem,
             editItem: editItem,
             deleteItem: deleteItem,
-            findGood: findGood
+            findGood: findGood,
+			_sort: sort
         };
-
+		
+        function getGoods() {
+            var url = webUrl + 'api/goods/get';
+            return $http.get(url)
+                .then(function (result) {
+                    result.data.sort(sort);
+                    return result;
+                });
+        }
+		
         function addItem(item) {
             var url = webUrl + 'api/goods/add';
             return $http.post(url, item)
@@ -53,6 +64,17 @@
                 .then(function (result) {
                     return result;
                 });
+        }
+		
+        function sort(a, b) {
+            var nameA = a.name.toLowerCase(), nameB = b.name.toLowerCase();
+            if (nameA < nameB) {
+                return -1
+            }
+            if (nameA > nameB) {
+                return 1
+            }
+            return 0;
         }
 	}
 })();

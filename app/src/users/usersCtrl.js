@@ -28,13 +28,12 @@
         init();
 
         function init() {
+            vm.title = 'Users';
+            vm.sort = 'name';
             $scope.currentPage = 1;
             $scope.numPerPage = 10;
             $scope.maxSize = 5;
 
-            vm.title = 'Users';
-            vm.sort = 'name';
-			
             UsersService.getUsers()
 				.then(function(data){
 					$scope.filteredUsers = [];
