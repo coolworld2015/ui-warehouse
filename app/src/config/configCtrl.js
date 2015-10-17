@@ -5,9 +5,9 @@
         .module('app')
         .controller('ConfigCtrl', ConfigCtrl);
 
-    ConfigCtrl.$inject = ['$scope', '$rootScope', '$state', '$http', 'ClientsLocalStorage', 'GoodsService'];
+    ConfigCtrl.$inject = ['$scope', '$rootScope', '$state', '$http', 'ClientsLocalStorage', 'GoodsLocalStorage'];
 
-    function ConfigCtrl($scope, $rootScope, $state, $http, ClientsLocalStorage, GoodsService) {
+    function ConfigCtrl($scope, $rootScope, $state, $http, ClientsLocalStorage, GoodsLocalStorage) {
         var vm = this;
 		
         angular.extend(vm, {
@@ -89,7 +89,7 @@
             $http.get(url)
                 .then(function (results) {
 					console.log(results.data);
-					GoodsService.uploadGoods(results.data);
+					GoodsLocalStorage.uploadGoods(results.data);
 					complete();
                 })
                 .catch(function (data) {
