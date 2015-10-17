@@ -5,9 +5,9 @@
         .module('app')
         .controller('UsersCtrl', UsersCtrl);
 
-    UsersCtrl.$inject = ['$scope', '$rootScope', '$state', 'UsersService'];
+    UsersCtrl.$inject = ['$scope', '$rootScope', '$state', 'UsersService', 'UsersLocalStorage'];
 
-    function UsersCtrl($scope, $rootScope, $state, UsersService) {
+    function UsersCtrl($scope, $rootScope, $state, UsersService, UsersLocalStorage) {
         $scope.$watch('numPerPage', currentPage);			
         $scope.$watch('currentPage', currentPage);
         var vm = this;
@@ -34,7 +34,17 @@
             $scope.currentPage = 1;
             $scope.numPerPage = 10;
             $scope.maxSize = 5;
-
+			
+            if ($rootScope.mode == 'ON-LINE (Heroku)') {
+                getUsersOn();
+            } else {
+                vm.users = UsersLocalStorage.getUsers();
+				$rootScope.myError = false;
+				$rootScope.loading = false;
+            }
+		}
+		
+        function getUsersOn() {
             UsersService.getUsers()
 				.then(function(data){
 					$scope.filteredUsers = [];
