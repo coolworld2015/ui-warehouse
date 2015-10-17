@@ -21,7 +21,8 @@
             clientsAdd: clientsAdd,
             goToBack: goToBack,
 			goToHead: goToHead,
-            clientsBack: clientsBack
+            clientsBack: clientsBack,
+			_errorHandler: errorHandler
         });
 
         init();
@@ -84,6 +85,11 @@
 
         function clientsBack() {
             $state.go('main');
+        }
+		
+		function errorHandler() {
+            $rootScope.loading = false;
+            $rootScope.myError = true;
         }
     }
 })();

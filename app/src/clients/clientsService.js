@@ -15,14 +15,15 @@
             addItem: addItem,
             editItem: editItem,
             deleteItem: deleteItem,
-			findClient: findClient
+			findClient: findClient,
+			_sort: sort
         };
 		
         function getClients() {
             var url = webUrl + 'api/clients/get';
             return $http.get(url)
                 .then(function (result) {
-                    result.data.sort();
+                    result.data.sort(sort);
                     return result;
                 });
         }
@@ -63,6 +64,17 @@
                 .then(function (result) {
                     return result;
                 });
+        }
+		
+        function sort(a, b) {
+            var nameA = a.name.toLowerCase(), nameB = b.name.toLowerCase();
+            if (nameA < nameB) {
+                return -1
+            }
+            if (nameA > nameB) {
+                return 1
+            }
+            return 0;
         }
 		
     }
