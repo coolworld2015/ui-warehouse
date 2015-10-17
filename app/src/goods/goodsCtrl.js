@@ -34,6 +34,7 @@
         function init() {
             vm.title = 'Commodities';
             vm.sort = 'name';
+			
             $scope.currentPage = 1;
             $scope.numPerPage = 10;
             $scope.maxSize = 5;

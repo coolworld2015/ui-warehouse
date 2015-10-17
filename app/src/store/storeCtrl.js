@@ -5,9 +5,9 @@
         .module('app')
         .controller('StoreCtrl', StoreCtrl);
 
-    StoreCtrl.$inject = ['$scope', '$state', '$timeout', 'goods'];
+    StoreCtrl.$inject = ['$scope', '$rootScope', '$state', '$timeout', 'GoodsService'];
 
-    function StoreCtrl($scope, $state, $timeout, goods) {
+    function StoreCtrl($scope, $rootScope, $state, $timeout, GoodsService) {
         $scope.$watch('numPerPage', currentPage);
         $scope.$watch('currentPage', currentPage);
         var vm = this;
@@ -20,7 +20,8 @@
             storeEditForm: storeEditForm,
             goToBack: goToBack,
 			goToHead: goToHead,			
-            storeBack: storeBack
+            storeBack: storeBack,
+			_errorHandler: errorHandler	
         });
 
         init();
@@ -30,13 +31,24 @@
         });
 
         function init() {
-            $scope.currentPage = 1;
-            $scope.numPerPage = 10;//GoodsService.numPerPage;
-            $scope.maxSize = 5;
-
             vm.title = 'Store';
             vm.sort = 'name';
-            vm.store = initStore(goods);
+			
+            $scope.currentPage = 1;
+            $scope.numPerPage = 10;
+            $scope.maxSize = 5;
+
+
+			
+            GoodsService.getGoods()
+				.then(function(data){
+					$scope.filteredClients = [];
+					vm.store = initStore(data.data);
+					currentPage();
+					$rootScope.myError = false;
+					$rootScope.loading = false;
+				})
+				.catch(errorHandler);
         }
 		
 		function initStore(goods) {	
@@ -82,6 +94,11 @@
 		
         function storeBack() {
             $state.go('main');
+        }
+		
+		function errorHandler() {
+            $rootScope.loading = false;
+            $rootScope.myError = true;
         }
     }
 })();
