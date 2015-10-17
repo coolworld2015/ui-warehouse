@@ -5,9 +5,9 @@
         .module('app')
         .controller('InputsCtrl', InputsCtrl);
 
-    InputsCtrl.$inject = ['$scope', '$state', '$timeout', 'inputs'];
+    InputsCtrl.$inject = ['$scope', '$rootScope', '$state', '$timeout', 'InputsService', 'InputLocalStorage'];
 
-    function InputsCtrl($scope, $state, $timeout, inputs) {
+    function InputsCtrl($scope, $rootScope, $state, $timeout, InputsService, InputLocalStorage) {
         $scope.$watch('numPerPage', currentPage);
         $scope.$watch('currentPage', currentPage);
         var vm = this;
@@ -21,7 +21,8 @@
             inputsAdd: inputsAdd,
             goToBack: goToBack,
             goToHead: goToHead,
-            inputsBack: inputsBack
+            inputsBack: inputsBack,
+			_errorHandler: errorHandler
         });
 
         init();
@@ -32,12 +33,31 @@
 
         function init() {
             $scope.currentPage = 1;
-            $scope.numPerPage = 10;//InputsService.numPerPage;
+            $scope.numPerPage = 10;
             $scope.maxSize = 5;
 
             vm.title = 'Purchase Invoices';
             vm.sort = 'name';
-            vm.inputs = inputs;
+            
+            if ($rootScope.mode == 'ON-LINE (Heroku)') {
+                getInputsOn();
+            } else {
+                vm.inputs = InputLocalStorage.getInputs();
+				$rootScope.myError = false;
+				$rootScope.loading = false;
+            }
+		}
+		
+        function getInputsOn() {
+            InputsService.getInputs()
+				.then(function(data){
+					$scope.filteredInputs = [];
+					vm.inputs = data.data;
+					currentPage();
+					$rootScope.myError = false;
+					$rootScope.loading = false;
+				})
+				.catch(errorHandler);
         }
 
         function currentPage() {
@@ -79,6 +99,11 @@
 
         function inputsBack() {
             $state.go('main');
+        }
+		
+		function errorHandler() {
+            $rootScope.loading = false;
+            $rootScope.myError = true;
         }
     }
 })();
