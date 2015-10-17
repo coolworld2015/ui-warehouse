@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+    <center>
+	
+        <form ng-submit="clientsEditCtrl.clientsSubmit()" novalidate name="clientsEditCtrl.form">
+            <div class="header">{{clientsEditCtrl.name}}&nbsp</div>
+            <br><br>
+            <table class="table table-bordered">
+                <tr>
+                    <td>
+                        <input type="text" class="form-control input" required
+                               placeholder="Customers name" name="name"
+                               ng-model="clientsEditCtrl.name">
+
+                        <div ng-if="clientsEditCtrl.form.$submitted">
+                            <div ng-show="clientsEditCtrl.form.name.$error.required" class="valid">Value required</div>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <input type="text" class="form-control input" required
+                               placeholder="Customers address" name="address"
+                               ng-model="clientsEditCtrl.address">
+
+                        <div ng-if="clientsEditCtrl.form.$submitted">
+                            <div ng-show="clientsEditCtrl.form.address.$error.required" class="valid">Value required</div>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <input type="text" class="form-control input" required
+                               placeholder="Customers phone" name="phone"
+                               ng-model="clientsEditCtrl.phone">
+
+                        <div ng-if="clientsEditCtrl.form.$submitted">
+                            <div ng-show="clientsEditCtrl.form.phone.$error.required" class="valid">Value required</div>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <input type="text" class="form-control input" required
+                               placeholder="Customers description" name="description"
+                               ng-model="clientsEditCtrl.description">
+
+                        <div ng-if="clientsEditCtrl.form.$submitted">
+                            <div ng-show="clientsEditCtrl.form.description.$error.required" class="valid">Value required</div>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <input type="text" class="form-control input"
+                               readonly
+                               style="background-color:white"
+                               value={{clientsEditCtrl.total}}>
+                    </td>
+                </tr>
+            </table>
+ 
+            <button type="submit" class="btn btn-primary button">Submit</button>&nbsp
+            <button type="button" class="btn btn-primary button" ng-click="clientsEditCtrl.clientsDialog()">Delete</button>
+            <br><br>
+            <button type="button" class="btn btn-primary button" ng-click="clientsEditCtrl.clientsEditBack()">Back</button>
+        </form>
+		
+    </center>
+</body>
+</html>

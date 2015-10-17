@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+    <center>
+
+        <form ng-submit="outputsInvoiceAddCtrl.addSubmit()" novalidate name="outputsInvoiceAddCtrl.form">
+            <div class="header" ng-click="outputsInvoiceAddCtrl.goOutputs()">
+                New record
+            </div>
+            <br><br>
+            <table class="table table-bordered">
+                <tr>
+                    <td>
+                        <input type="text" class="form-control input"
+                               readonly style="width:130px"
+                               value="Commoditie:">
+                    </td>
+                    <td style="width:100%">
+                        <select required class="form-control input"
+                                ng-model="outputsInvoiceAddCtrl.selectedItem"
+                                ng-options="goodsOption.name for goodsOption in outputsInvoiceAddCtrl.goodsOptions
+                                    track by goodsOption.name"
+                                ng-change="outputsInvoiceAddCtrl.updateChange(outputsInvoiceAddCtrl.selectedItem)">
+                        </select>
+
+                        <div ng-show="outputsInvoiceAddCtrl.error" class="valid">Value required</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="text" class="form-control input"
+                               readonly style="width:130px"
+                               value="Price:">
+                    </td>
+                    <td style="width:100%">
+                        <input type="text" class="form-control input" required
+                               placeholder="Price" name="invoicePrice"
+                               ng-model="outputsInvoiceAddCtrl.price" >
+
+                        <div ng-if="outputsInvoiceAddCtrl.form.$submitted">
+                            <div ng-show="outputsInvoiceAddCtrl.form.invoicePrice.$error.required" class="valid">Value required</div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="text" class="form-control input"
+                               readonly style="width:130px"
+                               value="Quantity:">
+                    </td>
+                    <td style="width:100%">
+                        <input type="text" class="form-control input" required digits-only
+                               placeholder="Quantity" name="quantity"
+                               ng-model="outputsInvoiceAddCtrl.quantity">
+
+                        <div ng-if="outputsInvoiceAddCtrl.form.$submitted">
+                            <div ng-show="outputsInvoiceAddCtrl.form.quantity.$error.required" class="valid">Value required</div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="text" class="form-control input"
+                               readonly style="width:130px"
+                               value="Description:">
+                    </td>
+                    <td style="width:100%">
+                        <input type="text" class="form-control input" required
+                               placeholder="Description" name="description"
+                               ng-model="outputsInvoiceAddCtrl.description">
+
+                        <div ng-if="outputsInvoiceAddCtrl.form.$submitted">
+                            <div ng-show="outputsInvoiceAddCtrl.form.description.$error.required" class="valid">Value required</div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+
+            <input type="submit" class="btn btn-primary button" value="Submit">&nbsp
+            <button type="button" class="btn btn-primary button" ng-click="outputsInvoiceAddCtrl.goOutputsInvoice()">Back</button>
+        </form>
+
+    </center>
+</body>
+</html>

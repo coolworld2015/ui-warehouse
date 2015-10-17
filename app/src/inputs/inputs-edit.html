@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+	<center>
+
+		<form ng-submit="inputsEditCtrl.inputsSubmit()" novalidate name="inputsEditCtrl.form">
+            <div class="header" ng-click="inputsEditCtrl.goInputs()">Purchase InvoicesID: {{inputsEditCtrl.number}}</div>
+            <br><br>
+            <table class="table table-bordered">
+                <tr>
+                    <td>
+                        <input type="text" class="form-control input"
+                               readonly style="width:130px"
+                               value="ID:">
+                    </td>
+                    <td style="width:100%">
+                        <input type="text" class="form-control input" required digits-only
+                               placeholder="Transaction ID" name="number"
+                               ng-model="inputsEditCtrl.number">
+
+                        <div ng-if="inputsEditCtrl.form.$submitted">
+                            <div ng-show="inputsEditCtrl.form.number.$error.required" class="valid">Value required</div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="text" class="form-control input"
+                               readonly style="width:130px"
+                               value="Customer:">
+                    </td>
+                    <td style="width:100%">
+                        <input type="text" class="form-control input" required readonly
+                               ng-model="inputsEditCtrl.client">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="text" class="form-control input"
+                               readonly style="width:130px"
+                               value="Date:">
+                    </td>
+                    <td style="width:100%">
+                        <input type="text" class="form-control input" required
+                               placeholder="Transaction date" name="date"
+                               ng-model="inputsEditCtrl.date">
+
+                        <div ng-if="inputsEditCtrl.form.$submitted">
+                            <div ng-show="inputsEditCtrl.form.date.$error.required" class="valid">Value required</div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="text" class="form-control input"
+                               readonly style="width:130px"
+                               value="Description:">
+                    </td>
+                    <td style="width:100%">
+                        <input type="text" class="form-control input" required
+                               placeholder="Transaction description" name="description"
+                               ng-model="inputsEditCtrl.description">
+
+                        <div ng-if="inputsEditCtrl.form.$submitted">
+                            <div ng-show="inputsEditCtrl.form.description.$error.required" class="valid">Value required</div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="text" class="form-control input"
+                               readonly style="width:130px"
+                               value="Total:">
+                    </td>
+                    <td style="width:100%">
+                        <input type="text" class="form-control input" required readonly
+                               ng-model="inputsEditCtrl.total">
+                    </td>
+                </tr>
+            </table>
+
+			<input type="submit" class="btn btn-primary button" value="Edit">&nbsp
+			<button type="button" class="btn btn-primary button" ng-click="inputsEditCtrl.inputsDialog()">Delete</button>
+            <br><br>
+			<button type="button" class="btn btn-primary button" ng-click="inputsEditCtrl.inputsEditBack()">Back</button>
+		</form>
+
+	</center>
+</body>
+</html>

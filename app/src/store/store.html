@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+    <center>
+        <div class="header" ng-click="storeCtrl.goToBack()">{{storeCtrl.title}}</div>
+        <input type="text" class="form-control" ng-model="storeCtrl.query.name" scroll-there>
+            <table class="table table-striped input">
+                <th ng-click="storeCtrl.goodsSort('name')" style="width:50%">Name</th>
+                <th ng-click="storeCtrl.goodsSort('quantity')">Quantity</th>
+                <tr ng-repeat="item in filteredGoods | orderBy:storeCtrl.sort:storeCtrl.rev |
+					filter:storeCtrl.query as goodsFilter track by $index">
+                    <td>{{item.name}}</td>
+                    <td>{{item.quantity | number:2}}</td>
+                </tr>
+            </table>
+        <hr>
+            <h4>
+                <div class="label label-default" style="font-size:17px; background-color:#337ab7" ng-click="storeCtrl.goToHead()">
+                    Records count: {{goodsFilter.length}} ({{storeCtrl.store.length}})
+                </div>
+            </h4>
+        <hr>
+            <h2 class="label label-primary" style="font-size:17px;">Items per page:
+				<input style="border:none; width: 30px; font-size:17px; background-color:#337ab7" 
+				type="text" ng-model="numPerPage" value={{numPerPage}}>
+			</h2>	
+        <div><pagination total-items="totalItems" ng-model="currentPage" max-size="maxSize" class="pagination-sm" boundary-links="true"></pagination></div>
+
+        <button class="btn btn-primary button" ng-click="storeCtrl.storeBack()" scroll-here>Back</button>
+        <br><br>
+    </center>
+</body>
+</html>

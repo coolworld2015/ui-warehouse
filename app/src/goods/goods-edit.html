@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+    <center>
+
+	    <form ng-submit="goodsEditCtrl.goodsSubmit()" novalidate name="goodsEditCtrl.form">
+            <div class="header">{{goodsEditCtrl.name}}&nbsp</div>
+            <br><br>
+            <table class="table table-bordered">
+                <tr>
+                    <td>
+                        <input type="text" class="form-control input" required
+                               placeholder="Commodities name" name="name"
+                               ng-model="goodsEditCtrl.name">
+
+                        <div ng-if="goodsEditCtrl.form.$submitted">
+                            <div ng-show="goodsEditCtrl.form.name.$error.required" class="valid">Value required</div>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <input type="text" class="form-control input" required
+                               placeholder="Commodities price" name="price"
+                               ng-model="goodsEditCtrl.price">
+
+                        <div ng-if="goodsEditCtrl.form.$submitted">
+                            <div ng-show="goodsEditCtrl.form.price.$error.required" class="valid">Value required</div>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <input type="text" class="form-control input" required
+                               placeholder="Commodities description" name="description"
+                               ng-model="goodsEditCtrl.description">
+
+                        <div ng-if="goodsEditCtrl.form.$submitted">
+                            <div ng-show="goodsEditCtrl.form.description.$error.required" class="valid">Value required</div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+
+            <input type="submit" class="btn btn-primary button" value="Submit">&nbsp
+            <button type="button" class="btn btn-primary button" ng-click="goodsEditCtrl.goodsDialog()">Delete</button>
+            <br><br>
+            <button type="button" class="btn btn-primary button" ng-click="goodsEditCtrl.goodsEditBack()">Back</button>
+        </form>
+
+    </center>
+</body>
+</html>

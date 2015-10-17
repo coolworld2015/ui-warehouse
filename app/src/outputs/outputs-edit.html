@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<center>
+
+    <form ng-submit="outputsEditCtrl.outputsSubmit()" novalidate name="outputsEditCtrl.form">
+        <div class="header" ng-click="outputsEditCtrl.goInputs()">
+            Sales InvoicesID: {{outputsEditCtrl.number}}
+        </div>
+        <br><br>
+        <table class="table table-bordered">
+            <tr>
+                <td>
+                    <input type="text" class="form-control input"
+                           readonly style="width:130px"
+                           value="ID:">
+                </td>
+                <td style="width:100%">
+                    <input type="text" class="form-control input" required digits-only
+                           placeholder="Transaction ID" name="number"
+                           ng-model="outputsEditCtrl.number">
+
+                    <div ng-if="outputsEditCtrl.form.$submitted">
+                        <div ng-show="outputsEditCtrl.form.number.$error.required" class="valid">Value required</div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="text" class="form-control input"
+                           readonly style="width:130px"
+                           value="Customer:">
+                </td>
+                <td style="width:100%">
+                    <input type="text" class="form-control input" required readonly
+                           ng-model="outputsEditCtrl.client">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="text" class="form-control input"
+                           readonly style="width:130px"
+                           value="Date:">
+                </td>
+                <td style="width:100%">
+                    <input type="text" class="form-control input" required
+                           placeholder="Transaction date" name="date"
+                           ng-model="outputsEditCtrl.date">
+
+                    <div ng-if="outputsEditCtrl.form.$submitted">
+                        <div ng-show="outputsEditCtrl.form.date.$error.required" class="valid">Value required</div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="text" class="form-control input"
+                           readonly style="width:130px"
+                           value="Description:">
+                </td>
+                <td style="width:100%">
+                    <input type="text" class="form-control input" required
+                           placeholder="Transaction description" name="description"
+                           ng-model="outputsEditCtrl.description">
+
+                    <div ng-if="outputsEditCtrl.form.$submitted">
+                        <div ng-show="outputsEditCtrl.form.description.$error.required" class="valid">Value required</div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="text" class="form-control input"
+                           readonly style="width:130px"
+                           value="Total:">
+                </td>
+                <td style="width:100%">
+                    <input type="text" class="form-control input" required readonly
+                           ng-model="outputsEditCtrl.total">
+                </td>
+            </tr>
+        </table>
+
+        <input type="submit" class="btn btn-primary button" value="Edit">&nbsp
+        <button type="button" class="btn btn-primary button" ng-click="outputsEditCtrl.outputsDialog()">Delete</button>
+        <br><br>
+        <button type="button" class="btn btn-primary button" ng-click="outputsEditCtrl.outputsEditBack()">Back</button>
+    </form>
+
+</center>
+</body>
+</html>

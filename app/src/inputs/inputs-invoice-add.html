@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+    <center>
+
+        <form ng-submit="inputsInvoiceAddCtrl.addSubmit()" novalidate name="inputsInvoiceAddCtrl.form">
+            <div class="header" ng-click="inputsInvoiceAddCtrl.goInputs()">
+                New record
+            </div>
+            <br><br>
+            <table class="table table-bordered">
+                <tr>
+                    <td>
+                        <input type="text" class="form-control input"
+                               readonly style="width:130px"
+                               value="Commoditie:">
+                    </td>
+                    <td style="width:100%">
+                        <select required class="form-control input"
+                                ng-model="inputsInvoiceAddCtrl.selectedItem"
+                                ng-options="goodsOption.name for goodsOption in inputsInvoiceAddCtrl.goodsOptions
+                                track by goodsOption.name"
+                                ng-change="inputsInvoiceAddCtrl.updateChange(inputsInvoiceAddCtrl.selectedItem)">
+                        </select>
+
+                        <div ng-show="inputsInvoiceAddCtrl.error" class="valid">Value required</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="text" class="form-control input"
+                               readonly style="width:130px"
+                               value="Price:">
+                    </td>
+                    <td style="width:100%">
+                        <input type="text" class="form-control input" required
+                               placeholder="Price" name="invoicePrice"
+                               ng-model="inputsInvoiceAddCtrl.price" >
+
+                        <div ng-if="inputsInvoiceAddCtrl.form.$submitted">
+                            <div ng-show="inputsInvoiceAddCtrl.form.invoicePrice.$error.required" class="valid">Value required</div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="text" class="form-control input"
+                               readonly style="width:130px"
+                               value="Quantity:">
+                    </td>
+                    <td style="width:100%">
+                        <input type="text" class="form-control input" required digits-only
+                               placeholder="Quantity" name="quantity"
+                               ng-model="inputsInvoiceAddCtrl.quantity">
+
+                        <div ng-if="inputsInvoiceAddCtrl.form.$submitted">
+                            <div ng-show="inputsInvoiceAddCtrl.form.quantity.$error.required" class="valid">Value required</div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="text" class="form-control input"
+                               readonly style="width:130px"
+                               value="Description:">
+                    </td>
+                    <td style="width:100%">
+                        <input type="text" class="form-control input" required
+                               placeholder="Description" name="description"
+                               ng-model="inputsInvoiceAddCtrl.description">
+
+                        <div ng-if="inputsInvoiceAddCtrl.form.$submitted">
+                            <div ng-show="inputsInvoiceAddCtrl.form.description.$error.required" class="valid">Value required</div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+
+            <input type="submit" class="btn btn-primary button" value="Submit">&nbsp
+            <button type="button" class="btn btn-primary button" ng-click="inputsInvoiceAddCtrl.goInputsInvoice()">Back</button>
+        </form>
+
+    </center>
+</body>
+</html>

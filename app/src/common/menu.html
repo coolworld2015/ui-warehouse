@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+	<nav class="navbar navbar-default">
+		<ul class="nav nav-pills">
+			<li ng-class="{active:menuCtrl.isActive('main')}"><a ui-sref="main">Main</a></li>
+			<li ng-class="{active:menuCtrl.isActive('main.store')}"><a ui-sref="main.store">Store</a></li>
+			<li ng-class="{active:menuCtrl.isActive('main.goods')}"><a ui-sref="main.goods">Commodities</a></li>
+			<li ng-class="{active:menuCtrl.isActive('main.clients')}"><a ui-sref="main.clients">Customers</a></li>
+			<li ng-class="{active:menuCtrl.isActive('main.input')}"><a ui-sref="main.input">Purchase Invoices</a></li>
+			<li ng-class="{active:menuCtrl.isActive('main.output')}"><a ui-sref="main.output">Sales Invoices</a></li>
+			<li ng-class="{active:menuCtrl.isActive('main.users')}"><a ui-sref="main.users">Users</a></li>
+			<li><a ui-sref="login">Logout</a></li>
+		</ul>
+	</nav>
+</body>
+</html>

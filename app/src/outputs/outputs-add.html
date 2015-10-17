@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<center>
+
+    <form ng-submit="outputsAddCtrl.outputsAddSubmit()" novalidate name="outputsAddCtrl.form">
+        <div class="header">New record</div>
+        <br><br>
+        <table class="table table-bordered">
+            <tr>
+                <td>
+                    <input type="text" class="form-control input"
+                           readonly style="width:130px"
+                           value="ID:">
+                </td>
+                <td style="width:100%">
+                    <input type="text" class="form-control input" required digits-only
+                           placeholder="Transaction ID" name="number"
+                           ng-model="outputsAddCtrl.number">
+
+                    <div ng-if="outputsAddCtrl.form.$submitted">
+                        <div ng-show="outputsAddCtrl.form.number.$error.required" class="valid">Value required</div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="text" class="form-control input"
+                           readonly style="width:130px"
+                           value="Customer:">
+                </td>
+                <td style="width:100%">
+                    <select required class="form-control input"
+                            ng-model="outputsAddCtrl.selectedItem"
+                            ng-options="clientsOption.name for clientsOption in outputsAddCtrl.clientsOptions
+                                track by clientsOption.name"
+                            ng-change="outputsAddCtrl.updateChange(outputsAddCtrl.selectedItem)">
+                    </select>
+
+                    <div ng-show="outputsAddCtrl.error" class="valid">Value required</div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input type="text" class="form-control input"
+                           readonly style="width:130px"
+                           value="Date:">
+                </td>
+                <td style="width:100%">
+                    <input type="text" class="form-control input" required
+                           placeholder="Transaction date" name="date"
+                           ng-model="outputsAddCtrl.date">
+
+                    <div ng-if="outputsAddCtrl.form.$submitted">
+                        <div ng-show="outputsAddCtrl.form.date.$error.required" class="valid">Value required</div>
+                    </div>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <input type="text" class="form-control input"
+                           readonly style="width:130px"
+                           value="Description:">
+                </td>
+                <td style="width:100%">
+                    <input type="text" class="form-control input" required
+                           placeholder="Transaction description" name="description"
+                           ng-model="outputsAddCtrl.description">
+
+                    <div ng-if="outputsAddCtrl.form.$submitted">
+                        <div ng-show="outputsAddCtrl.form.description.$error.required" class="valid">Value required</div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+
+        <input type="submit" class="btn btn-primary button" value="Submit">&nbsp
+        <button type="button" class="btn btn-primary button" ng-click="outputsAddCtrl.outputsAddBack()">Back</button>
+    </form>
+
+</center>
+</body>
+</html>

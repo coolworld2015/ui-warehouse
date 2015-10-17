@@ -1,0 +1,10 @@
+.idea
+node_modules
+app/vendors
+
+*.log
+
+build
+reports
+
+.env

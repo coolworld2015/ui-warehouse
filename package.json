@@ -1,0 +1,36 @@
+{
+  "scripts": {
+    "test": "gulp test",
+    "server": "node server.js",
+    "preGulp": "npm i",
+    "Gulp": "gulp",
+    "gulp": "gulp",
+    "install": "bower i",
+    "postinstall": "npm run gulp",
+    "release": "gulp release",
+    "dev": "gulp dev",
+    "watch": "gulp watch"
+  },
+  "dependencies": {
+    "bower": "^1.4.1",
+    "chai": "^3.0.0",
+    "gulp": "^3.8.11",
+    "gulp-angular-templatecache": "^1.6.0",
+    "gulp-concat": "^2.5.2",
+    "gulp-minify-css": "^1.2.0",
+    "gulp-minify-html": "^1.0.3",
+    "gulp-sourcemaps": "^1.5.2",
+    "gulp-uglify": "^1.2.0",
+    "karma": "^0.12.36",
+    "karma-chai": "^0.1.0",
+    "karma-chrome-launcher": "^0.1.12",
+    "karma-coverage": "^0.4.2",
+    "karma-mocha": "^0.1.10",
+    "karma-ng-html2js-preprocessor": "^0.1.2",
+    "karma-phantomjs-launcher": "^0.2.0",
+    "karma-sinon-chai": "^1.0.0",
+    "mocha": "^2.2.5",
+    "node-static": "^0.7.6",
+    "phantomjs": "^1.9.17"
+  }
+}

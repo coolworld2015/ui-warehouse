@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+    <center>
+
+        <form ng-submit="usersAddCtrl.usersAddSubmit()" novalidate name="usersAddCtrl.form">
+            <div class="header">New record</div>
+            <br><br>
+            <table class="table table-bordered">
+                <tr>
+                    <td>
+                        <input type="text" class="form-control input" required
+                               placeholder="User login" name="name"
+                               ng-model="usersAddCtrl.name">
+
+                        <div ng-if="usersAddCtrl.form.$submitted">
+                            <div ng-show="usersAddCtrl.form.name.$error.required" class="valid">Value required</div>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <input type="text" class="form-control input" required
+                               placeholder="User password" name="pass"
+                               ng-model="usersAddCtrl.pass">
+
+                        <div ng-if="usersAddCtrl.form.$submitted">
+                            <div ng-show="usersAddCtrl.form.pass.$error.required" class="valid">Value required</div>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <input type="text" class="form-control input" required
+                               placeholder="User description" name="description"
+                               ng-model="usersAddCtrl.description">
+
+                        <div ng-if="usersAddCtrl.form.$submitted">
+                            <div ng-show="usersAddCtrl.form.description.$error.required" class="valid">Value required</div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+
+            <button type="submit" class="btn btn-primary button">Submit</button>&nbsp
+            <button type="button" class="btn btn-primary button" ng-click="usersAddCtrl.usersAddBack()">Back</button>
+        </form>
+
+    </center>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+    <center>
+        <div class="header" ng-click="usersCtrl.goToBack()" ng-bind="usersCtrl.title"></div>
+        <input type="text" class="form-control" ng-model="usersCtrl.query.name" scroll-there>
+            <table class="table table-striped input">
+                <th ng-click="usersCtrl.usersSort('name')" style="width:50%">Login</th>
+                <th ng-click="usersCtrl.usersSort('pass')">Password</th>
+                <tr ng-repeat="item in filteredUsers | orderBy:usersCtrl.sort:usersCtrl.rev |
+					filter:usersCtrl.query as usersFilter track by $index"
+					ng-click="usersCtrl.usersEditForm(item)">
+                    <td ng-bind="item.name"></td>
+                    <td ng-bind="item.pass"></td>
+                </tr>
+            </table>
+        <hr>
+            <h4>
+				<div class="label label-default" style="font-size:17px; background-color:#337ab7" ng-click="usersCtrl.goToHead()">
+					Records count: <span ng-bind="usersFilter.length"></span> (<span ng-bind="usersCtrl.users.length"></span>)
+				</div>
+			</h4>
+        <hr>
+            <h2 class="label label-primary" style="font-size:17px;">Items per page:
+				<input style="border:none; width: 30px; font-size:17px; background-color:#337ab7" 
+				type="text" ng-model="numPerPage" value={{numPerPage}}>
+			</h2>	
+        <div><pagination total-items="totalItems" ng-model="currentPage" max-size="maxSize" class="pagination-sm" boundary-links="true"></pagination></div>
+
+        <button class="btn btn-primary button" ng-click="usersCtrl.usersAdd()">Add</button>&nbsp
+        <button class="btn btn-primary button" ng-click="usersCtrl.usersBack()" scroll-here>Back</button>
+        <br><br>
+    </center>
+</body>
+</html>

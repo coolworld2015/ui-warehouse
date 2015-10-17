@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+	<center>
+		<div class="header">Configurations</div>
+		<br><br>
+			<table class="table table-bordered">
+				<tr>
+					<td><b>Application mode</b>
+                        <input type="text"
+                               class="form-control"
+                               ng-model = "configCtrl.mode"
+                               ng-click = "configCtrl.toggleMode()"
+                               readonly value="configCtrl.mode">
+					</td>
+				</tr>
+				<tr>
+					<td><b>Transaction</b>
+						<select class="form-control"
+							scroll-there
+							require
+							ng-options="option.name for option in configCtrl.options" 
+							ng-model="configCtrl.selectedItem">
+						</select>
+						<div ng-show="configCtrl.error" class="alert alert-danger" style="margin-bottom:-8px">Something went wrong</div>
+						<div ng-show="configCtrl.loading" class="header" style="font-size:25px;">&nbsp Loading...</div>	
+						<div ng-show="configCtrl.complete" class="header" style="font-size:25px;">&nbsp Action is completed</div>
+					</td>
+				</tr>
+			</table>
+
+		<button class="btn btn-primary button" ng-click="configCtrl.doAction()">Action</button>&nbsp
+		<button class="btn btn-primary button" ng-click="configCtrl.toMain()" scroll-here>Back</button>
+		<br><br>
+	</center>
+</body>
+</html>

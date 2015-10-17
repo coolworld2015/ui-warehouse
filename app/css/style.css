@@ -1,0 +1,50 @@
+.header {
+    width: 100%;
+    display: inline-block;
+    font-size: 30px;
+    background-color: #337ab7;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+}
+.button {
+    font-weight:bold;
+    font-size:17px;
+    width:46%;
+}
+.input {
+    font-weight:bold;
+    font-size:17px;
+}
+.valid {
+    color: red;
+    font-weight: bold;
+    font-size: 16px;
+    position: relative;
+    top: 5px;
+    left: 3px;
+}
+.loading {
+    position:fixed;
+    top:20px;
+    height:100%;
+    width: 100%;
+    right: 30px;
+    padding: 20px;
+    opacity:.9;
+    color: dodgerblue;
+	text-align: right;
+    background-color: transparent;
+}
+.error {
+    position:fixed;
+    top:20px;
+    height:85px;
+    width: 40%;
+    right: 20px;
+    padding: 20px;
+    opacity:.9;
+    color: red;
+    background-color: transparent;
+}

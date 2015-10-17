@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+    <center>
+        <div class="header" ng-click="outputsCtrl.goToBack()">{{outputsCtrl.title}}</div>
+        <input type="text" class="form-control" ng-model="outputsCtrl.query.name" scroll-there>
+            <table class="table table-striped input">
+                <th ng-click="outputsCtrl.outputsSort('id1')" style="width:10%">ID</th>
+                <th ng-click="outputsCtrl.outputsSort('name')" style="width:40%">Customer</th>
+                <th ng-click="outputsCtrl.outputsSort('date')" style="width:40%">Date</th>
+                <th ng-click="outputsCtrl.outputsSort('sum')" style="width:10%">Total</th>
+                <tr ng-repeat="item in filteredOutputs | orderBy:outputsCtrl.sort:outputsCtrl.rev |
+                            filter:outputsCtrl.query as outputsFilter track by $index"
+                    ng-click="outputsCtrl.outputsEditForm(item)">
+                    <td>{{item.number}}</td>
+                    <td>{{item.client}}</td>
+                    <td>{{item.date}}</td>
+                    <td>{{item.total | number:2}}</td>
+                </tr>
+            </table>
+        <hr>
+        <h4>
+            <div class="label label-default" style="font-size:17px; background-color:#337ab7" ng-click="outputsCtrl.goToHead()">
+                Records count: {{outputsFilter.length}} ({{outputsCtrl.outputs.length}})
+            </div>
+        </h4>
+        <hr>
+        <h2 class="label label-primary" style="font-size:17px;">Items per page:
+            <input style="border:none; width: 30px; font-size:17px; background-color:#337ab7"
+                   type="text" ng-model="numPerPage" value={{numPerPage}}>
+        </h2>
+        <div><pagination total-items="totalItems" ng-model="currentPage" max-size="maxSize" class="pagination-sm" boundary-links="true"></pagination></div>
+
+        <button class="btn btn-primary button" ng-click="outputsCtrl.outputsAdd()">Add</button>&nbsp
+        <button class="btn btn-primary button" ng-click="outputsCtrl.outputsBack()" scroll-here>Back</button>
+        <br><br>
+    </center>
+</body>
+</html>

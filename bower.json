@@ -1,0 +1,22 @@
+{
+  "name": "UI-Router",
+  "version": "0.0.0",
+  "homepage": "https://github.com/eduard-tkachuk/UI-Router",
+  "authors": [
+    "Eduard Tkachuk <wintermute2009@ukr.net>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.4.0",
+    "angular-bootstrap": "~0.13.0",
+    "angular-ui-router": "~0.2.15",
+    "angular-mocks": "~1.4.1"
+  }
+}
