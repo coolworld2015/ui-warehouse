@@ -11,11 +11,21 @@
         var webUrl = $rootScope.myConfig.webUrl;
 
         return {
+			getOutputs: getOutputs,
             addItem: addItem,
             editItem: editItem,
             deleteItem: deleteItem
         };
-
+		
+        function getOutputs() {
+            var url = webUrl + 'api/outputs/get';
+            return $http.get(url)
+                .then(function (result) {
+                    result.data.sort();
+                    return result;
+                });
+        }
+		
         function addItem(item) {
             var url = webUrl + 'api/outputs/add';
             return $http.post(url, item)

@@ -3,11 +3,11 @@
 
     angular
         .module('app')
-        .factory('InputLocalStorage', InputLocalStorage);
+        .factory('InputsLocalStorage', InputsLocalStorage);
 		
-    InputLocalStorage.$inject = ['$rootScope', '$http', '$q'];    
+    InputsLocalStorage.$inject = ['$rootScope', '$http', '$q'];    
 	
-	function InputLocalStorage($rootScope, $http, $q) {
+	function InputsLocalStorage($rootScope, $http, $q) {
         var webUrl = $rootScope.myConfig.webUrl;
 		
         return {
@@ -24,26 +24,26 @@
         };
 		
         function getInputs() {
-            if (InputLocalStorage.inputs === undefined) {
+            if (InputsLocalStorage.inputs === undefined) {
                 var inputs = localStorage.getItem('warehouse_inputs');
                 inputs = JSON.parse(inputs);
-                InputLocalStorage.inputs = inputs;
+                InputsLocalStorage.inputs = inputs;
             }
 
-            if (InputLocalStorage.inputs === null) {
-                InputLocalStorage.inputs = [];
+            if (InputsLocalStorage.inputs === null) {
+                InputsLocalStorage.inputs = [];
             }
 
-            return InputLocalStorage.inputs.sort(sort);
+            return InputsLocalStorage.inputs.sort(sort);
         }
 		
         function addItem(item) {
-            InputLocalStorage.inputs.push(item);
+            InputsLocalStorage.inputs.push(item);
             setInput();
         }
 		
         function editItem(item) {
-            var inputs = InputLocalStorage.inputs;
+            var inputs = InputsLocalStorage.inputs;
             for (var i = 0; i < inputs.length; i++) {
                 if (inputs[i].id == item.id) {
                     inputs.splice(i, 1, item);
@@ -54,7 +54,7 @@
         }
 		
         function deleteItem(id) {
-            var inputs = InputLocalStorage.inputs;
+            var inputs = InputsLocalStorage.inputs;
             for (var i = 0; i < inputs.length; i++) {
                 if (inputs[i].id == id) {
                     inputs.splice(i, 1);
@@ -65,12 +65,12 @@
         }
 
         function setInput() {
-            localStorage.setItem('warehouse_inputs', JSON.stringify(InputLocalStorage.inputs));
+            localStorage.setItem('warehouse_inputs', JSON.stringify(InputsLocalStorage.inputs));
         }
 
         function uploadInput(inputs) {
             localStorage.setItem('warehouse_inputs', JSON.stringify(inputs));
-            InputLocalStorage.inputs = undefined;
+            InputsLocalStorage.inputs = undefined;
         }
 
         function sort(a, b) {
