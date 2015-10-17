@@ -5,9 +5,9 @@
         .module('app')
         .controller('StoreCtrl', StoreCtrl);
 
-    StoreCtrl.$inject = ['$scope', '$rootScope', '$state', '$timeout', 'GoodsService'];
+    StoreCtrl.$inject = ['$scope', '$rootScope', '$state', '$timeout', 'GoodsService', 'GoodsLocalStorage'];
 
-    function StoreCtrl($scope, $rootScope, $state, $timeout, GoodsService) {
+    function StoreCtrl($scope, $rootScope, $state, $timeout, GoodsService, GoodsLocalStorage) {
         $scope.$watch('numPerPage', currentPage);
         $scope.$watch('currentPage', currentPage);
         var vm = this;
@@ -37,9 +37,18 @@
             $scope.currentPage = 1;
             $scope.numPerPage = 10;
             $scope.maxSize = 5;
-
-
 			
+            if ($rootScope.mode == 'ON-LINE (Heroku)') {
+                getGoodsOn();
+            } else {
+                vm.goods = GoodsLocalStorage.getGoods();
+				vm.store = initStore(vm.goods);
+				$rootScope.myError = false;
+				$rootScope.loading = false;
+            }
+		}
+		
+        function getGoodsOn() {			
             GoodsService.getGoods()
 				.then(function(data){
 					$scope.filteredClients = [];
