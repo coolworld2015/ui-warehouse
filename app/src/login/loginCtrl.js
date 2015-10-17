@@ -5,16 +5,17 @@
         .module('app')
         .controller('LoginCtrl', LoginCtrl);
 
-    LoginCtrl.$inject = ['$rootScope','$state','UsersService'];
+    LoginCtrl.$inject = ['$rootScope', '$state', 'UsersService', 'UsersLocalStorage'];
 
-    function LoginCtrl($rootScope, $state, UsersService) {
+    function LoginCtrl($rootScope, $state, UsersService, UsersLocalStorage) {
         var vm = this;
 		
         angular.extend(vm, {
 			init: init,
             toLogin: toLogin,
 			checkUser: checkUser,
-			_check: check
+			_check: check,
+			_errorHandler: errorHandler
         });
 		
 		init();
@@ -28,25 +29,32 @@
             if (vm.form.$invalid) {
                 return;
             }
+			$rootScope.loading = true;
             checkUser(vm.name, vm.pass);
         }
 		
         function checkUser(name, pass) {
 			$rootScope.myError = false;
 			$rootScope.loading = true;
-
+			
+            if ($rootScope.mode == 'ON-LINE (Heroku)') {
+                getUsersOn(name, pass);
+            } else {
+                vm.users = UsersLocalStorage.getUsers();
+				check(vm.users, name, pass);
+				$rootScope.myError = false;
+				$rootScope.loading = false;
+            }
+		}
+		
+        function getUsersOn(name, pass) {
 			UsersService.getUsers()
 				.then(function (data) {
 					$rootScope.loading = false;
 					var users = data.data;
 					check(users, name, pass);
 				})
-				.catch(function (data) {
-					$rootScope.loading = false;
-					$rootScope.myError = true;
-					console.log('catch - ' + data.status);
-					console.log(data);
-				});
+				.catch(errorHandler);
         }
 		
 		function check(users, name, pass) {
@@ -63,6 +71,10 @@
 			vm.error = true;
 			}	
 		}
-	
+		
+		function errorHandler() {
+            $rootScope.loading = false;
+            $rootScope.myError = true;
+        }
     }
 })();
