@@ -9,6 +9,7 @@
 
     function ConfigCtrl($scope, $rootScope, $state, $http, ClientsService, GoodsService) {
         var vm = this;
+		
         angular.extend(vm, {
 			init: init,
             toggleMode: toggleMode,
@@ -19,14 +20,13 @@
 		init();
  
 		function init() {
+			vm.webUrl = $rootScope.myConfig.webUrl;
             vm.mode= $rootScope.mode;
-            vm.error= false;
-            vm.complete= false;
+			$rootScope.myError = false;
+			$rootScope.loading = false;
 
 			vm.options = [
 				{name: 'Select transaction', value:'none'}, 
-				//{name: 'Get clients (ASP)', value: 'asp.clients'},
-				//{name: 'Get commodities (ASP)', value: 'asp.goods'},
 				{name: 'Get clients (Heroku)', value: 'heroku.clients.get'},
 				{name: 'Get goods (Heroku)', value: 'heroku.goods.get'}
 			];
@@ -54,19 +54,7 @@
 					error();
                     break;
                 }
-				
-                case 'asp.clients':
-                {
-					getClientsAsp();
-                    break;
-                }	
-				
-                case 'asp.goods':
-                {
-                    getgoodsAsp();
-                    break;
-                }	
-				
+
                 case 'heroku.clients.get':
                 {
 					getClientsHeroku();
@@ -80,39 +68,9 @@
                 }				
             }
         }
-		
-		function getClientsAsp(result) {
-            var url = 'http://localhost/base/json_clients.asp';
-            $http.get(url)
-                .then(function (results) {
-					console.log(results.data.dataSet);
-					ClientsService.uploadClients(results.data.dataSet);
-					complete();
-                })
-                .catch(function (data) {
-                    console.log('catch - ' + data.status);
-                    console.log(data);
-					error();
-                });
-        }
-		
-        function getgoodsAsp(result) {
-			var url = 'http://localhost/base/json_goods.asp';
-            $http.get(url)
-                .then(function (results) {
-					console.log(results.data.dataSet);
-					GoodsService.uploadGoods(results.data.dataSet);
-					complete();
-                })
-                .catch(function (data) {
-                    console.log('catch - ' + data.status);
-                    console.log(data);
-					error();
-                });	
-        }
-		
+		 			
         function getClientsHeroku() {
-			var url = 'http://coolworld.herokuapp.com/api/clients/get';
+			var url = vm.webUrl + 'api/clients/get';
             $http.get(url)
                 .then(function (results) {
 					console.log(results.data);
@@ -127,7 +85,7 @@
         }  
 		
         function getGoodsHeroku() {
-			var url = 'http://coolworld.herokuapp.com/api/goods/get';
+			var url = vm.webUrl + 'api/goods/get';
             $http.get(url)
                 .then(function (results) {
 					console.log(results.data);
@@ -150,8 +108,9 @@
 
         function error() {
             vm.complete = false;
-            vm.loading = false;
-            vm.error = true;
+			vm.loading = false;
+			$rootScope.loading = false;
+			$rootScope.myError = true;
         }
 
         function complete() {
