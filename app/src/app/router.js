@@ -8,42 +8,6 @@
 	routeConfig.$inject = ['$stateProvider','$urlRouterProvider'];
 
     function routeConfig($stateProvider, $urlRouterProvider) {
-        var webUrl = 'http://coolworld2015a1.herokuapp.com/'; //TODO change URL
-        //var webUrl = 'http://localhost:3000/';
-
-		function resolveResource(url, sort) {
-			resolver.$inject = ['$http', '$q', '$rootScope'];
-			function resolver($http, $q, $rootScope) {
-				return $http.get(url)
-                    .then(function (result) {
-                        $rootScope.loading = false;
-                        return result.data.sort(sort);
-                    })
-                    .catch(function (reject) {
-                        $rootScope.loading = false;
-                        $rootScope.myError = true;
-                        return $q.reject(reject);
-                    });
-			}
-
-			return resolver;
-		}
-		
-        function sort(a, b) {
-            var nameA = a.name.toLowerCase(), nameB = b.name.toLowerCase();
-            if (nameA < nameB) {
-                return -1
-            }
-            if (nameA > nameB) {
-                return 1
-            }
-            return 0;
-        }
-
-        function sort1(a, b) {
-            return parseInt(a.number) - parseInt(b.number);
-        }
-
         //$urlRouterProvider.otherwise('/login');  //TODO
         $urlRouterProvider.otherwise('/main');
 		
@@ -106,9 +70,6 @@
                 },
                 data: {
                     requireLogin: true
-                },
-				resolve: {
-                    goods: resolveResource(webUrl + 'api/goods/get',sort)
                 }
             })
 
@@ -123,9 +84,6 @@
                 },
                 data: {
                     requireLogin: true
-                },
-				resolve: {
-                    goods: resolveResource(webUrl + 'api/goods/get',sort)
                 }
             })
 
@@ -185,9 +143,6 @@
                 },
                 data: {
                     requireLogin: true
-                },
-                resolve: {
-                    clients: resolveResource(webUrl + 'api/clients/get', sort)
                 }
             })
 
@@ -246,9 +201,6 @@
                 },
                 data: {
                     requireLogin: true
-                },
-                resolve: {
-                    inputs: resolveResource(webUrl + 'api/inputs/get', sort1)
                 }
             })
 
@@ -264,9 +216,6 @@
                 },
                 data: {
                     requireLogin: true
-                },
-                resolve: {
-                    clients: resolveResource(webUrl + 'api/clients/get', sort)
                 }
             })
 
@@ -297,9 +246,6 @@
                 },
                 data: {
                     requireLogin: true
-                },
-                resolve: {
-                    invoice: resolveResource(webUrl + 'api/invoicein/get', sort1)
                 }
             })
 
@@ -315,9 +261,6 @@
                 },
                 data: {
                     requireLogin: true
-                },
-                resolve: {
-                    invoice: resolveResource(webUrl + 'api/invoicein/get', sort1)
                 }
             })
 
@@ -333,9 +276,6 @@
                 },
                 data: {
                     requireLogin: true
-                },
-                resolve: {
-                    goods: resolveResource(webUrl + 'api/goods/get', sort)
                 }
             })
 
@@ -348,9 +288,6 @@
                         controller: 'InputsInvoiceEditCtrl',
                         controllerAs: 'inputsInvoiceEditCtrl'
                     }
-                },
-                data: {
-                    requireLogin: true
                 }
             })
 
@@ -363,9 +300,6 @@
                         controller: 'InputsInvoiceDialogCtrl',
                         controllerAs: 'inputsInvoiceDialogCtrl'
                     }
-                },
-                data: {
-                    requireLogin: true
                 }
             })
 
@@ -380,9 +314,6 @@
                 },
                 data: {
                     requireLogin: true
-                },
-                resolve: {
-                    outputs: resolveResource(webUrl + 'api/outputs/get', sort1)
                 }
             })
 
@@ -398,9 +329,6 @@
                 },
                 data: {
                     requireLogin: true
-                },
-                resolve: {
-                    clients: resolveResource(webUrl + 'api/clients/get', sort)
                 }
             })
 
@@ -413,9 +341,6 @@
                         controller: 'OutputsEditCtrl',
                         controllerAs: 'outputsEditCtrl'
                     }
-                },
-                data: {
-                    requireLogin: true
                 }
             })
 
@@ -431,9 +356,6 @@
                 },
                 data: {
                     requireLogin: true
-                },
-                resolve: {
-                    invoice: resolveResource(webUrl + 'api/invoiceout/get', sort1)
                 }
             })
 
@@ -449,9 +371,6 @@
                 },
                 data: {
                     requireLogin: true
-                },
-                resolve: {
-                    invoice: resolveResource(webUrl + 'api/invoiceout/get', sort1)
                 }
             })
 
@@ -467,9 +386,6 @@
                 },
                 data: {
                     requireLogin: true
-                },
-                resolve: {
-                    goods: resolveResource(webUrl + 'api/goods/get', sort)
                 }
             })
 
@@ -514,9 +430,6 @@
                 },
                 data: {
                     requireLogin: true
-                },
-				resolve: {
-                    users: resolveResource(webUrl + 'api/users/get', sort)
                 }
             })
 

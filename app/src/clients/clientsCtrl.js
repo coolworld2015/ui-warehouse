@@ -5,9 +5,9 @@
         .module('app')
         .controller('ClientsCtrl', ClientsCtrl);
 
-    ClientsCtrl.$inject = ['$scope', '$rootScope', '$state', '$timeout', 'clients'];
+    ClientsCtrl.$inject = ['$scope', '$rootScope', '$state', '$timeout', 'ClientsService'];
 
-    function ClientsCtrl($scope, $rootScope, $state, $timeout, clients) {
+    function ClientsCtrl($scope, $rootScope, $state, $timeout, ClientsService) {
         $scope.$watch('numPerPage', currentPage);		
         $scope.$watch('currentPage', currentPage);
         var vm = this;
@@ -36,10 +36,16 @@
             $scope.currentPage = 1;
             $scope.numPerPage = 10;
             $scope.maxSize = 5;
-			 
-			vm.clients = clients;
-			$rootScope.myError = false;
-			$rootScope.loading = false;
+
+            ClientsService.getClients()
+				.then(function(data){
+					$scope.filteredClients = [];
+					vm.clients = data.data;
+					currentPage();
+					$rootScope.myError = false;
+					$rootScope.loading = false;
+				})
+				.catch(errorHandler);
         }
 		 	
         function currentPage() {
