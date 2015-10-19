@@ -5,16 +5,17 @@
         .module('app')
         .controller('ClientsEditCtrl', ClientsEditCtrl);
 
-    ClientsEditCtrl.$inject = ['$state', '$rootScope', '$filter', 'ClientsService', '$stateParams'];
+    ClientsEditCtrl.$inject = ['$state', '$rootScope', '$filter', 'ClientsService', 'ClientsLocalStorage', '$stateParams'];
 
-    function ClientsEditCtrl($state, $rootScope, $filter, ClientsService, $stateParams) {
+    function ClientsEditCtrl($state, $rootScope, $filter, ClientsService, ClientsLocalStorage, $stateParams) {
         var vm = this;
 
         angular.extend(vm, {
             init: init,
             clientsSubmit: clientsSubmit,
             clientsDialog: clientsDialog,
-            clientsEditBack: clientsEditBack
+            clientsEditBack: clientsEditBack,
+			_errorHandler: errorHandler
         });
 
         angular.extend(vm, $stateParams.item);
@@ -41,16 +42,17 @@
                 sum: vm.sum,
                 description: vm.description
             };
-
-			ClientsService.editItem(item)
-				.then(function () {
-					$rootScope.myError = false;
-					$state.go('main.clients');
-				})
-				.catch(function () {
-					$rootScope.loading = false;
-					$rootScope.myError = true;
-				});
+			if ($rootScope.mode == 'ON-LINE (Heroku)') {
+				ClientsService.editItem(item)
+					.then(function () {
+						$rootScope.myError = false;
+						$state.go('main.clients');
+					})
+					.catch(errorHandler);;
+			} else {
+				ClientsLocalStorage.editItem(item);
+				$state.go('main.clients');
+			}
         }
 
         function clientsDialog() {
@@ -64,6 +66,11 @@
         function clientsEditBack() {
 			$rootScope.loading = true;
             $state.go('main.clients');
+        }
+		
+		function errorHandler() {
+            $rootScope.loading = false;
+            $rootScope.myError = true;
         }
     }
 })();
