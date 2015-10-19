@@ -5,14 +5,15 @@
         .module('app')
         .controller('GoodsAddCtrl', GoodsAddCtrl);
 
-    GoodsAddCtrl.$inject = ['$state', '$rootScope', 'GoodsService'];
+    GoodsAddCtrl.$inject = ['$state', '$rootScope', 'GoodsService', 'GoodsLocalStorage'];
 
-    function GoodsAddCtrl($state, $rootScope, GoodsService) {
+    function GoodsAddCtrl($state, $rootScope, GoodsService, GoodsLocalStorage) {
         var vm = this;
 
         angular.extend(vm, {
             goodsAddSubmit: goodsAddSubmit,
-            goodsAddBack: goodsAddBack
+            goodsAddBack: goodsAddBack,
+			_errorHandler: errorHandler
         });
 
         function goodsAddSubmit() {
@@ -32,20 +33,30 @@
 				store: false,				
                 description: vm.description
             };
-
-            GoodsService.addItem(item)
-                .then(function () {
-                    $rootScope.myError = false;
-                    $state.go('main.goods');
-                })
-                .catch(function (data) {
-                    $rootScope.loading = false;
-                    $rootScope.myError = true;
-                });
+			
+			if ($rootScope.mode == 'ON-LINE (Heroku)') {
+				GoodsService.addItem(item)
+					.then(function () {
+						$rootScope.myError = false;
+						$state.go('main.goods');
+					})
+					.catch(function (data) {
+						$rootScope.loading = false;
+						$rootScope.myError = true;
+					});
+			} else {
+                GoodsLocalStorage.addItem(item);
+				$state.go('main.goods');
+            }
         }
 
         function goodsAddBack() {
             $state.go('main.goods');
+        }		
+		
+		function errorHandler() {
+            $rootScope.loading = false;
+            $rootScope.myError = true;
         }
     }
 })();
