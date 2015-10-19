@@ -84,7 +84,7 @@
 
         function outputsAdd() {
             var obj = {
-                count: ++outputs.length
+                count: ++vm.outputs.length
             };
             $state.go('main.outputs-add', {item: obj});
         }
