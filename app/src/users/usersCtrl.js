@@ -79,12 +79,7 @@
         }
 
         function usersAdd() {
-            var obj = {
-                name: '',
-                pass: '',
-                role: ''
-            };
-            $state.go('main.users-add', {item: obj});
+            $state.go('main.users-add');
         }
 
         function goToBack() {

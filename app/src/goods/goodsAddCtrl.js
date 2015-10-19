@@ -40,10 +40,7 @@
 						$rootScope.myError = false;
 						$state.go('main.goods');
 					})
-					.catch(function (data) {
-						$rootScope.loading = false;
-						$rootScope.myError = true;
-					});
+					.catch(errorHandler);
 			} else {
                 GoodsLocalStorage.addItem(item);
 				$state.go('main.goods');

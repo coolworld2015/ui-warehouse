@@ -5,14 +5,15 @@
         .module('app')
         .controller('UsersAddCtrl', UsersAddCtrl);
 
-    UsersAddCtrl.$inject = ['$state', '$rootScope', 'UsersService'];
+    UsersAddCtrl.$inject = ['$state', '$rootScope', 'UsersService', 'UsersLocalStorage'];
 
-    function UsersAddCtrl($state, $rootScope, UsersService) {
+    function UsersAddCtrl($state, $rootScope, UsersService, UsersLocalStorage) {
         var vm = this;
 
         angular.extend(vm, {
             usersAddSubmit: usersAddSubmit,
-            usersAddBack: usersAddBack
+            usersAddBack: usersAddBack,
+			_errorHandler: errorHandler
         });
 
         function usersAddSubmit() {
@@ -30,20 +31,27 @@
                 pass: vm.pass,
                 description: vm.description
             };
-
-            UsersService.addItem(item)
-                .then(function () {
-                    $rootScope.myError = false;
-                    $state.go('main.users');
-                })
-                .catch(function () {
-                    $rootScope.loading = false;
-                    $rootScope.myError = true;
-                });
+			
+            if ($rootScope.mode == 'ON-LINE (Heroku)') {
+				UsersService.addItem(item)
+					.then(function () {
+						$rootScope.myError = false;
+						$state.go('main.users');
+					})
+					.catch(errorHandler);
+			} else {
+				UsersLocalStorage.addItem(item);
+				$state.go('main.users');
+			}
         }
 
         function usersAddBack() {
             $state.go('main.users');
+        }
+		
+        function errorHandler() {
+            $rootScope.loading = false;
+            $rootScope.myError = true;
         }
     }
 })();

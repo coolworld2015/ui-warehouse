@@ -5,16 +5,17 @@
         .module('app')
         .controller('UsersEditCtrl', UsersEditCtrl);
 
-    UsersEditCtrl.$inject = ['$state', '$rootScope', '$filter', 'UsersService', '$stateParams'];
+    UsersEditCtrl.$inject = ['$state', '$rootScope', '$filter', 'UsersService', 'UsersLocalStorage', '$stateParams'];
 
-    function UsersEditCtrl($state, $rootScope, $filter, UsersService, $stateParams) {
+    function UsersEditCtrl($state, $rootScope, $filter, UsersService, UsersLocalStorage, $stateParams) {
         var vm = this;
 
         angular.extend(vm, {
             init: init,
             usersSubmit: usersSubmit,
             usersDialog: usersDialog,
-            usersEditBack: usersEditBack
+            usersEditBack: usersEditBack,
+			_errorHandler: errorHandler
         });
 
         angular.extend(vm, $stateParams.item);
@@ -39,16 +40,18 @@
                 pass: vm.pass,
                 description: vm.description
             };
-
-            UsersService.editItem(item)
-                .then(function () {
-                    $rootScope.myError = false;
-                    $state.go('main.users');
-                })
-                .catch(function () {
-                    $rootScope.loading = false;
-                    $rootScope.myError = true;
-                });
+			
+            if ($rootScope.mode == 'ON-LINE (Heroku)') {
+				UsersService.editItem(item)
+					.then(function () {
+						$rootScope.myError = false;
+						$state.go('main.users');
+					})
+					.catch(errorHandler);
+			} else {
+				UsersLocalStorage.editItem(item);
+				$state.go('main.users');
+			}
         }
 
         function usersDialog() {
@@ -61,6 +64,11 @@
 
         function usersEditBack() {
             $state.go('main.users');
+        }
+		
+        function errorHandler() {
+            $rootScope.loading = false;
+            $rootScope.myError = true;
         }
     }
 })();
