@@ -84,7 +84,7 @@
 
         function inputsAdd() {
             var obj = {
-                count: ++inputs.length
+                count: ++vm.inputs.length
             };
             $state.go('main.inputs-add', {item: obj});
         }
