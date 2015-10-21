@@ -5,9 +5,9 @@
         .module('app')
         .factory('InputsLocalStorage', InputsLocalStorage);
 		
-    InputsLocalStorage.$inject = ['$rootScope', '$http', '$q'];    
+    InputsLocalStorage.$inject = ['$rootScope'];    
 	
-	function InputsLocalStorage($rootScope, $http, $q) {
+	function InputsLocalStorage($rootScope) {
         var webUrl = $rootScope.myConfig.webUrl;
 		
         return {

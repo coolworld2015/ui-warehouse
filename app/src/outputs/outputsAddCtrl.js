@@ -5,9 +5,9 @@
         .module('app')
         .controller('OutputsAddCtrl', OutputsAddCtrl);
 
-    OutputsAddCtrl.$inject = ['$state', '$rootScope', '$filter', 'OutputsService', '$stateParams', 'ClientsService', 'ClientsLocalStorage'];
+    OutputsAddCtrl.$inject = ['$state', '$rootScope', '$filter', 'OutputsService', 'OutputsLocalStorage', '$stateParams', 'ClientsService', 'ClientsLocalStorage'];
 
-    function OutputsAddCtrl($state, $rootScope, $filter, OutputsService, $stateParams, ClientsService, ClientsLocalStorage) {
+    function OutputsAddCtrl($state, $rootScope, $filter, OutputsService, OutputsLocalStorage, $stateParams, ClientsService, ClientsLocalStorage) {
         var vm = this;
         var optionalClient = {name: 'Select customer'};
         angular.extend(vm, $stateParams.item);
@@ -79,13 +79,18 @@
                 total: 0,
                 description: vm.description
             };
-
-            OutputsService.addItem(item)
-                .then(function () {
-                    $rootScope.myError = false;
-                    $state.go('main.outputs-edit', {item: item});
-                })
-                .catch(errorHandler);
+			
+			if ($rootScope.mode == 'ON-LINE (Heroku)') {
+				OutputsService.addItem(item)
+					.then(function () {
+						$rootScope.myError = false;
+						$state.go('main.outputs-edit', {item: item});
+					})
+					.catch(errorHandler);
+			} else {
+				OutputsLocalStorage.addItem(item);
+				$state.go('main.outputs');
+			}
         }
 
         function outputsAddBack() {

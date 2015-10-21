@@ -5,9 +5,9 @@
         .module('app')
         .controller('InputsEditCtrl', InputsEditCtrl);
 
-    InputsEditCtrl.$inject = ['$state', '$rootScope', '$filter', 'InputsService', '$stateParams'];
+    InputsEditCtrl.$inject = ['$state', '$rootScope', '$filter', 'InputsService', 'InputsLocalStorage', '$stateParams'];
 
-    function InputsEditCtrl($state, $rootScope, $filter, InputsService, $stateParams) {
+    function InputsEditCtrl($state, $rootScope, $filter, InputsService, InputsLocalStorage, $stateParams) {
         var vm = this;
 
         angular.extend(vm, {
@@ -44,16 +44,21 @@
                 total: vm.total,
                 description: vm.description
             };
-
-            InputsService.editItem(item)
-                .then(function () {
-                    $rootScope.myError = false;
-                    $state.go('main.inputs-invoice', {item: item});
-                })
-                .catch(function () {
-                    $rootScope.loading = false;
-                    $rootScope.myError = true;
-                });
+			
+			if ($rootScope.mode == 'ON-LINE (Heroku)') {
+				InputsService.editItem(item)
+					.then(function () {
+						$rootScope.myError = false;
+						$state.go('main.inputs-invoice', {item: item});
+					})
+					.catch(function () {
+						$rootScope.loading = false;
+						$rootScope.myError = true;
+					});
+			} else {
+                InputsLocalStorage.editItem(item);
+                $state.go('main.inputs-invoice', {item: item});
+            }
         }
 
         function inputsDialog() {

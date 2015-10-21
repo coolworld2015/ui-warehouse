@@ -5,9 +5,9 @@
         .module('app')
         .controller('InputsAddCtrl', InputsAddCtrl);
 
-    InputsAddCtrl.$inject = ['$state', '$rootScope', '$filter', 'InputsService', '$stateParams', 'ClientsService', 'ClientsLocalStorage'];
+    InputsAddCtrl.$inject = ['$state', '$rootScope', '$filter', 'InputsService', 'InputsLocalStorage', '$stateParams', 'ClientsService', 'ClientsLocalStorage'];
 
-    function InputsAddCtrl($state, $rootScope, $filter, InputsService, $stateParams, ClientsService, ClientsLocalStorage) {
+    function InputsAddCtrl($state, $rootScope, $filter, InputsService, InputsLocalStorage, $stateParams, ClientsService, ClientsLocalStorage) {
         var vm = this;
 		
         var optionalClient = {name: 'Select customer'};
@@ -80,13 +80,18 @@
                 total: 0,
                 description: vm.description
             };
-
-            InputsService.addItem(item)
-                .then(function () {
-                    $rootScope.myError = false;
-                    $state.go('main.inputs-edit', {item: item});
-                })
-                .catch(errorHandler);
+			
+			if ($rootScope.mode == 'ON-LINE (Heroku)') {
+				InputsService.addItem(item)
+					.then(function () {
+						$rootScope.myError = false;
+						$state.go('main.inputs-edit', {item: item});
+					})
+					.catch(errorHandler);
+			} else {
+                InputsLocalStorage.addItem(item);
+                $state.go('main.inputs-edit', {item: item});
+            }
         }
 
         function inputsAddBack() {

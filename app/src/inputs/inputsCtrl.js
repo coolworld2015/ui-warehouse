@@ -42,7 +42,7 @@
             if ($rootScope.mode == 'ON-LINE (Heroku)') {
                 getInputsOn();
             } else {
-                vm.inputs = InputsLocalStorage.getInputs();
+                vm.inputs = [].concat(InputsLocalStorage.getInputs());
 				$rootScope.myError = false;
 				$rootScope.loading = false;
             }

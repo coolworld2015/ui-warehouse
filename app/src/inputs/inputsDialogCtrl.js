@@ -5,9 +5,9 @@
         .module('app')
         .controller('InputsDialogCtrl', InputsDialogCtrl);
 
-    InputsDialogCtrl.$inject = ['$state', '$q', '$rootScope', 'InputsService', 'InputsInvoiceService', 'GoodsService', 'ClientsService', '$stateParams'];
+    InputsDialogCtrl.$inject = ['$state', '$q', '$rootScope', 'InputsService', 'InputsLocalStorage', 'InputsInvoiceService', 'InputsInvoiceLocalStorage', 'GoodsService', 'ClientsService', '$stateParams'];
 
-    function InputsDialogCtrl($state, $q, $rootScope, InputsService, InputsInvoiceService, GoodsService, ClientsService, $stateParams) {
+    function InputsDialogCtrl($state, $q, $rootScope, InputsService, InputsLocalStorage, InputsInvoiceService, InputsInvoiceLocalStorage, GoodsService, ClientsService, $stateParams) {
         var vm = this;
 
         angular.extend(vm, {
@@ -32,7 +32,7 @@
 			if ($rootScope.mode == 'ON-LINE (Heroku)') {
                 getInputInvoicesOn();
             } else {
-                vm.inputInvoices = InputsInvoiceService.getInvoices();
+                vm.inputInvoices = [].concat(InputsInvoiceLocalStorage.getInputInvoice());
 				$rootScope.myError = false;
 				$rootScope.loading = false;
             }
@@ -55,7 +55,12 @@
         function inputsDelete() {
             $rootScope.loading = true;
             $rootScope.myError = false;
-
+			
+			if ($rootScope.mode != 'ON-LINE (Heroku)') {
+                $state.go('main.inputs');
+				return;
+            }
+			
             fillRequests();
 
             $q.serial(vm.requests)
