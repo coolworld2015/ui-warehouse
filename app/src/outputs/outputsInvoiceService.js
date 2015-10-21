@@ -11,11 +11,21 @@
         var webUrl = $rootScope.myConfig.webUrl;
 
         return {
+			getInvoices: getInvoices,
             addItem: addItem,
             editItem: editItem,
             deleteItem: deleteItem
         };
-
+		
+        function getInvoices() {
+            var url = webUrl + 'api/invoiceout/get';
+            return $http.get(url)
+                .then(function (result) {
+                    result.data.sort();
+                    return result;
+                });
+        }
+		
         function addItem(item) {
             var url = webUrl + 'api/invoiceout/add';
             return $http.post(url, item)

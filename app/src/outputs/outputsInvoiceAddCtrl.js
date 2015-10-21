@@ -6,14 +6,15 @@
         .controller('OutputsInvoiceAddCtrl', OutputsInvoiceAddCtrl);
 
     OutputsInvoiceAddCtrl.$inject = ['$state', '$rootScope', '$filter', 'OutputsInvoiceService',
-        '$stateParams', 'goods', 'OutputsTransactionService'];
+        '$stateParams', 'GoodsService', 'OutputsTransactionService'];
 
-    function OutputsInvoiceAddCtrl($state, $rootScope, $filter, OutputsInvoiceService, $stateParams, goods, OutputsTransactionService) {
+    function OutputsInvoiceAddCtrl($state, $rootScope, $filter, OutputsInvoiceService, $stateParams, GoodsService, OutputsTransactionService) {
         var vm = this;
         var optionalGoods = {name: 'Select commodities'};
 
         angular.extend(vm, {
             init: init,
+			_getGoodsOn: getGoodsOn,			
             updateChange: updateChange,
             selectedItem: optionalGoods,
             addSubmit: addSubmit,
@@ -33,10 +34,28 @@
             vm.date = $filter('date')(now, 'dd/MM/yyyy H:mm:ss '); //russian style
             vm.description = '';
 
-            vm.goodsOptions = [].concat(goods);
-            vm.goodsOptions.unshift(optionalGoods);
+            if ($rootScope.mode == 'ON-LINE (Heroku)') {
+                getGoodsOn();
+            } else {
+                vm.goods = ClientsLocalStorage.getClients();
+				vm.goodsOptions = [].concat(vm.goods);
+				vm.goodsOptions.unshift(optionalGoods);
+				$rootScope.myError = false;
+				$rootScope.loading = false;
+            }
         }
-
+		
+        function getGoodsOn() {
+            GoodsService.getGoods()
+				.then(function(data){
+					vm.goodsOptions = [].concat(data.data);
+					vm.goodsOptions.unshift(optionalGoods);
+					$rootScope.myError = false;
+					$rootScope.loading = false;
+				})
+				.catch(errorHandler);
+        }
+		
         function updateChange(item) {
             vm.error = false;
             if (item.price) {
