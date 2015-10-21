@@ -5,17 +5,19 @@
         .module('app')
         .controller('InputsInvoiceCtrl', InputsInvoiceCtrl);
 
-    InputsInvoiceCtrl.$inject = ['$state', '$rootScope', '$filter', 'invoice', '$stateParams'];
+    InputsInvoiceCtrl.$inject = ['$state', '$rootScope', '$filter', 'InputsInvoiceService', '$stateParams'];
 
-    function InputsInvoiceCtrl($state, $rootScope, $filter, invoice, $stateParams) {
+    function InputsInvoiceCtrl($state, $rootScope, $filter, InputsInvoiceService, $stateParams) {
         var vm = this;
 
         angular.extend(vm, {
             init: init,
+			_getInputInvoicesOn: getInputInvoicesOn,
             addInvoice: addInvoice,
             editInvoice: editInvoice,
             inputEditExitInvoice: inputEditExitInvoice,
-            goInputs: goInputs
+            goInputs: goInputs,
+            _errorHandler: errorHandler			
         });
 
         angular.extend(vm, $stateParams.item);
@@ -26,12 +28,29 @@
             $rootScope.myError = false;
             $rootScope.loading = false;
 
-            vm.inputInvoice = invoice;
+			if ($rootScope.mode == 'ON-LINE (Heroku)') {
+                getInputInvoicesOn();
+            } else {
+                vm.inputInvoices = InputsInvoiceService.getInvoices();
+				$rootScope.myError = false;
+				$rootScope.loading = false;
+            }
+			
             vm.total = $filter('number')(vm.total, 2);
             vm.sortInvoice = 'invoiceID';
             vm.invoiceFilter = {invoiceID: $stateParams.item.id};
         }
-
+		
+        function getInputInvoicesOn() {
+			InputsInvoiceService.getInvoices()
+				.then(function(data){
+					vm.inputInvoices = data.data;
+					$rootScope.myError = false;
+					$rootScope.loading = false;
+				})
+				.catch(errorHandler);
+		}
+		
         function editInvoice(invoice) {
             $state.go('main.inputs-invoice-edit', {item: $stateParams.item, invoice: invoice});
         }
@@ -52,5 +71,10 @@
             $rootScope.loading = true;
             $state.go('main.inputs');
         }
+		
+        function errorHandler() {
+            $rootScope.loading = false;
+            $rootScope.myError = true;
+        }		
     }
 })();

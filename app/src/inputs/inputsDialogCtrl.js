@@ -5,13 +5,14 @@
         .module('app')
         .controller('InputsDialogCtrl', InputsDialogCtrl);
 
-    InputsDialogCtrl.$inject = ['$state', '$q', '$rootScope', 'InputsService', 'invoice', 'GoodsService', 'ClientsService', '$stateParams'];
+    InputsDialogCtrl.$inject = ['$state', '$q', '$rootScope', 'InputsService', 'InputsInvoiceService', 'GoodsService', 'ClientsService', '$stateParams'];
 
-    function InputsDialogCtrl($state, $q, $rootScope, InputsService, invoice, GoodsService, ClientsService, $stateParams) {
+    function InputsDialogCtrl($state, $q, $rootScope, InputsService, InputsInvoiceService, GoodsService, ClientsService, $stateParams) {
         var vm = this;
 
         angular.extend(vm, {
             init: init,
+			_getInputInvoicesOn: getInputInvoicesOn,
             inputsDelete: inputsDelete,
             _fillRequests: fillRequests,
             _modifyGoods: modifyGoods,
@@ -27,12 +28,30 @@
 
         function init() {
             vm.webUrl = $rootScope.myConfig.webUrl;
-            vm.inputInvoice = invoice;
+			
+			if ($rootScope.mode == 'ON-LINE (Heroku)') {
+                getInputInvoicesOn();
+            } else {
+                vm.inputInvoices = InputsInvoiceService.getInvoices();
+				$rootScope.myError = false;
+				$rootScope.loading = false;
+            }
+			
             vm.requests = [];
             vm.index = [];
             vm.i = 0;
         }
 
+        function getInputInvoicesOn() {
+			InputsInvoiceService.getInvoices()
+				.then(function(data){
+					vm.inputInvoices = data.data;
+					$rootScope.myError = false;
+					$rootScope.loading = false;
+				})
+				.catch(errorHandler);
+		}
+		
         function inputsDelete() {
             $rootScope.loading = true;
             $rootScope.myError = false;
@@ -62,7 +81,7 @@
         }
 
         function fillRequests() {
-            vm.inputInvoice.forEach(function (el) {
+            vm.inputInvoices.forEach(function (el) {
                 if (el.invoiceID == $stateParams.item.id) {
                     vm.index.push(el);
                     vm.requests.push(modifyGoods);

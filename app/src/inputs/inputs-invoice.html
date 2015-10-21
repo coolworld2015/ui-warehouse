@@ -75,7 +75,7 @@
             <th>Quantity</th>
             <th>Total</th>
 
-            <tr ng-repeat="item in inputsInvoiceCtrl.inputInvoice | orderBy:inputsInvoiceCtrl.sortInvoice
+            <tr ng-repeat="item in inputsInvoiceCtrl.inputInvoices | orderBy:inputsInvoiceCtrl.sortInvoice
                 | filter:inputsInvoiceCtrl.invoiceFilter as invoiceData track by $index"
                 ng-click="inputsInvoiceCtrl.editInvoice(item)">
                 <td style="width:50%">{{item.goods}}</td>
