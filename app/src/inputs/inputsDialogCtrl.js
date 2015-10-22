@@ -88,9 +88,10 @@
         }
 
         function fillRequests() {
+console.log(vm.inputInvoices);
+
             vm.inputInvoices.forEach(function (el) {
                 if (el.invoiceID == $stateParams.item.id) {
-					vm.goodsID = el.id;
                     vm.index.push(el);
                     vm.requests.push(modifyGoods);
                 }
@@ -115,7 +116,7 @@
                         quantity: quantity,
                         store: good.data.store,
                         description: good.data.description,
-						goodsID: vm.goodsID
+						goodsID: vm.index[vm.i].id
                     };
                 });
         }
@@ -129,7 +130,7 @@
         }
 		
 		function deleteInputsInvoiceItem() {
-            return 	InputsInvoiceService.deleteItem(vm.goodsID)
+            return 	InputsInvoiceService.deleteItem(vm.item.goodsID)
 				.then(function () {
 				})
 				.catch(errorHandler);
