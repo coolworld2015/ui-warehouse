@@ -83,6 +83,7 @@
         }
 
         function outputsAdd() {
+			$rootScope.loading = true;
             var obj = {
                 count: ++vm.outputs.length
             };

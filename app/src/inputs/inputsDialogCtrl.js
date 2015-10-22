@@ -88,8 +88,6 @@
         }
 
         function fillRequests() {
-console.log(vm.inputInvoices);
-
             vm.inputInvoices.forEach(function (el) {
                 if (el.invoiceID == $stateParams.item.id) {
                     vm.index.push(el);
