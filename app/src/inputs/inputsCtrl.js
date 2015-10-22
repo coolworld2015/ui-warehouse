@@ -83,6 +83,7 @@
         }
 
         function inputsAdd() {
+			$rootScope.loading = true;
             var obj = {
                 count: ++vm.inputs.length
             };

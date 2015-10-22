@@ -18,6 +18,7 @@
             _modifyGoods: modifyGoods,
             _findGood: findGood,
             _editGood: editGood,
+			_deleteInputsInvoiceItem: deleteInputsInvoiceItem,
             inputsEditBack: inputsEditBack,
             _errorHandler: errorHandler
         });
@@ -72,15 +73,16 @@
 
                     ClientsService.editItem(client.data)
                         .then(function () {
+							
+							InputsService.deleteItem(vm.id)
+								.then(function () {
+											$rootScope.myError = false;
+											$state.go('main.inputs');
+								})
+								.catch(errorHandler);
+								
                         })
                         .catch(errorHandler);
-                })
-                .catch(errorHandler);
-
-            InputsService.deleteItem(vm.id)
-                .then(function () {
-                    $rootScope.myError = false;
-                    $state.go('main.inputs');
                 })
                 .catch(errorHandler);
         }
@@ -88,6 +90,7 @@
         function fillRequests() {
             vm.inputInvoices.forEach(function (el) {
                 if (el.invoiceID == $stateParams.item.id) {
+					vm.goodsID = el.id;
                     vm.index.push(el);
                     vm.requests.push(modifyGoods);
                 }
@@ -97,6 +100,7 @@
         function modifyGoods() {
             return findGood()
                 .then(editGood)
+                .then(deleteInputsInvoiceItem)
                 .catch(errorHandler)
         }
 
@@ -110,7 +114,8 @@
                         price: good.data.price,
                         quantity: quantity,
                         store: good.data.store,
-                        description: good.data.description
+                        description: good.data.description,
+						goodsID: vm.goodsID
                     };
                 });
         }
@@ -122,7 +127,14 @@
                 })
                 .catch(errorHandler);
         }
-
+		
+		function deleteInputsInvoiceItem() {
+            return 	InputsInvoiceService.deleteItem(vm.goodsID)
+				.then(function () {
+				})
+				.catch(errorHandler);
+        }
+										
         function inputsEditBack() {
             $state.go('main.inputs');
         }
