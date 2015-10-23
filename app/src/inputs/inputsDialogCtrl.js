@@ -5,9 +5,11 @@
         .module('app')
         .controller('InputsDialogCtrl', InputsDialogCtrl);
 
-    InputsDialogCtrl.$inject = ['$state', '$q', '$rootScope', 'InputsService', 'InputsLocalStorage', 'InputsInvoiceService', 'InputsInvoiceLocalStorage', 'GoodsService', 'ClientsService', '$stateParams'];
+    InputsDialogCtrl.$inject = ['$state', '$q', '$rootScope', 'InputsService', 'InputsLocalStorage', 
+		'InputsInvoiceService', 'InputsInvoiceLocalStorage', 'GoodsService', 'ClientsService', '$stateParams'];
 
-    function InputsDialogCtrl($state, $q, $rootScope, InputsService, InputsLocalStorage, InputsInvoiceService, InputsInvoiceLocalStorage, GoodsService, ClientsService, $stateParams) {
+    function InputsDialogCtrl($state, $q, $rootScope, InputsService, InputsLocalStorage, 
+		InputsInvoiceService, InputsInvoiceLocalStorage, GoodsService, ClientsService, $stateParams) {
         var vm = this;
 
         angular.extend(vm, {
@@ -58,6 +60,17 @@
             $rootScope.myError = false;
 			
 			if ($rootScope.mode != 'ON-LINE (Heroku)') {
+				InputsLocalStorage.deleteItem(vm.id);
+
+                //inputTransaction.setClientSum($scope.clientID, -$scope.total);
+
+                vm.inputInvoices.forEach(function (el) {
+                    if (el.invoiceID == vm.id) {
+                        //inputTransaction.setStoreSum(el.goodsID, -el.quantity);
+                    }
+                });
+
+                //InputInvoiceService.deleteItemInvoice($scope.id);
                 $state.go('main.inputs');
 				return;
             }
