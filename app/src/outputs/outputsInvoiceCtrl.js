@@ -5,9 +5,9 @@
         .module('app')
         .controller('OutputsInvoiceCtrl', OutputsInvoiceCtrl);
 
-    OutputsInvoiceCtrl.$inject = ['$state', '$rootScope', '$filter', 'OutputsInvoiceService', '$stateParams'];
+    OutputsInvoiceCtrl.$inject = ['$state', '$rootScope', '$filter', 'OutputsInvoiceService', 'OutputsInvoiceLocalStorage', '$stateParams'];
 
-    function OutputsInvoiceCtrl($state, $rootScope, $filter, OutputsInvoiceService, $stateParams) {
+    function OutputsInvoiceCtrl($state, $rootScope, $filter, OutputsInvoiceService, OutputsInvoiceLocalStorage, $stateParams) {
         var vm = this;
 
         angular.extend(vm, {
@@ -31,7 +31,7 @@
 			if ($rootScope.mode == 'ON-LINE (Heroku)') {
                 getOutputInvoicesOn();
             } else {
-                vm.outputInvoices = OutputsInvoiceService.getInvoices();
+				vm.outputInvoices = [].concat(OutputsInvoiceLocalStorage.getOutputInvoice());
 				$rootScope.myError = false;
 				$rootScope.loading = false;
             }

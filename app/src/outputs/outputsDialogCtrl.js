@@ -5,9 +5,11 @@
         .module('app')
         .controller('OutputsDialogCtrl', OutputsDialogCtrl);
 
-    OutputsDialogCtrl.$inject = ['$state', '$q', '$rootScope', 'OutputsService', 'OutputsInvoiceService', 'GoodsService', 'ClientsService', '$stateParams'];
+    OutputsDialogCtrl.$inject = ['$state', '$q', '$rootScope', 'OutputsService', 'OutputsLocalStorage', 
+	'OutputsInvoiceService', 'OutputsInvoiceLocalStorage', 'GoodsService', 'ClientsService', '$stateParams'];
 
-    function OutputsDialogCtrl($state, $q, $rootScope, OutputsService, OutputsInvoiceService, GoodsService, ClientsService, $stateParams) {
+    function OutputsDialogCtrl($state, $q, $rootScope, OutputsService, OutputsLocalStorage,
+	OutputsInvoiceService, OutputsInvoiceLocalStorage, GoodsService, ClientsService, $stateParams) {
         var vm = this;
 
         angular.extend(vm, {
@@ -33,7 +35,7 @@
 			if ($rootScope.mode == 'ON-LINE (Heroku)') {
                 getOutputInvoicesOn();
             } else {
-                vm.outputInvoices = OutputsInvoiceService.getInvoices();
+                vm.outputInvoices = [].concat(OutputsInvoiceLocalStorage.getOutputInvoice());
 				$rootScope.myError = false;
 				$rootScope.loading = false;
             }
@@ -56,7 +58,23 @@
         function outputsDelete() {
             $rootScope.loading = true;
             $rootScope.myError = false;
+			
+			if ($rootScope.mode != 'ON-LINE (Heroku)') {
+				OutputsLocalStorage.deleteItem(vm.id);
 
+                //inputTransaction.setClientSum($scope.clientID, -$scope.total);
+
+                vm.outputInvoices.forEach(function (el) {
+                    if (el.invoiceID == vm.id) {
+                        //inputTransaction.setStoreSum(el.goodsID, -el.quantity);
+                    }
+                });
+
+                //InputInvoiceService.deleteItemInvoice($scope.id);
+                $state.go('main.inputs');
+				return;
+            }
+			
             fillRequests();
 
             $q.serial(vm.requests)

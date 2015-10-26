@@ -5,9 +5,9 @@
         .module('app')
         .controller('OutputsEditCtrl', OutputsEditCtrl);
 
-    OutputsEditCtrl.$inject = ['$state', '$rootScope', '$filter', 'OutputsService', '$stateParams'];
+    OutputsEditCtrl.$inject = ['$state', '$rootScope', '$filter', 'OutputsService', 'OutputsLocalStorage', '$stateParams'];
 
-    function OutputsEditCtrl($state, $rootScope, $filter, OutputsService, $stateParams) {
+    function OutputsEditCtrl($state, $rootScope, $filter, OutputsService, OutputsLocalStorage, $stateParams) {
         var vm = this;
 
         angular.extend(vm, {
@@ -44,16 +44,21 @@
                 total: vm.total,
                 description: vm.description
             };
-
-            OutputsService.editItem(item)
-                .then(function () {
-                    $rootScope.myError = false;
-                    $state.go('main.outputs-invoice', {item: item});
-                })
-                .catch(function () {
-                    $rootScope.loading = false;
-                    $rootScope.myError = true;
-                });
+			
+			if ($rootScope.mode == 'ON-LINE (Heroku)') {
+				OutputsService.editItem(item)
+					.then(function () {
+						$rootScope.myError = false;
+						$state.go('main.outputs-invoice', {item: item});
+					})
+					.catch(function () {
+						$rootScope.loading = false;
+						$rootScope.myError = true;
+					});
+			} else {
+                OutputsLocalStorage.editItem(item);
+                $state.go('main.outputs-invoice', {item: item});
+            }
         }
 
         function outputsDialog() {

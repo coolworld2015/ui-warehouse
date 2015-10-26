@@ -4,11 +4,12 @@
     angular
         .module('app')
         .controller('OutputsInvoiceAddCtrl', OutputsInvoiceAddCtrl);
-
-    OutputsInvoiceAddCtrl.$inject = ['$state', '$rootScope', '$filter', 'OutputsInvoiceService',
-        '$stateParams', 'GoodsService', 'OutputsTransactionService'];
-
-    function OutputsInvoiceAddCtrl($state, $rootScope, $filter, OutputsInvoiceService, $stateParams, GoodsService, OutputsTransactionService) {
+		
+    OutputsInvoiceAddCtrl.$inject = ['$state', '$rootScope', '$filter', 'OutputsLocalStorage', 'OutputsInvoiceService', 'OutputsInvoiceLocalStorage',
+        '$stateParams', 'GoodsService', 'GoodsLocalStorage', 'OutputsTransactionService', 'OutputsTransactionLocalStorage'];
+		
+    function OutputsInvoiceAddCtrl($state, $rootScope, $filter, OutputsLocalStorage, OutputsInvoiceService, OutputsInvoiceLocalStorage,
+        $stateParams, GoodsService, GoodsLocalStorage, OutputsTransactionService, OutputsTransactionLocalStorage) {
         var vm = this;
         var optionalGoods = {name: 'Select commodities'};
 
@@ -37,7 +38,7 @@
             if ($rootScope.mode == 'ON-LINE (Heroku)') {
                 getGoodsOn();
             } else {
-                vm.goods = ClientsLocalStorage.getClients();
+                vm.goods = GoodsLocalStorage.getGoods();
 				vm.goodsOptions = [].concat(vm.goods);
 				vm.goodsOptions.unshift(optionalGoods);
 				$rootScope.myError = false;
@@ -103,19 +104,49 @@
 
             $stateParams.item.total = parseFloat($stateParams.item.total) + parseFloat(invoice.total);
             var sum = parseFloat(invoice.total);
+			
+			if ($rootScope.mode == 'ON-LINE (Heroku)') {
+				OutputsInvoiceService.addItem(invoice)
+					.then(function () {
 
-            OutputsInvoiceService.addItem(invoice)
-                .then(function () {
+						OutputsTransactionService.addItem(store, $stateParams.item, $stateParams.item.clientID, sum )
+							.then(function () {
+								$state.go('main.outputs-invoice', {item: $stateParams.item});
+							})
+							.catch(errorHandler);
+					})
+					.catch(errorHandler);
+			} else {
+				OutputsInvoiceLocalStorage.addItem(invoice);
+				outputSubmitTotal();
 
-                    OutputsTransactionService.addItem(store, $stateParams.item, $stateParams.item.clientID, sum )
-                        .then(function () {
-                            $state.go('main.outputs-invoice', {item: $stateParams.item});
-                        })
-                        .catch(errorHandler);
-                })
-                .catch(errorHandler);
+				OutputsTransactionLocalStorage.setClientSum($stateParams.item.clientID, sum);
+				OutputsTransactionLocalStorage.setStoreSum(vm.goodsID, vm.quantity);
+
+				vm.goods.filter(function (el) {
+					if (el.store === true) {
+						//$rootScope.store.push(el);
+						return el;
+					}
+				});
+                $state.go('main.outputs-invoice', {item: $stateParams.item});
+            }		
         }
+		
+        function outputSubmitTotal() {
+            var item = {
+                id: $stateParams.item.id,
+                number: $stateParams.item.number,
+                client: $stateParams.item.client,
+                clientID: $stateParams.item.clientID,
+                date: $stateParams.item.date,
+                total: $stateParams.item.total,
+                description: $stateParams.item.description
+            };
 
+            OutputsLocalStorage.editItem(item);
+        }
+		
         function goOutputsInvoice() {
             loading();
             $state.go('main.outputs-invoice', {item: $stateParams.item});
