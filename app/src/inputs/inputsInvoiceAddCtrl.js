@@ -5,10 +5,10 @@
         .module('app')
         .controller('InputsInvoiceAddCtrl', InputsInvoiceAddCtrl);
 
-    InputsInvoiceAddCtrl.$inject = ['$state', '$rootScope', '$filter', 'InputsInvoiceService', 'InputsInvoiceLocalStorage',
+    InputsInvoiceAddCtrl.$inject = ['$state', '$rootScope', '$filter', 'InputsLocalStorage', 'InputsInvoiceService', 'InputsInvoiceLocalStorage',
         '$stateParams', 'GoodsService', 'GoodsLocalStorage', 'InputsTransactionService', 'InputsTransactionLocalStorage'];
 
-    function InputsInvoiceAddCtrl($state, $rootScope, $filter, InputsInvoiceService, InputsInvoiceLocalStorage,
+    function InputsInvoiceAddCtrl($state, $rootScope, $filter, InputsLocalStorage, InputsInvoiceService, InputsInvoiceLocalStorage,
 		$stateParams, GoodsService, GoodsLocalStorage, InputsTransactionService, InputsTransactionLocalStorage) {
         var vm = this;
         var optionalGoods = {name: 'Select commodities'};
@@ -118,10 +118,10 @@
 					.catch(errorHandler);
 			} else {
 				InputsInvoiceLocalStorage.addItem(invoice);
-				//inputSubmitTotal();
+				inputSubmitTotal();
 
-				//inputTransaction.setClientSum($scope.clientID, $scope.invoiceTotal);
-				//inputTransaction.setStoreSum($scope.goodsID, $scope.invoiceQuantity);
+				InputsTransactionLocalStorage.setClientSum($stateParams.item.clientID, sum);
+				InputsTransactionLocalStorage.setStoreSum(vm.goodsID, vm.quantity);
 
 				vm.goods.filter(function (el) {
 					if (el.store === true) {
@@ -135,16 +135,16 @@
 		
         function inputSubmitTotal() {
             var item = {
-                id: $scope.id,
-                number: $scope.number,
-                client: $scope.client,
-                clientID: $scope.clientID,
-                date: $scope.date,
-                total: $scope.total,
-                description: $scope.description
+                id: $stateParams.item.id,
+                number: $stateParams.item.number,
+                client: $stateParams.item.client,
+                clientID: $stateParams.item.clientID,
+                date: $stateParams.item.date,
+                total: $stateParams.item.total,
+                description: $stateParams.item.description
             };
 
-            InputService.editItem(item);
+            InputsLocalStorage.editItem(item);
         }
 		
         function goInputsInvoice() {
