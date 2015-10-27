@@ -5,9 +5,11 @@
         .module('app')
         .controller('InputsAddCtrl', InputsAddCtrl);
 
-    InputsAddCtrl.$inject = ['$state', '$rootScope', '$filter', 'InputsService', 'InputsLocalStorage', '$stateParams', 'ClientsService', 'ClientsLocalStorage'];
+    InputsAddCtrl.$inject = ['$state', '$rootScope', '$filter', 'InputsService', 'InputsLocalStorage', '$stateParams',
+        'ClientsService', 'ClientsLocalStorage'];
 
-    function InputsAddCtrl($state, $rootScope, $filter, InputsService, InputsLocalStorage, $stateParams, ClientsService, ClientsLocalStorage) {
+    function InputsAddCtrl($state, $rootScope, $filter, InputsService, InputsLocalStorage, $stateParams,
+        ClientsService, ClientsLocalStorage) {
         var vm = this;
 		
         var optionalClient = {name: 'Select customer'};
