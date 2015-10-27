@@ -6,9 +6,12 @@
         .controller('InputsInvoiceAddCtrl', InputsInvoiceAddCtrl);
 
     InputsInvoiceAddCtrl.$inject = ['$state', '$rootScope', '$filter', 'InputsLocalStorage', 'InputsInvoiceService',
-        'InputsInvoiceLocalStorage', '$stateParams', 'GoodsService', 'GoodsLocalStorage', 'InputsTransactionService', 'InputsTransactionLocalStorage'];
+        'InputsInvoiceLocalStorage', '$stateParams', 'GoodsService', 'GoodsLocalStorage', 'InputsTransactionService',
+        'InputsTransactionLocalStorage'];
 
-    function InputsInvoiceAddCtrl($state, $rootScope, $filter, InputsLocalStorage, InputsInvoiceService, InputsInvoiceLocalStorage, $stateParams, GoodsService, GoodsLocalStorage, InputsTransactionService, InputsTransactionLocalStorage) {
+    function InputsInvoiceAddCtrl($state, $rootScope, $filter, InputsLocalStorage, InputsInvoiceService,
+        InputsInvoiceLocalStorage, $stateParams, GoodsService, GoodsLocalStorage, InputsTransactionService,
+        InputsTransactionLocalStorage) {
         var vm = this;
         var optionalGoods = {name: 'Select commodities'};
 
