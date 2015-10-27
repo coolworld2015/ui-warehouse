@@ -34,6 +34,7 @@ describe('clientsData', function () {
             ClientsService.getClients.should.have.been.defined;
             ClientsService.getClients.should.have.been.a('function');
         });
+        
 
         it('should getClients return array', function () {
             ClientsService.getClients().should.deep.equal(mockClients);
