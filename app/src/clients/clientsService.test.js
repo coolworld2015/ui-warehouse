@@ -30,7 +30,7 @@ describe('clientsData', function () {
     }));
 
     describe('getClients', function () {
-        it('should exist method getClients', function () {
+        it.only('should exist method getClients', function () {
             ClientsService.getClients.should.have.been.defined;
             ClientsService.getClients.should.have.been.a('function');
         });
