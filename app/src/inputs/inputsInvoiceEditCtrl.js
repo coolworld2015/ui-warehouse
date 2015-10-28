@@ -5,9 +5,11 @@
         .module('app')
         .controller('InputsInvoiceEditCtrl', InputsInvoiceEditCtrl);
 
-    InputsInvoiceEditCtrl.$inject = ['$state', '$rootScope', '$filter', 'InputsInvoiceService', '$stateParams'];
+    InputsInvoiceEditCtrl.$inject = ['$state', '$rootScope', '$filter', 'InputsInvoiceService',
+        'InputsInvoiceLocalStorage', '$stateParams'];
 
-    function InputsInvoiceEditCtrl($state, $rootScope, $filter, InputsInvoiceService, $stateParams) {
+    function InputsInvoiceEditCtrl($state, $rootScope, $filter, InputsInvoiceService,
+        InputsInvoiceLocalStorage, $stateParams) {
         var vm = this;
 
         angular.extend(vm, {
@@ -15,7 +17,8 @@
             invoiceSubmit: invoiceSubmit,
             invoiceDialog: invoiceDialog,
             goInputsInvoice: goInputsInvoice,
-            goInputs: goInputs
+            goInputs: goInputs,
+            _errorHandler: errorHandler
         });
 
         angular.extend(vm, $stateParams.invoice);
@@ -47,15 +50,17 @@
                 description: vm.description
             };
 
-            InputsInvoiceService.editItem(invoice)
-                .then(function () {
-                    $rootScope.myError = false;
-                    $state.go('main.inputs-invoice', {item: $stateParams.item});
-                })
-                .catch(function () {
-                    $rootScope.loading = false;
-                    $rootScope.myError = true;
-                });
+            if ($rootScope.mode == 'ON-LINE (Heroku)') {
+                InputsInvoiceService.editItem(invoice)
+                    .then(function () {
+                        $rootScope.myError = false;
+                        $state.go('main.inputs-invoice', {item: $stateParams.item});
+                    })
+                    .catch(errorHandler);
+            } else {
+                InputsInvoiceLocalStorage.editItem(invoice);
+                $state.go('main.inputs-invoice', {item: $stateParams.item});
+            }
         }
 
         function invoiceDialog() {
@@ -72,6 +77,11 @@
             $rootScope.myError = false;
             $rootScope.loading = true;
             $state.go('main.inputs');
+        }
+
+        function errorHandler() {
+            $rootScope.loading = false;
+            $rootScope.myError = true;
         }
     }
 })();
