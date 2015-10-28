@@ -5,9 +5,11 @@
         .module('app')
         .controller('OutputsInvoiceEditCtrl', OutputsInvoiceEditCtrl);
 
-    OutputsInvoiceEditCtrl.$inject = ['$state', '$rootScope', '$filter', 'OutputsInvoiceService', '$stateParams'];
+    OutputsInvoiceEditCtrl.$inject = ['$state', '$rootScope', '$filter', 'OutputsInvoiceService',
+        'OutputsInvoiceLocalStorage', '$stateParams'];
 
-    function OutputsInvoiceEditCtrl($state, $rootScope, $filter, OutputsInvoiceService, $stateParams) {
+    function OutputsInvoiceEditCtrl($state, $rootScope, $filter, OutputsInvoiceService,
+        OutputsInvoiceLocalStorage, $stateParams) {
         var vm = this;
 
         angular.extend(vm, {
@@ -47,15 +49,20 @@
                 description: vm.description
             };
 
-            OutputsInvoiceService.editItem(invoice)
-                .then(function () {
-                    $rootScope.myError = false;
-                    $state.go('main.outputs-invoice', {item: $stateParams.item});
-                })
-                .catch(function () {
-                    $rootScope.loading = false;
-                    $rootScope.myError = true;
-                });
+            if ($rootScope.mode == 'ON-LINE (Heroku)') {
+                OutputsInvoiceService.editItem(invoice)
+                    .then(function () {
+                        $rootScope.myError = false;
+                        $state.go('main.outputs-invoice', {item: $stateParams.item});
+                    })
+                    .catch(function () {
+                        $rootScope.loading = false;
+                        $rootScope.myError = true;
+                    });
+            } else {
+                OutputsInvoiceLocalStorage.editItem(invoice);
+                $state.go('main.outputs-invoice', {item: $stateParams.item});
+            }
         }
 
         function invoiceDialog() {

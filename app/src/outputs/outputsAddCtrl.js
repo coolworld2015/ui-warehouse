@@ -89,7 +89,7 @@
 					.catch(errorHandler);
 			} else {
 				OutputsLocalStorage.addItem(item);
-				$state.go('main.outputs');
+                $state.go('main.outputs-edit', {item: item});
 			}
         }
 

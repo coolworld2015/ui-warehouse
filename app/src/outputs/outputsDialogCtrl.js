@@ -71,7 +71,7 @@
                 });
 
                 //InputInvoiceService.deleteItemInvoice($scope.id);
-                $state.go('main.inputs');
+                $state.go('main.outputs');
 				return;
             }
 			
