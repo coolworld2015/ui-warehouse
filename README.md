@@ -1,4 +1,4 @@
-# UI-Router
+# UI Warehouse
 git clone https://github.com/coolworld2015/ui-warehouse.git
 -------------------------------------------------------------------------------------------------
 npm i
