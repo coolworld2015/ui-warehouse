@@ -25,7 +25,7 @@
 			_errorHandler: errorHandler
         });
 
-        init();
+        //init();
 
         $timeout(function () {
             $scope.$broadcast('_scrollHere');
@@ -34,7 +34,9 @@
         function init() {
             vm.title = 'Customers';
             vm.sort = 'name';
-			
+			vm.clients = [];
+			vm.clientsFilter = [];
+
             $scope.currentPage = 1;
             $scope.numPerPage = 10;
             $scope.maxSize = 5;
