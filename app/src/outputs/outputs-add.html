@@ -1,12 +1,4 @@
-<!DOCTYPE html>
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
-<center>
-
+<center ng-init="outputsAddCtrl.init()">
     <form ng-submit="outputsAddCtrl.outputsAddSubmit()" novalidate name="outputsAddCtrl.form">
         <div class="header">New record</div>
         <br><br>
@@ -82,7 +74,4 @@
         <input type="submit" class="btn btn-primary button" value="Submit">&nbsp
         <button type="button" class="btn btn-primary button" ng-click="outputsAddCtrl.outputsAddBack()">Back</button>
     </form>
-
 </center>
-</body>
-</html>

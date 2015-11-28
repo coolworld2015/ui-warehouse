@@ -25,8 +25,6 @@
 			_errorHandler: errorHandler
         });
 
-        init();
-
         function init() {
             vm.title = 'Users';
             vm.sort = 'name';

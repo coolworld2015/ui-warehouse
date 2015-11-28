@@ -26,8 +26,6 @@
         });
 
         angular.extend(vm, $stateParams.item);
-		
-        init();
 
         function init() {
             vm.webUrl = $rootScope.myConfig.webUrl;

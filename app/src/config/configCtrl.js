@@ -17,8 +17,6 @@
             toMain: toMain
         });
 		
-		init();
- 
 		function init() {
 			vm.webUrl = $rootScope.myConfig.webUrl;
             vm.mode= $rootScope.mode;

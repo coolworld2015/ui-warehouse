@@ -24,8 +24,6 @@
 			_errorHandler: errorHandler	
         });
 
-        init();
-
         $timeout(function () {
             $scope.$broadcast('_scrollHere');
         });

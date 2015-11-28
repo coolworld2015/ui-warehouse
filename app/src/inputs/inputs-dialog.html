@@ -1,17 +1,8 @@
-<!DOCTYPE html>
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
-    <center>
-        <div class="header">Purchase Invoices</div>
-            <br><br>
-                <h3>Are you sure you want to delete invoice {{inputsDialogCtrl.number}}?</h3>
-            <br><br>
-        <button class="btn btn-primary button" ng-click="inputsDialogCtrl.inputsDelete()">Yes</button>
-        <button class="btn btn-primary button" ng-click="inputsDialogCtrl.inputsEditBack()">No</button>
-    </center>
-</body>
-</html>
+<center ng-init="inputsDialogCtrl.init()">
+	<div class="header">Purchase Invoices</div>
+		<br><br>
+			<h3>Are you sure you want to delete invoice {{inputsDialogCtrl.number}}?</h3>
+		<br><br>
+	<button class="btn btn-primary button" ng-click="inputsDialogCtrl.inputsDelete()">Yes</button>
+	<button class="btn btn-primary button" ng-click="inputsDialogCtrl.inputsEditBack()">No</button>
+</center>

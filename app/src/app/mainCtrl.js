@@ -14,9 +14,7 @@
 				init: init,
 				go: go
 			});
-			
-			init();
-			
+		
 			function init() {
 				$rootScope.loading = false;
 			}

@@ -21,8 +21,6 @@
 			_errorHandler: errorHandler
         });
 
-        init();
-
         function init() {
             var now = new Date();
             vm.date = $filter('date')(now, 'MM/dd/yyyy H:mm:ss ');

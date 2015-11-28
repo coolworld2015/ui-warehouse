@@ -1,11 +1,4 @@
-<!DOCTYPE html>
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
-    <center>
+<center ng-init="storeCtrl.init()">
         <div class="header" ng-click="storeCtrl.goToBack()">{{storeCtrl.title}}</div>
         <input type="text" class="form-control" ng-model="storeCtrl.query.name" scroll-there>
             <table class="table table-striped input">
@@ -33,5 +26,3 @@
         <button class="btn btn-primary button" ng-click="storeCtrl.storeBack()" scroll-here>Back</button>
         <br><br>
     </center>
-</body>
-</html>

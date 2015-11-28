@@ -1,12 +1,4 @@
-<!DOCTYPE html>
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title></title>
-</head>
-<body>
-<center>
-
+<center ng-init="outputsEditCtrl.init()">
     <form ng-submit="outputsEditCtrl.outputsSubmit()" novalidate name="outputsEditCtrl.form">
         <div class="header" ng-click="outputsEditCtrl.goInputs()">
             Sales InvoicesID: {{outputsEditCtrl.number}}
@@ -90,7 +82,4 @@
         <br><br>
         <button type="button" class="btn btn-primary button" ng-click="outputsEditCtrl.outputsEditBack()">Back</button>
     </form>
-
 </center>
-</body>
-</html>
