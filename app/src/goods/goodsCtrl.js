@@ -32,6 +32,8 @@
         function init() {
             vm.title = 'Commodities';
             vm.sort = 'name';
+			vm.goods = [];
+			vm.goodsFilter = [];
 			
             $scope.currentPage = 1;
             $scope.numPerPage = 10;

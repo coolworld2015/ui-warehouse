@@ -31,6 +31,8 @@
         function init() {
             vm.title = 'Store';
             vm.sort = 'name';
+			vm.store = [];
+			vm.goodsFilter = [];
 			
             $scope.currentPage = 1;
             $scope.numPerPage = 10;
@@ -49,7 +51,7 @@
         function getGoodsOn() {			
             GoodsService.getGoods()
 				.then(function(data){
-					$scope.filteredClients = [];
+					$scope.filteredGoods = [];
 					vm.store = initStore(data.data);
 					currentPage();
 					$rootScope.myError = false;

@@ -28,6 +28,8 @@
         function init() {
             vm.title = 'Users';
             vm.sort = 'name';
+			vm.users = [];
+			vm.usersFilter = [];
 			
             $scope.currentPage = 1;
             $scope.numPerPage = 10;

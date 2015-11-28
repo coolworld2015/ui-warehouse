@@ -33,7 +33,9 @@
             $scope.currentPage = 1;
             $scope.numPerPage = 10;
             $scope.maxSize = 5;
-
+			vm.inputs = [];
+			vm.inputsFilter = [];
+			
             vm.title = 'Purchase Invoices';
             vm.sort = 'name';
             
