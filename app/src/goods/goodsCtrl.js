@@ -5,9 +5,9 @@
         .module('app')
         .controller('GoodsCtrl', GoodsCtrl);
 
-    GoodsCtrl.$inject = ['$scope', '$rootScope', '$state', '$timeout', 'GoodsService', 'GoodsLocalStorage'];
+    GoodsCtrl.$inject = ['$scope', '$rootScope', '$state', '$timeout', 'GoodsService', 'GoodsLocalStorage', 'goods'];
 
-    function GoodsCtrl($scope, $rootScope, $state, $timeout, GoodsService, GoodsLocalStorage) {
+    function GoodsCtrl($scope, $rootScope, $state, $timeout, GoodsService, GoodsLocalStorage, goods) {
         $scope.$watch('numPerPage', currentPage);			
         $scope.$watch('currentPage', currentPage);
         var vm = this;
@@ -32,13 +32,16 @@
         function init() {
             vm.title = 'Commodities';
             vm.sort = 'name';
-			vm.goods = [];
+			vm.goods = goods;
 			vm.goodsFilter = [];
 			
             $scope.currentPage = 1;
             $scope.numPerPage = 10;
             $scope.maxSize = 5;
 			
+			$rootScope.myError = false;
+			$rootScope.loading = false;
+			/*
             if ($rootScope.mode == 'ON-LINE (Heroku)') {
                 getGoodsOn();
             } else {
@@ -46,6 +49,7 @@
 				$rootScope.myError = false;
 				$rootScope.loading = false;
             }
+			*/			
 		}
 		
         function getGoodsOn() {

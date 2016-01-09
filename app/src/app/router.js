@@ -8,12 +8,19 @@
 	routeConfig.$inject = ['$stateProvider','$urlRouterProvider'];
 
     function routeConfig($stateProvider, $urlRouterProvider) {
-		function resolveResource(url, sort) {
-			resolver.$inject = ['$http', '$q', '$rootScope', 'ClientsLocalStorage'];
-			function resolver($http, $q, $rootScope, ClientsLocalStorage) {
+		function resolveResource(url, state ,sort) {
+			resolver.$inject = ['$http', '$q', '$rootScope', 'ClientsLocalStorage', 'GoodsLocalStorage'];
+			function resolver($http, $q, $rootScope, ClientsLocalStorage, GoodsLocalStorage) {
+				var data;
 				if ($rootScope.mode == 'OFF-LINE (LocalStorage)') {
-					var clients = ClientsLocalStorage.getClients();
-					return clients;
+					if (state == 'clients') {
+						data = ClientsLocalStorage.getClients();
+						return data;
+					}
+					if (state == 'goods') {
+						data = GoodsLocalStorage.getGoods();
+						return data;
+					}
 				}
 				var webUrl = $rootScope.myConfig.webUrl + url;
 				return $http.get(webUrl)
@@ -121,6 +128,9 @@
                 },
                 data: {
                     requireLogin: true
+                },
+                resolve: {
+                    goods: resolveResource('api/goods/get', 'goods', sort)
                 }
             })
 
@@ -182,7 +192,7 @@
                     requireLogin: true
                 },
                 resolve: {
-                    clients: resolveResource('api/clients/get', sort)
+                    clients: resolveResource('api/clients/get', 'clients', sort)
                 }
             })
 
