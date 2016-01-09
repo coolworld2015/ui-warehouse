@@ -5,9 +5,9 @@
         .module('app')
         .controller('ClientsCtrl', ClientsCtrl);
 
-    ClientsCtrl.$inject = ['$scope', '$rootScope', '$state', '$timeout', 'ClientsService', 'ClientsLocalStorage'];
+    ClientsCtrl.$inject = ['$scope', '$rootScope', '$state', '$timeout', 'ClientsService', 'ClientsLocalStorage', 'clients'];
 
-    function ClientsCtrl($scope, $rootScope, $state, $timeout, ClientsService, ClientsLocalStorage) {
+    function ClientsCtrl($scope, $rootScope, $state, $timeout, ClientsService, ClientsLocalStorage, clients) {
         $scope.$watch('numPerPage', currentPage);		
         $scope.$watch('currentPage', currentPage);
         var vm = this;
@@ -32,20 +32,25 @@
         function init() {
             vm.title = 'Customers';
             vm.sort = 'name';
-			vm.clients = [];
+			vm.clients = clients;
 			vm.clientsFilter = [];
 
             $scope.currentPage = 1;
             $scope.numPerPage = 10;
             $scope.maxSize = 5;
 			
+			$rootScope.myError = false;
+			$rootScope.loading = false;
+			/*
             if ($rootScope.mode == 'ON-LINE (Heroku)') {
-                getClientsOn();
+                vm.clients = clients;
+				//getClientsOn();
             } else {
                 vm.clients = ClientsLocalStorage.getClients();
 				$rootScope.myError = false;
 				$rootScope.loading = false;
             }
+			*/
 		}
 		
 		function getClientsOn() {	

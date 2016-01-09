@@ -8,6 +8,43 @@
 	routeConfig.$inject = ['$stateProvider','$urlRouterProvider'];
 
     function routeConfig($stateProvider, $urlRouterProvider) {
+		function resolveResource(url, sort) {
+			resolver.$inject = ['$http', '$q', '$rootScope', 'ClientsLocalStorage'];
+			function resolver($http, $q, $rootScope, ClientsLocalStorage) {
+				if ($rootScope.mode == 'OFF-LINE (LocalStorage)') {
+					var clients = ClientsLocalStorage.getClients();
+					return clients;
+				}
+				var webUrl = $rootScope.myConfig.webUrl + url;
+				return $http.get(webUrl)
+                    .then(function (result) {
+                        $rootScope.loading = false;
+                        return result.data.sort(sort);
+                    })
+                    .catch(function (reject) {
+                        $rootScope.loading = false;
+                        $rootScope.myError = true;
+                        return $q.reject(reject);
+                    });
+			}
+
+			return resolver;
+		}
+		
+		function sort(a, b) {
+            var nameA = a.name.toLowerCase(), nameB = b.name.toLowerCase();
+            if (nameA < nameB) {
+                return -1
+            }
+            if (nameA > nameB) {
+                return 1
+            }
+            return 0;
+        }
+
+        function sort1(a, b) {
+            return parseInt(a.number) - parseInt(b.number);
+        }
         //$urlRouterProvider.otherwise('/login');  //TODO
         $urlRouterProvider.otherwise('/main');
 		
@@ -143,6 +180,9 @@
                 },
                 data: {
                     requireLogin: true
+                },
+                resolve: {
+                    clients: resolveResource('api/clients/get', sort)
                 }
             })
 
