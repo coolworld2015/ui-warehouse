@@ -1,6 +1,8 @@
 <center ng-init="storeCtrl.init()">
         <div class="header" ng-click="storeCtrl.goToBack()">{{storeCtrl.title}}</div>
-        <input type="text" class="form-control" ng-model="storeCtrl.query.name" scroll-there>
+        <input type="text" class="form-control" ng-model="storeCtrl.query.name" 
+				placeholder="Search here"
+		scroll-there>
             <table class="table table-striped input">
                 <th ng-click="storeCtrl.goodsSort('name')" style="width:50%">Name</th>
                 <th ng-click="storeCtrl.goodsSort('quantity')">Quantity</th>

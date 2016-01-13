@@ -1,6 +1,8 @@
 <center ng-init="clientsCtrl.init()">
 	<div class="header" ng-click="clientsCtrl.goToBack()">{{clientsCtrl.title}}</div>
-	<input type="text" class="form-control" ng-model="clientsCtrl.query.name" scroll-there>
+	<input type="text" class="form-control" ng-model="clientsCtrl.query.name" 
+		placeholder="Search here"
+	scroll-there>
 		<table class="table table-striped input">
 			<th ng-click="clientsCtrl.clientsSort('name')" style="width:50%">Name</th>
 			<th ng-click="clientsCtrl.clientsSort('sum')">Balance</th>

@@ -1,6 +1,8 @@
 <center ng-init="outputsCtrl.init()">
 	<div class="header" ng-click="outputsCtrl.goToBack()">{{outputsCtrl.title}}</div>
-	<input type="text" class="form-control" ng-model="outputsCtrl.query.name" scroll-there>
+	<input type="text" class="form-control" ng-model="outputsCtrl.query.name" 
+			placeholder="Search here"
+	scroll-there>
 		<table class="table table-striped input">
 			<th ng-click="outputsCtrl.outputsSort('id1')" style="width:10%">ID</th>
 			<th ng-click="outputsCtrl.outputsSort('name')" style="width:40%">Customer</th>

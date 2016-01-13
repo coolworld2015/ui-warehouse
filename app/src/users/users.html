@@ -1,6 +1,8 @@
 <center ng-init="usersCtrl.init()">
 	<div class="header" ng-click="usersCtrl.goToBack()" ng-bind="usersCtrl.title"></div>
-	<input type="text" class="form-control" ng-model="usersCtrl.query.name" scroll-there>
+	<input type="text" class="form-control" ng-model="usersCtrl.query.name" 
+			placeholder="Search here"
+	scroll-there>
 		<table class="table table-striped input">
 			<th ng-click="usersCtrl.usersSort('name')" style="width:50%">Login</th>
 			<th ng-click="usersCtrl.usersSort('pass')">Password</th>
