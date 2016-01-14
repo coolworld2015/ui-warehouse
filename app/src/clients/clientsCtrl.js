@@ -28,7 +28,9 @@
         $timeout(function () {
             $scope.$broadcast('_scrollHere');
         });
-
+		
+		init();
+		
         function init() {
             vm.title = 'Customers';
             vm.sort = 'name';
