@@ -1,30 +1,39 @@
-<center ng-init="storeCtrl.init()">
-	<div class="header" ng-click="storeCtrl.goToBack()">{{storeCtrl.title}}</div>
-	<input type="text" class="form-control" ng-model="storeCtrl.query.name" 
-			placeholder="Search here"
-	scroll-there>
-		<table class="table table-striped input">
-			<th ng-click="storeCtrl.goodsSort('name')" style="width:50%">Name</th>
-			<th ng-click="storeCtrl.goodsSort('quantity')">Quantity</th>
-			<tr ng-repeat="item in filteredGoods | orderBy:storeCtrl.sort:storeCtrl.rev |
-				filter:storeCtrl.query as goodsFilter track by $index">
-				<td>{{item.name}}</td>
-				<td>{{item.quantity | number:2}}</td>
-			</tr>
-		</table>
-	<hr>
-		<h4>
-			<div class="label label-default" style="font-size:17px; background-color:#337ab7" ng-click="storeCtrl.goToHead()">
-				Records count: {{goodsFilter.length}} ({{storeCtrl.store.length}})
-			</div>
-		</h4>
-	<hr>
-		<h2 class="label label-primary" style="font-size:17px;">Items per page:
-			<input style="border:none; width: 30px; font-size:17px; background-color:#337ab7" 
-			type="text" ng-model="numPerPage" value={{numPerPage}}>
-		</h2>	
-	<div><pagination total-items="totalItems" ng-model="currentPage" max-size="maxSize" class="pagination-sm" boundary-links="true"></pagination></div>
+<center>
+    <div class="header">Collection</div>
+    <br><br>
+    <img ng-src="logo.jpg" class="logo" ng-click="categoriesCtrl.goToBack()">
+    <hr>
+    <div class="header" ng-click="storeCtrl.goToBack()">
+        {{storeCtrl.title}} ({{goodsFilter.length}} / {{storeCtrl.store.length}})
+    </div>
+    <div>
+        <input type="text" class="form-control input"
+               placeholder="Search here"
+               ng-model="storeCtrl.query.name">
+    </div>
 
-	<button class="btn btn-primary button" ng-click="storeCtrl.storeBack()" scroll-here>Back</button>
-	<br><br>
+    <table class="table table-striped input">
+        <tr ng-repeat="item in filteredGoods | orderBy:storeCtrl.sort:storeCtrl.rev |
+				filter:storeCtrl.query as goodsFilter track by $index">
+            <td class="input">
+                <div class="name-div">
+                    {{item.name}} ({{item.quantity | number:2}})
+                </div>
+
+            </td>
+        </tr>
+    </table>
+
+    <hr class="fix-hr">
+		<span class="label label-primary per-page">Items per page:
+			<input class="per-page-input" type="text" ng-model="numPerPage" value={{numPerPage}}>
+		</span>
+
+    <div>
+        <pagination total-items="totalItems" ng-model="currentPage" max-size="maxSize" class="pagination-sm"
+                    boundary-links="true"></pagination>
+    </div>
+
+    <button class="btn btn-primary button" ng-click="storeCtrl.storeBack()" scroll-here>Back</button>
+    <br><br>
 </center>

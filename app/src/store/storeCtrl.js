@@ -25,8 +25,10 @@
         });
 
         $timeout(function () {
-            $scope.$broadcast('_scrollHere');
+            window.scrollTo(0, 0);
         });
+
+        init();
 
         function init() {
             vm.title = 'Store';
@@ -102,7 +104,10 @@
         }		
 		
         function storeBack() {
-            $state.go('main');
+            $rootScope.loading = true;
+            $timeout(function () {
+                $state.go('main');
+            }, 100);
         }
 		
 		function errorHandler() {
