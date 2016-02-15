@@ -1,3 +1,7 @@
+body {
+    background-color: black;
+}
+
 .header {
     width: 100%;
     display: inline-block;
@@ -8,15 +12,95 @@
     font-weight: bold;
     text-align: center;
 }
+
 .button {
-    font-weight:bold;
-    font-size:17px;
-    width:46%;
+    font-weight: bold;
+    font-size: 17px;
+    width: 46%;
 }
+
 .input {
-    font-weight:bold;
-    font-size:17px;
+    font-weight: bold;
+    font-size: 20px;
+    color: white;
+    background-color: black;
+    border-style: none;
 }
+
+.readonly {
+    font-weight: bold;
+    font-size: 20px;
+    color: black;
+    border-style: none;
+}
+
+.dialog {
+    font-weight: bold;
+    font-size:24px;
+    color: white;
+}
+
+.select {
+    font-weight: bold;
+    font-size: 16px;
+    color: black;
+    background-color: white;
+    border-style: none;
+}
+
+.items {
+    color: white;
+    background-color: black;
+    font-size: 24px;
+    font-weight: bold;
+    border: black;
+    cursor: pointer;
+}
+
+.logo {
+    width: 150px;
+    height: 150px;
+}
+
+.img {
+    width: 100px;
+    height: 100px;
+}
+
+.img-large {
+    width:200px;
+    height:210px;
+}
+
+.img-large-border {
+    border-color: white;
+    border-style: solid;
+    border-width: thick;
+    width: 210px;
+}
+
+.img-div {
+    border-style: solid;
+    border-width: thick;
+    float: left;
+}
+
+.name {
+    width: 50%;
+    float: left;
+    color: white;
+    font-size: 20px;
+    padding: 40px 0 0 15px;
+}
+
+.name-div {
+    width: 50%;
+    float: left;
+    color: white;
+    font-size: 20px;
+    padding: 15px 0 15px 15px;
+}
+
 .valid {
     color: red;
     font-weight: bold;
@@ -25,26 +109,60 @@
     top: 5px;
     left: 3px;
 }
+
+.fix {
+    top: -5px;
+    margin: 10px;
+}
+
+.fix-hr {
+    margin-top: -20px;
+}
+
+.per-page {
+    font-size: 17px;
+}
+
+.per-page-input {
+    border: none;
+    width: 30px;
+    font-size: 17px;
+    background-color: #337ab7;
+}
+
 .loading {
-    position:fixed;
-    top:20px;
-    height:100%;
+    position: fixed;
+    top: 20px;
+    height: 100%;
     width: 100%;
     right: 30px;
     padding: 20px;
-    opacity:.9;
+    opacity: 1;
     color: dodgerblue;
-	text-align: right;
+    text-align: right;
     background-color: transparent;
 }
+
 .error {
-    position:fixed;
-    top:20px;
-    height:85px;
+    position: fixed;
+    top: 20px;
+    height: 85px;
     width: 40%;
     right: 20px;
     padding: 20px;
-    opacity:.9;
+    opacity: .9;
     color: red;
     background-color: transparent;
+}
+
+.error-conf {
+    margin-bottom:-8px
+}
+
+.conf {
+    font-size:25px;
+}
+
+.blanker {
+    margin-top: 1000px;
 }
