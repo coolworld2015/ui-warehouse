@@ -111,6 +111,7 @@
         }
 
         function complete() {
+            $rootScope.loading = false;
             vm.error = false;
             vm.loading = false;
             vm.complete = true;
