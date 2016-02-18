@@ -5,10 +5,10 @@
         .module('app')
         .controller('GoodsCtrl', GoodsCtrl);
 
-    GoodsCtrl.$inject = ['$scope', '$rootScope', '$state', '$timeout', 'GoodsService', 'GoodsLocalStorage', 'goods'];
+    GoodsCtrl.$inject = ['$scope', '$rootScope', '$state', '$timeout', 'goods'];
 
-    function GoodsCtrl($scope, $rootScope, $state, $timeout, GoodsService, GoodsLocalStorage, goods) {
-        $scope.$watch('numPerPage', currentPage);			
+    function GoodsCtrl($scope, $rootScope, $state, $timeout, goods) {
+        $scope.$watch('numPerPage', currentPage);
         $scope.$watch('currentPage', currentPage);
         var vm = this;
 
@@ -20,57 +20,38 @@
             goodsEditForm: goodsEditForm,
             goodsAdd: goodsAdd,
             goToBack: goToBack,
-			goToHead: goToHead,			
+            goToHead: goToHead,
             goodsBack: goodsBack,
-			_errorHandler: errorHandler			
+            _errorHandler: errorHandler
         });
 
         $timeout(function () {
-            $scope.$broadcast('_scrollHere');
+            window.scrollTo(0, 0);
         });
+
+        init();
 
         function init() {
             vm.title = 'Commodities';
             vm.sort = 'name';
-			vm.goods = goods;
-			vm.goodsFilter = [];
-			
+            vm.goods = goods;
+            vm.goodsFilter = [];
+
             $scope.currentPage = 1;
             $scope.numPerPage = 10;
             $scope.maxSize = 5;
-			
-			$rootScope.myError = false;
-			$rootScope.loading = false;
-			/*
-            if ($rootScope.mode == 'ON-LINE (Heroku)') {
-                getGoodsOn();
-            } else {
-                vm.goods = GoodsLocalStorage.getGoods();
-				$rootScope.myError = false;
-				$rootScope.loading = false;
-            }
-			*/			
-		}
-		
-        function getGoodsOn() {
-			GoodsService.getGoods()
-				.then(function(data){
-					$scope.filteredClients = [];
-					vm.goods = data.data;
-					currentPage();
-					$rootScope.myError = false;
-					$rootScope.loading = false;
-				})
-				.catch(errorHandler);
+
+            $rootScope.myError = false;
+            $rootScope.loading = false;
         }
-		 	
+
         function currentPage() {
             if (Object.prototype.toString.call(vm.goods) == '[object Array]') {
-				var begin = (($scope.currentPage - 1) * $scope.numPerPage);
-				var end = parseInt(begin) + parseInt($scope.numPerPage);
-				$scope.filteredGoods = vm.goods.slice(begin, end);
-				$scope.totalItems = vm.goods.length;
-			}
+                var begin = (($scope.currentPage - 1) * $scope.numPerPage);
+                var end = parseInt(begin) + parseInt($scope.numPerPage);
+                $scope.filteredGoods = vm.goods.slice(begin, end);
+                $scope.totalItems = vm.goods.length;
+            }
         }
 
         function numPages() {
@@ -99,15 +80,15 @@
             $scope.$broadcast('scrollHere');
         }
 
-		function goToHead() {
+        function goToHead() {
             $scope.$broadcast('scrollThere');
-        }		
-		
+        }
+
         function goodsBack() {
             $state.go('main');
         }
-		
-		function errorHandler() {
+
+        function errorHandler() {
             $rootScope.loading = false;
             $rootScope.myError = true;
         }

@@ -1,7 +1,7 @@
 <center>
     <div class="header">Warehouse</div>
     <br><br>
-    <img ng-src="logo.jpg" class="logo" ng-click="categoriesCtrl.goToBack()">
+    <img ng-src="logo.jpg" class="logo" ng-click="storeCtrl.goToBack()">
     <hr>
 
     <div class="header" ng-click="storeCtrl.goToBack()">
@@ -17,11 +17,13 @@
     <table class="table table-striped input">
         <tr ng-repeat="item in filteredGoods | orderBy:storeCtrl.sort:storeCtrl.rev |
 				filter:storeCtrl.query as goodsFilter track by $index">
+
             <td class="input">
                 <div class="name-div">
                     {{item.name}} ({{item.quantity | number:2}})
                 </div>
             </td>
+
         </tr>
     </table>
 

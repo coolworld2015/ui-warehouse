@@ -1,32 +1,44 @@
-<center ng-init="goodsCtrl.init()">
-	<div class="header" ng-click="goodsCtrl.goToBack()">{{goodsCtrl.title}}</div>
-	<input type="text" class="form-control" ng-model="goodsCtrl.query.name" 
-		placeholder="Search here" 
-	scroll-there>
-		<table class="table table-striped input">
-			<th ng-click="goodsCtrl.goodsSort('name')" style="width:50%">Name</th>
-			<th ng-click="goodsCtrl.goodsSort('price')">Price</th>
-			<tr ng-repeat="item in filteredGoods | orderBy:goodsCtrl.sort:goodsCtrl.rev |
-				filter:goodsCtrl.query as goodsFilter track by $index"
-				ng-click="goodsCtrl.goodsEditForm(item)">
-				<td>{{item.name}}</td>
-				<td>{{item.price | number:2}}</td>
-			</tr>
-		</table>
-	<hr>
-		<h4>
-			<div class="label label-default" style="font-size:17px; background-color:#337ab7" ng-click="goodsCtrl.goToHead()">
-				Records count: {{goodsFilter.length}} ({{goodsCtrl.goods.length}})
-			</div>
-		</h4>
-	<hr>
-		<h2 class="label label-primary" style="font-size:17px;">Items per page:
-			<input style="border:none; width: 30px; font-size:17px; background-color:#337ab7" 
-			type="text" ng-model="numPerPage" value={{numPerPage}}>
-		</h2>	
-	<div><pagination total-items="totalItems" ng-model="currentPage" max-size="maxSize" class="pagination-sm" boundary-links="true"></pagination></div>
+<center>
+    <div class="header">Warehouse</div>
+    <br><br>
+    <img ng-src="logo.jpg" class="logo" ng-click="goodsCtrl.goToBack()">
+    <hr>
 
-	<button class="btn btn-primary button" ng-click="goodsCtrl.goodsAdd()">Add</button>&nbsp
-	<button class="btn btn-primary button" ng-click="goodsCtrl.goodsBack()" scroll-here>Back</button>
-	<br><br>
+    <div class="header" ng-click="goodsCtrl.goToBack()">
+        {{goodsCtrl.title}} ({{goodsFilter.length}} / {{goodsCtrl.goods.length}})
+    </div>
+
+    <div>
+        <input type="text" class="form-control input"
+               placeholder="Search here"
+               ng-model="goodsCtrl.query.name">
+    </div>
+
+    <table class="table table-striped input">
+        <tr ng-repeat="item in filteredGoods | orderBy:goodsCtrl.sort:goodsCtrl.rev |
+				filter:goodsCtrl.query as goodsFilter track by $index"
+            ng-click="goodsCtrl.goodsEditForm(item)">
+
+            <td class="input">
+                <div class="name-div">
+                    {{item.name}} ({{item.price | number:2}})
+                </div>
+            </td>
+
+        </tr>
+    </table>
+
+    <hr class="fix-hr">
+		<span class="label label-primary per-page">Items per page:
+			<input class="per-page-input" type="text" ng-model="numPerPage" value={{numPerPage}}>
+		</span>
+
+    <div>
+        <pagination total-items="totalItems" ng-model="currentPage" max-size="maxSize" class="pagination-sm"
+                    boundary-links="true"></pagination>
+    </div>
+
+    <button class="btn btn-primary button" ng-click="goodsCtrl.goodsAdd()">Add</button>&nbsp
+    <button class="btn btn-primary button" ng-click="goodsCtrl.goodsBack()" scroll-here>Back</button>
+    <br><br>
 </center>
