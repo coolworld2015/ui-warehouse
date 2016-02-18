@@ -1,11 +1,13 @@
 <center>
-    <div class="header">Collection</div>
+    <div class="header">Warehouse</div>
     <br><br>
     <img ng-src="logo.jpg" class="logo" ng-click="categoriesCtrl.goToBack()">
     <hr>
+
     <div class="header" ng-click="storeCtrl.goToBack()">
         {{storeCtrl.title}} ({{goodsFilter.length}} / {{storeCtrl.store.length}})
     </div>
+
     <div>
         <input type="text" class="form-control input"
                placeholder="Search here"
@@ -19,7 +21,6 @@
                 <div class="name-div">
                     {{item.name}} ({{item.quantity | number:2}})
                 </div>
-
             </td>
         </tr>
     </table>

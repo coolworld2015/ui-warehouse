@@ -1,32 +1,43 @@
-<center ng-init="usersCtrl.init()">
-	<div class="header" ng-click="usersCtrl.goToBack()" ng-bind="usersCtrl.title"></div>
-	<input type="text" class="form-control" ng-model="usersCtrl.query.name" 
-			placeholder="Search here"
-	scroll-there>
-		<table class="table table-striped input">
-			<th ng-click="usersCtrl.usersSort('name')" style="width:50%">Login</th>
-			<th ng-click="usersCtrl.usersSort('pass')">Password</th>
-			<tr ng-repeat="item in filteredUsers | orderBy:usersCtrl.sort:usersCtrl.rev |
-				filter:usersCtrl.query as usersFilter track by $index"
-				ng-click="usersCtrl.usersEditForm(item)">
-				<td ng-bind="item.name"></td>
-				<td ng-bind="item.pass"></td>
-			</tr>
-		</table>
-	<hr>
-		<h4>
-			<div class="label label-default" style="font-size:17px; background-color:#337ab7" ng-click="usersCtrl.goToHead()">
-				Records count: <span ng-bind="usersFilter.length"></span> (<span ng-bind="usersCtrl.users.length"></span>)
-			</div>
-		</h4>
-	<hr>
-		<h2 class="label label-primary" style="font-size:17px;">Items per page:
-			<input style="border:none; width: 30px; font-size:17px; background-color:#337ab7" 
-			type="text" ng-model="numPerPage" value={{numPerPage}}>
-		</h2>	
-	<div><pagination total-items="totalItems" ng-model="currentPage" max-size="maxSize" class="pagination-sm" boundary-links="true"></pagination></div>
+<center>
+    <div class="header">Warehouse</div>
+    <br><br>
+    <img ng-src="logo.jpg" class="logo" ng-click="categoriesCtrl.goToBack()">
+    <hr>
 
-	<button class="btn btn-primary button" ng-click="usersCtrl.usersAdd()">Add</button>&nbsp
-	<button class="btn btn-primary button" ng-click="usersCtrl.usersBack()" scroll-here>Back</button>
-	<br><br>
+    <div class="header" ng-click="usersCtrl.goToBack()">
+        {{usersCtrl.title}} ({{usersFilter.length}} / {{usersCtrl.store.length}})
+    </div>
+
+    <div>
+        <input type="text" class="form-control input"
+               placeholder="Search here"
+               ng-model="usersCtrl.query.name">
+    </div>
+
+    <table class="table table-striped input">
+        <tr ng-repeat="item in filteredUsers | orderBy:usersCtrl.sort:usersCtrl.rev |
+				filter:usersCtrl.query as usersFilter track by $index"
+            ng-click="usersCtrl.usersEditForm(item)">
+            <td class="input">
+                <div class="name-div">
+                    {{item.name}}
+                </div>
+            </td>
+
+        </tr>
+    </table>
+
+    <hr class="fix-hr">
+		<span class="label label-primary per-page">Items per page:
+			<input class="per-page-input" type="text" ng-model="numPerPage" value={{numPerPage}}>
+		</span>
+
+    <div>
+        <pagination total-items="totalItems" ng-model="currentPage" max-size="maxSize" class="pagination-sm"
+                    boundary-links="true"></pagination>
+    </div>
+
+    <button class="btn btn-primary button" ng-click="usersCtrl.usersAdd()">Add</button>&nbsp
+    <button class="btn btn-primary button" ng-click="usersCtrl.usersBack()" scroll-here>Back</button>
+    <br><br>
 </center>

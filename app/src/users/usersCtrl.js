@@ -5,9 +5,9 @@
         .module('app')
         .controller('UsersCtrl', UsersCtrl);
 
-    UsersCtrl.$inject = ['$scope', '$rootScope', '$state', 'UsersService', 'UsersLocalStorage'];
+    UsersCtrl.$inject = ['$scope', '$rootScope', '$state', '$timeout', 'UsersService', 'UsersLocalStorage'];
 
-    function UsersCtrl($scope, $rootScope, $state, UsersService, UsersLocalStorage) {
+    function UsersCtrl($scope, $rootScope, $state, $timeout, UsersService, UsersLocalStorage) {
         $scope.$watch('numPerPage', currentPage);			
         $scope.$watch('currentPage', currentPage);
         var vm = this;
@@ -24,6 +24,12 @@
             usersBack: usersBack,
 			_errorHandler: errorHandler
         });
+
+        $timeout(function () {
+            window.scrollTo(0, 0);
+        });
+
+        init();
 
         function init() {
             vm.title = 'Users';
