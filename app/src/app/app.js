@@ -29,20 +29,20 @@
     function init($rootScope) {
 		var mode;
 		if ($rootScope.mode === undefined) {
-			mode = localStorage.getItem('warehouse_mode');
+			mode = localStorage.getItem('ui-warehouse.mode');
 			mode = JSON.parse(mode);
 			$rootScope.mode = mode;
 		}
 		
 		if ($rootScope.mode === null) {
 			mode = 'OFF-LINE (LocalStorage)';
-			localStorage.setItem('warehouse_mode', JSON.stringify(mode));
+			localStorage.setItem('ui-warehouse.mode', JSON.stringify(mode));
 			$rootScope.mode = mode;
 		}
 		
         $rootScope.myConfig = {
-            //webUrl: 'http://ui-warehouse.herokuapp.com/' //TODO Heroku MongoDB
-            webUrl: 'http://localhost:3000/' //TODO Local MongoDB
+            webUrl: 'http://ui-warehouse.herokuapp.com/' //TODO Heroku MongoDB
+            //webUrl: 'http://localhost:3000/' //TODO Local MongoDB
         };
     }
 

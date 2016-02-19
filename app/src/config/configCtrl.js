@@ -5,10 +5,10 @@
         .module('app')
         .controller('ConfigCtrl', ConfigCtrl);
 
-    ConfigCtrl.$inject = ['$scope', '$rootScope', '$state', '$http', '$timeout',
+    ConfigCtrl.$inject = ['$rootScope', '$state', '$http', '$timeout',
         'ClientsLocalStorage', 'GoodsLocalStorage'];
 
-    function ConfigCtrl($scope, $rootScope, $state, $http, $timeout,
+    function ConfigCtrl($rootScope, $state, $http, $timeout,
                         ClientsLocalStorage, GoodsLocalStorage) {
         var vm = this;
 
@@ -43,7 +43,7 @@
                 vm.mode = 'OFF-LINE (LocalStorage)';
                 $rootScope.mode = 'OFF-LINE (LocalStorage)';
             }
-            localStorage.setItem('warehouse_mode', JSON.stringify(vm.mode));
+            localStorage.setItem('ui-warehouse.mode', JSON.stringify(vm.mode));
             toMain();
         }
 

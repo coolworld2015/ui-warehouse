@@ -5,12 +5,13 @@
         .module('app')
         .factory('ClientsService', ClientsService);
 		
-    ClientsService.$inject = ['$rootScope', '$http', '$q'];
+    ClientsService.$inject = ['$rootScope', '$http'];
 	
-    function ClientsService($rootScope, $http, $q) {
+    function ClientsService($rootScope, $http) {
         var webUrl = $rootScope.myConfig.webUrl;
 		
         return {
+            clients: [],
 			getClients: getClients,
             addItem: addItem,
             editItem: editItem,

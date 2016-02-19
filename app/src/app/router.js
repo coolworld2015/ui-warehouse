@@ -5,40 +5,147 @@
         .module('app')
         .config(routeConfig);
 
-	routeConfig.$inject = ['$stateProvider','$urlRouterProvider'];
+    routeConfig.$inject = ['$stateProvider', '$urlRouterProvider'];
 
     function routeConfig($stateProvider, $urlRouterProvider) {
-		function resolveResource(url, state ,sort) {
-			resolver.$inject = ['$http', '$q', '$rootScope', 'ClientsLocalStorage', 'GoodsLocalStorage'];
-			function resolver($http, $q, $rootScope, ClientsLocalStorage, GoodsLocalStorage) {
-				var data;
-				if ($rootScope.mode == 'OFF-LINE (LocalStorage)') {
-					if (state == 'clients') {
-						data = ClientsLocalStorage.getClients();
-						return data;
-					}
-					if (state == 'goods') {
-						data = GoodsLocalStorage.getGoods();
-						return data;
-					}
-				}
-				var webUrl = $rootScope.myConfig.webUrl + url;
-				return $http.get(webUrl)
-                    .then(function (result) {
-                        $rootScope.loading = false;
-                        return result.data.sort(sort);
-                    })
-                    .catch(function (reject) {
-                        $rootScope.loading = false;
-                        $rootScope.myError = true;
-                        return $q.reject(reject);
-                    });
-			}
 
-			return resolver;
-		}
-		
-		function sort(a, b) {
+        function resolveResource(url, state, sort) {
+            resolver.$inject = ['$http', '$q', '$rootScope', 'ClientsLocalStorage', 'ClientsService',
+                'GoodsLocalStorage', 'GoodsService'];
+            function resolver($http, $q, $rootScope, ClientsLocalStorage, ClientsService,
+                              GoodsLocalStorage, GoodsService) {
+
+                var data;
+                var webUrl = $rootScope.myConfig.webUrl;
+
+                if ($rootScope.mode == 'OFF-LINE (LocalStorage)') {
+                        switch (state) {
+                            case 'store':
+                                data = GoodsLocalStorage.getGoods();
+                                return data;
+                                break;
+
+                            case 'goods':
+                                data = GoodsLocalStorage.getGoods();
+                                return data;
+                                break;
+
+                            case 'clients':
+                                data = ClientsLocalStorage.getClients();
+                                return data;
+                                break;
+                        }
+                } else {
+                    switch (state) {
+                        case 'goods':
+                            if ($rootScope.goods === undefined) {
+                                return $http.get(webUrl + url)
+                                    .then(function (result) {
+                                        GoodsService.goods = result.data;
+                                        $rootScope.goods = true;
+                                        $rootScope.loading = false;
+                                        return GoodsService.goods.sort(sort);
+                                    })
+                                    .catch(function (reject) {
+                                        $rootScope.loading = false;
+                                        $rootScope.myError = true;
+                                        return $q.reject(reject);
+                                    });
+                            } else {
+                                return GoodsService.goods.sort(sort);
+                            }
+                            break;
+
+                        case 'clients':
+                            if ($rootScope.clients === undefined) {
+                                return $http.get(webUrl + url)
+                                    .then(function (result) {
+                                        ClientsService.clients = result.data;
+                                        $rootScope.clients = true;
+                                        $rootScope.loading = false;
+                                        return ClientsService.clients.sort(sort);
+                                    })
+                                    .catch(function (reject) {
+                                        $rootScope.loading = false;
+                                        $rootScope.myError = true;
+                                        return $q.reject(reject);
+                                    });
+                            } else {
+                                return ClientsService.clients.sort(sort);
+                            }
+                            break;
+                    }
+
+
+                    //var webUrl = $rootScope.myConfig.webUrl + url;
+                    //return $http.get(webUrl)
+                    //    .then(function (result) {
+                    //        $rootScope.loading = false;
+                    //        return result.data.sort(sort);
+                    //    })
+                    //    .catch(function (reject) {
+                    //        $rootScope.loading = false;
+                    //        $rootScope.myError = true;
+                    //        return $q.reject(reject);
+                    //    });
+                }
+            }
+
+                //if ($rootScope.mode == 'OFF-LINE (LocalStorage)') {
+                //    switch (state) {
+                //        case 'store':
+                //            data = GoodsLocalStorage.getGoods();
+                //            return data;
+                //            break;
+                //
+                //        case 'goods':
+                //            data = GoodsLocalStorage.getGoods();
+                //            return data;
+                //            break;
+                //
+                //        case 'clients':
+                //            data = ClientsLocalStorage.getClients();
+                //            return data;
+                //            break;
+                //    }
+                //} else {
+                    //switch (state) {
+                    //    case 'store':
+                    //        data = GoodsLocalStorage.getGoods();
+                    //        return data;
+                    //        break;
+                    //
+                    //    case 'goods':
+                    //        data = GoodsLocalStorage.getGoods();
+                    //        return data;
+                    //        break;
+                    //
+                    //    case 'clients':
+                    //        if ($rootScope.clients === undefined) {
+                    //            var webUrl = $rootScope.myConfig.webUrl + url;
+                    //            return $http.get(webUrl)
+                    //                .then(function (result) {
+                    //                    ClientsService.clients = result.data;
+                    //                    $rootScope.clients = true;
+                    //                    $rootScope.loading = false;
+                    //                    return ClientsService.clients.sort(sort);
+                    //                })
+                    //                .catch(function (reject) {
+                    //                    $rootScope.loading = false;
+                    //                    $rootScope.myError = true;
+                    //                    return $q.reject(reject);
+                    //                });
+                    //        } else {
+                    //            return ClientsService.clients.sort(sort);
+                    //        }
+                    //        break;
+                    //}
+                //}
+
+                return resolver;
+        }
+
+        function sort(a, b) {
             var nameA = a.name.toLowerCase(), nameB = b.name.toLowerCase();
             if (nameA < nameB) {
                 return -1
@@ -49,13 +156,37 @@
             return 0;
         }
 
-        function sort1(a, b) {
+        function sortNumber(a, b) {
             return parseInt(a.number) - parseInt(b.number);
         }
+
         //$urlRouterProvider.otherwise('/login');  //TODO
         $urlRouterProvider.otherwise('/main');
-		
+
         $stateProvider
+            .state('main', {
+                url: '/main',
+                data: {
+                    requireLogin: true
+                },
+                views: {
+                    '': {
+                        template: //'<div ui-view="menu"></div>' +
+                            '<div ui-view="display"></div>'
+                    },
+                    'menu@main': {
+                        templateUrl: 'common/menu.html',
+                        controller: 'MenuCtrl',
+                        controllerAs: 'menuCtrl'
+                    },
+                    'display@main': {
+                        templateUrl: 'app/main.html',
+                        controller: 'MainCtrl',
+                        controllerAs: 'mainCtrl'
+                    }
+                }
+            })
+//-------------------------------------------------------------------------------------------------------
             .state('login', {
                 url: '/login',
                 templateUrl: 'login/login.html',
@@ -65,30 +196,7 @@
                     requireLogin: false
                 }
             })
-
-            .state('main', {
-                url: '/main',
-                data: {
-                    requireLogin: true
-                },
-                views: {
-                    '': {
-                        template: //'<div ui-view="menu"></div>' +
-								  '<div ui-view="display"></div>'
-                    },
-                    'menu@main': {
-						templateUrl: 'common/menu.html',
-                        controller: 'MenuCtrl',
-                        controllerAs: 'menuCtrl'
-					},
-                    'display@main': {
-						templateUrl: 'app/main.html',
-                        controller: 'MainCtrl',
-                        controllerAs: 'mainCtrl'
-                    }
-                }
-            })
-
+//-------------------------------------------------------------------------------------------------------
             .state('main.config', {
                 url: '/config',
                 views: {
@@ -102,7 +210,7 @@
                     requireLogin: true
                 }
             })
-
+//-------------------------------------------------------------------------------------------------------
             .state('main.store', {
                 url: '/store',
                 views: {
@@ -110,13 +218,16 @@
                         templateUrl: 'store/store.html',
                         controller: 'StoreCtrl',
                         controllerAs: 'storeCtrl'
-						}
+                    }
                 },
                 data: {
                     requireLogin: true
+                },
+                resolve: {
+                    goods: resolveResource('api/goods/get', 'goods', sort)
                 }
             })
-
+//-------------------------------------------------------------------------------------------------------
             .state('main.goods', {
                 url: '/goods',
                 views: {
@@ -136,7 +247,7 @@
 
             .state('main.goods-add', {
                 url: '/goods-add',
-                params: {item:{}},
+                params: {item: {}},
                 views: {
                     'display': {
                         templateUrl: 'goods/goods-add.html',
@@ -151,7 +262,7 @@
 
             .state('main.goods-edit', {
                 url: '/goods-edit',
-                params: {item:{}},
+                params: {item: {}},
                 views: {
                     'display': {
                         templateUrl: 'goods/goods-edit.html',
@@ -166,7 +277,7 @@
 
             .state('main.goods-dialog', {
                 url: '/goods-dialog',
-                params: {item:{}},
+                params: {item: {}},
                 views: {
                     'display': {
                         templateUrl: 'goods/goods-dialog.html',
@@ -178,7 +289,7 @@
                     requireLogin: true
                 }
             })
-
+//-------------------------------------------------------------------------------------------------------
             .state('main.clients', {
                 url: '/clients',
                 views: {
@@ -212,7 +323,7 @@
 
             .state('main.clients-edit', {
                 url: '/clients-edit',
-                params: {item:{}},
+                params: {item: {}},
                 views: {
                     'display': {
                         templateUrl: 'clients/clients-edit.html',
@@ -227,7 +338,7 @@
 
             .state('main.clients-dialog', {
                 url: '/clients-dialog',
-                params: {item:{}},
+                params: {item: {}},
                 views: {
                     'display': {
                         templateUrl: 'clients/clients-dialog.html',
@@ -239,7 +350,7 @@
                     requireLogin: true
                 }
             })
-
+//-------------------------------------------------------------------------------------------------------
             .state('main.inputs', {
                 url: '/inputs',
                 views: {
@@ -256,7 +367,7 @@
 
             .state('main.inputs-add', {
                 url: '/inputs-add',
-                params: {item:{}},
+                params: {item: {}},
                 views: {
                     'display': {
                         templateUrl: 'inputs/inputs-add.html',
@@ -271,7 +382,7 @@
 
             .state('main.inputs-edit', {
                 url: '/inputs-edit',
-                params: {item:{}},
+                params: {item: {}},
                 views: {
                     'display': {
                         templateUrl: 'inputs/inputs-edit.html',
@@ -286,7 +397,7 @@
 
             .state('main.inputs-dialog', {
                 url: '/inputs-dialog',
-                params: {item:{}},
+                params: {item: {}},
                 views: {
                     'display': {
                         templateUrl: 'inputs/inputs-dialog.html',
@@ -301,7 +412,7 @@
 
             .state('main.inputs-invoice', {
                 url: '/inputs-invoice',
-                params: {item:{}},
+                params: {item: {}},
                 views: {
                     'display': {
                         templateUrl: 'inputs/inputs-invoice.html',
@@ -316,7 +427,7 @@
 
             .state('main.inputs-invoice-add', {
                 url: '/inputs-invoice-add',
-                params: {item:{}},
+                params: {item: {}},
                 views: {
                     'display': {
                         templateUrl: 'inputs/inputs-invoice-add.html',
@@ -331,7 +442,7 @@
 
             .state('main.inputs-invoice-edit', {
                 url: '/inputs-invoice-edit',
-                params: {item:{},invoice:{}},
+                params: {item: {}, invoice: {}},
                 views: {
                     'display': {
                         templateUrl: 'inputs/inputs-invoice-edit.html',
@@ -343,7 +454,7 @@
 
             .state('main.inputs-invoice-dialog', {
                 url: '/inputs-invoice-dialog',
-                params: {item:{},invoice:{}},
+                params: {item: {}, invoice: {}},
                 views: {
                     'display': {
                         templateUrl: 'inputs/inputs-invoice-dialog.html',
@@ -352,7 +463,7 @@
                     }
                 }
             })
-
+//-------------------------------------------------------------------------------------------------------
             .state('main.outputs', {
                 url: '/outputs',
                 views: {
@@ -369,7 +480,7 @@
 
             .state('main.outputs-add', {
                 url: '/outputs-add',
-                params: {item:{}},
+                params: {item: {}},
                 views: {
                     'display': {
                         templateUrl: 'outputs/outputs-add.html',
@@ -384,7 +495,7 @@
 
             .state('main.outputs-edit', {
                 url: '/outputs-edit',
-                params: {item:{}},
+                params: {item: {}},
                 views: {
                     'display': {
                         templateUrl: 'outputs/outputs-edit.html',
@@ -396,7 +507,7 @@
 
             .state('main.outputs-dialog', {
                 url: '/outputs-dialog',
-                params: {item:{}},
+                params: {item: {}},
                 views: {
                     'display': {
                         templateUrl: 'outputs/outputs-dialog.html',
@@ -411,7 +522,7 @@
 
             .state('main.outputs-invoice', {
                 url: '/outputs-invoice',
-                params: {item:{}},
+                params: {item: {}},
                 views: {
                     'display': {
                         templateUrl: 'outputs/outputs-invoice.html',
@@ -426,7 +537,7 @@
 
             .state('main.outputs-invoice-add', {
                 url: '/outputs-invoice-add',
-                params: {item:{}},
+                params: {item: {}},
                 views: {
                     'display': {
                         templateUrl: 'outputs/outputs-invoice-add.html',
@@ -441,7 +552,7 @@
 
             .state('main.outputs-invoice-edit', {
                 url: '/outputs-invoice-edit',
-                params: {item:{},invoice:{}},
+                params: {item: {}, invoice: {}},
                 views: {
                     'display': {
                         templateUrl: 'outputs/outputs-invoice-edit.html',
@@ -456,7 +567,7 @@
 
             .state('main.outputs-invoice-dialog', {
                 url: '/outputs-invoice-dialog',
-                params: {item:{},invoice:{}},
+                params: {item: {}, invoice: {}},
                 views: {
                     'display': {
                         templateUrl: 'outputs/outputs-invoice-dialog.html',
@@ -468,7 +579,7 @@
                     requireLogin: true
                 }
             })
-
+//-------------------------------------------------------------------------------------------------------
             .state('main.users', {
                 url: '/users',
                 views: {
@@ -485,7 +596,7 @@
 
             .state('main.users-add', {
                 url: '/users-add',
-                params: {item:{}},
+                params: {item: {}},
                 views: {
                     'display': {
                         templateUrl: 'users/users-add.html',
@@ -497,10 +608,10 @@
                     requireLogin: true
                 }
             })
-			
-			.state('main.users-edit', {
+
+            .state('main.users-edit', {
                 url: '/users-edit',
-                params: {item:{}},
+                params: {item: {}},
                 views: {
                     'display': {
                         templateUrl: 'users/users-edit.html',
@@ -515,7 +626,7 @@
 
             .state('main.users-dialog', {
                 url: '/users-dialog',
-                params: {item:{}},
+                params: {item: {}},
                 views: {
                     'display': {
                         templateUrl: 'users/users-dialog.html',
@@ -526,6 +637,7 @@
                 data: {
                     requireLogin: true
                 }
-            })
+            });
+//-------------------------------------------------------------------------------------------------------
     }
 })();

@@ -26,7 +26,7 @@
 
         function getGoods() {
             if (GoodsLocalStorage.goods === undefined) {
-                var goods = localStorage.getItem('warehouse_goods');
+                var goods = localStorage.getItem('ui-warehouse.goods');
                 goods = JSON.parse(goods);
                 GoodsLocalStorage.goods = goods;
             }
@@ -66,11 +66,11 @@
         }
 
         function setGoods() {
-            localStorage.setItem('warehouse_goods', JSON.stringify(GoodsLocalStorage.goods));
+            localStorage.setItem('ui-warehouse.goods', JSON.stringify(GoodsLocalStorage.goods));
         }
 
         function uploadGoods(goods) {
-            localStorage.setItem('warehouse_goods', JSON.stringify(goods));
+            localStorage.setItem('ui-warehouse.goods', JSON.stringify(goods));
             GoodsLocalStorage.goods = undefined;
         }
 		

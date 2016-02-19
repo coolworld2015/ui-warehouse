@@ -5,16 +5,17 @@
         .module('app')
         .controller('StoreCtrl', StoreCtrl);
 
-    StoreCtrl.$inject = ['$scope', '$rootScope', '$state', '$timeout', 'GoodsService', 'GoodsLocalStorage'];
+    StoreCtrl.$inject = ['$scope', '$rootScope', '$state', '$timeout', 'goods'];
 
-    function StoreCtrl($scope, $rootScope, $state, $timeout, GoodsService, GoodsLocalStorage) {
+    function StoreCtrl($scope, $rootScope, $state, $timeout, goods) {
         $scope.$watch('numPerPage', currentPage);
         $scope.$watch('currentPage', currentPage);
         var vm = this;
 
         angular.extend(vm, {
             init: init,
-            currentPage: currentPage,
+            _initStore: initStore,
+            _currentPage: currentPage,
             numPages: numPages,
             storeSort: storeSort,
             storeEditForm: storeEditForm,
@@ -33,35 +34,17 @@
         function init() {
             vm.title = 'Store';
             vm.sort = 'name';
-			vm.store = [];
+			vm.store = initStore(goods);
 			vm.goodsFilter = [];
 			
             $scope.currentPage = 1;
             $scope.numPerPage = 10;
             $scope.maxSize = 5;
-			
-            if ($rootScope.mode == 'ON-LINE (Heroku)') {
-                getGoodsOn();
-            } else {
-                vm.goods = GoodsLocalStorage.getGoods();
-				vm.store = initStore(vm.goods);
-				$rootScope.myError = false;
-				$rootScope.loading = false;
-            }
+
+            $rootScope.myError = false;
+            $rootScope.loading = false;
 		}
-		
-        function getGoodsOn() {			
-            GoodsService.getGoods()
-				.then(function(data){
-					$scope.filteredGoods = [];
-					vm.store = initStore(data.data);
-					currentPage();
-					$rootScope.myError = false;
-					$rootScope.loading = false;
-				})
-				.catch(errorHandler);
-        }
-		
+
 		function initStore(goods) {	
 			var store = [];
 			goods.filter(function (item) {
