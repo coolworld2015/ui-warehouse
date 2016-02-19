@@ -41,8 +41,8 @@
 		}
 		
         $rootScope.myConfig = {
-            webUrl: 'http://coolworld2015a1.herokuapp.com/' //TODO change URL
-            //webUrl: 'http://localhost:3000/'
+            //webUrl: 'http://ui-warehouse.herokuapp.com/' //TODO Heroku MongoDB
+            webUrl: 'http://localhost:3000/' //TODO Local MongoDB
         };
     }
 

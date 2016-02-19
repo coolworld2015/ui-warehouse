@@ -1,0 +1,58 @@
+node index.js
+
+mongod.exe --dbpath d:/MongoDB/db
+mongod.exe --dbpath d:/MongoDB/db --repair
+
+-----------------------------------------------------------------------------------------------------
+mongo shell
+show dbs
+use test
+show collections
+db.dropDatabase()
+
+mongoimport --db test --collection clients --file clients.json
+-----------------------------------------------------------------------------------------------------
+
+mongoose.connect('mongodb://localhost:27017');
+
+https://mongolab.com/databases/wintermute2009/collections/clients
+
+mongoimport -h ds047772.mongolab.com:47772 -d wintermute2009 -c clients -u ed -p ed --file clients.json
+mongoexport -h ds047772.mongolab.com:47772 -d wintermute2009 -c clients -u ed -p ed -o clients.json
+
+mongoimport -h ds047772.mongolab.com:47772 -d wintermute2009 -c goods -u ed -p ed --file goods.json
+mongoexport -h ds047772.mongolab.com:47772 -d wintermute2009 -c goods -u ed -p ed -o goods.json
+
+http://coolworld.herokuapp.com/
+https://dashboard.heroku.com/apps/coolworld/deploy/heroku-git
+
+heroku login
+heroku git:clone -a coolworld
+
+git push heroku master
+
+-----------------------------------------------------------------------------------------------------
+
+mongoose.connect('mongodb://admin:admin@ds053728.mongolab.com:53728/warehouse');
+
+mongoimport -h ds053728.mongolab.com:53728 -d warehouse -c clients -u admin -p admin --file clients.json
+mongoexport -h ds053728.mongolab.com:53728 -d warehouse -c clients -u admin -p admin -o clients1.json
+
+mongoimport -h ds053728.mongolab.com:53728 -d warehouse -c goods -u admin -p admin --file goods.json
+mongoexport -h ds053728.mongolab.com:53728 -d warehouse -c goods -u admin -p admin -o goods1.json
+
+mongoimport -h ds053728.mongolab.com:53728 -d warehouse -c users -u admin -p admin --file users.json
+mongoexport -h ds053728.mongolab.com:53728 -d warehouse -c users -u admin -p admin -o users1.json
+-----------------------------------------------------------------------------------------------------
+
+mongoose.connect('mongodb://localhost:27017/warehouse');
+
+mongoimport --db warehouse --collection clients --file clients.json
+mongoexport --db warehouse --collection clients -o clients1.json
+
+mongoimport --db warehouse --collection goods --file goods.json
+mongoexport --db warehouse --collection goods -o goods1.json
+
+mongoimport --db warehouse --collection users --file users.json
+mongoexport --db warehouse --collection users -o users1.json
+

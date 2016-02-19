@@ -1,0 +1,1033 @@
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.9/angular.min.js"></script>
+
+<html ng-app="app">
+<center>
+<div ng-controller="myCtrl as ctx">
+    <div>
+        <hr>
+        {{ ctx.name }}
+
+        <hr>
+        <select ng-model="ctx.selectedItem"
+                ng-options="option.name for option in ctx.options"
+                ng-change="ctx.updateChange(ctx.selectedItem,'selectedItem')">
+        </select>
+
+        <hr>
+        <select ng-model="ctx.selectedItem1"
+                ng-options="option.name for option in ctx.options1"
+                ng-change="ctx.updateChange(ctx.selectedItem1,'selectedItem1')">
+        </select>
+
+        <hr>
+
+        <div ng-show="ctx.clients">
+            <button ng-click="ctx.getClients()">Get Clients</button>
+            <button ng-click="ctx.addClient()">Add Item</button>
+            <hr>
+            <table border=1 ng-if="ctx.items">
+                <tr ng-repeat="item in ctx.items">
+                    <td ng-click="ctx.updateClient(item)">&nbsp E &nbsp</td>
+                    <td ng-click="ctx.findClient(item)">{{item.id}}</td>
+                    <td ng-click="ctx.findClient(item)">{{item.name}}</td>
+                    <td ng-click="ctx.findClient(item)">{{item.sum | number:2}}</td>
+                    <td ng-click="ctx.delClient(item)">&nbsp X &nbsp</td>
+                </tr>
+            </table>
+        </div>
+
+        <div ng-show="ctx.goods">
+            <button ng-click="ctx.getGoods()">Get Goods</button>
+            <button ng-click="ctx.addGood()">Add Item</button>
+            <hr>
+            <table border=1 ng-if="ctx.items">
+                <tr ng-repeat="item in ctx.items">
+                    <td ng-click="ctx.updateGood(item)">&nbsp E &nbsp</td>
+                    <td ng-click="ctx.findGood(item)">{{item.id}}</td>
+                    <td ng-click="ctx.findGood(item)">{{item.name}}</td>
+                    <td ng-click="ctx.findGood(item)">{{item.price | number:2}}</td>
+                    <td ng-click="ctx.delGood(item)">&nbsp X &nbsp</td>
+                </tr>
+            </table>
+        </div>
+
+        <div ng-show="ctx.users">
+            <button ng-click="ctx.getUsers()">Get Users</button>
+            <button ng-click="ctx.addUser()">Add Item</button>
+            <hr>
+            <table border=1 ng-if="ctx.items">
+                <tr ng-repeat="item in ctx.items">
+                    <td ng-click="ctx.updateUser(item)">&nbsp E &nbsp</td>
+                    <td ng-click="ctx.findUser(item)">{{item.id}}</td>
+                    <td ng-click="ctx.findUser(item)">{{item.name}}</td>
+                    <td ng-click="ctx.findUser(item)">{{item.pass}}</td>
+                    <td ng-click="ctx.delUser(item)">&nbsp X &nbsp</td>
+                </tr>
+            </table>
+        </div>
+
+        <div ng-show="ctx.inputs">
+            <button ng-click="ctx.getInputs()">Get Inputs</button>
+            <button ng-click="ctx.addInput()">Add Item</button>
+            <hr>
+            <table border=1 ng-if="ctx.items">
+                <tr ng-repeat="item in ctx.items">
+                    <td ng-click="ctx.updateInput(item)">&nbsp E &nbsp</td>
+                    <td ng-click="ctx.findInput(item)">{{item.id}}</td>
+                    <td ng-click="ctx.findInput(item)">{{item.number}}</td>
+                    <td ng-click="ctx.findInput(item)">{{item.client}}</td>
+                    <td ng-click="ctx.findInput(item)">{{item.clientID}}</td>
+                    <td ng-click="ctx.findInput(item)">{{item.date}}</td>
+                    <td ng-click="ctx.findInput(item)">{{item.total}}</td>
+                    <td ng-click="ctx.delInput(item)">&nbsp X &nbsp</td>
+                </tr>
+            </table>
+        </div>
+
+        <div ng-show="ctx.outputs">
+            <button ng-click="ctx.getOutputs()">Get Outputs</button>
+            <button ng-click="ctx.addOutput()">Add Item</button>
+            <hr>
+            <table border=1 ng-if="ctx.items">
+                <tr ng-repeat="item in ctx.items">
+                    <td ng-click="ctx.updateOutput(item)">&nbsp E &nbsp</td>
+                    <td ng-click="ctx.findOutput(item)">{{item.id}}</td>
+                    <td ng-click="ctx.findOutput(item)">{{item.number}}</td>
+                    <td ng-click="ctx.findOutput(item)">{{item.client}}</td>
+                    <td ng-click="ctx.findOutput(item)">{{item.clientID}}</td>
+                    <td ng-click="ctx.findOutput(item)">{{item.date}}</td>
+                    <td ng-click="ctx.findOutput(item)">{{item.total}}</td>
+                    <td ng-click="ctx.delOutput(item)">&nbsp X &nbsp</td>
+                </tr>
+            </table>
+        </div>	
+		
+        <div ng-show="ctx.invoicein">
+            <button ng-click="ctx.getInvoiceIn()">Get InvoiceIn</button>
+            <button ng-click="ctx.addInvoiceIn()">Add Item</button>
+            <hr>
+            <table border=1 ng-if="ctx.items">
+                <tr ng-repeat="item in ctx.items">
+                    <td ng-click="ctx.updateInvoiceIn(item)">&nbsp E &nbsp</td>
+                    <td ng-click="ctx.findInvoiceIn(item)">{{item.id}}</td>
+                    <td ng-click="ctx.findInvoiceIn(item)">{{item.invoiceID}}</td>
+                    <td ng-click="ctx.findInvoiceIn(item)">{{item.goods}}</td>
+                    <td ng-click="ctx.findInvoiceIn(item)">{{item.goodsID}}</td>
+                    <td ng-click="ctx.findInvoiceIn(item)">{{item.price}}</td>
+                    <td ng-click="ctx.findInvoiceIn(item)">{{item.quantity}}</td>
+                    <td ng-click="ctx.findInvoiceIn(item)">{{item.total}}</td>
+                    <td ng-click="ctx.delInvoiceIn(item)">&nbsp X &nbsp</td>
+                </tr>
+            </table>
+        </div>
+	
+        <div ng-show="ctx.invoiceout">
+            <button ng-click="ctx.getInvoiceOut()">Get InvoiceIn</button>
+            <button ng-click="ctx.addInvoiceOut()">Add Item</button>
+            <hr>
+            <table border=1 ng-if="ctx.items">
+                <tr ng-repeat="item in ctx.items">
+                    <td ng-click="ctx.updateInvoiceOut(item)">&nbsp E &nbsp</td>
+                    <td ng-click="ctx.findInvoiceOut(item)">{{item.id}}</td>
+                    <td ng-click="ctx.findInvoiceOut(item)">{{item.invoiceID}}</td>
+                    <td ng-click="ctx.findInvoiceOut(item)">{{item.goods}}</td>
+                    <td ng-click="ctx.findInvoiceOut(item)">{{item.goodsID}}</td>
+                    <td ng-click="ctx.findInvoiceOut(item)">{{item.price}}</td>
+                    <td ng-click="ctx.findInvoiceOut(item)">{{item.quantity}}</td>
+                    <td ng-click="ctx.findInvoiceOut(item)">{{item.total}}</td>
+                    <td ng-click="ctx.delInvoiceOut(item)">&nbsp X &nbsp</td>
+                </tr>
+            </table>
+        </div>
+	
+        <div ng-show="ctx.loading" style="font-size:25px;">&nbsp
+            Loading...
+        </div>
+
+        <div ng-show="ctx.error" style="font-size:25px;">
+            Something went wrong
+        </div>
+
+        <hr>
+    </div>
+</div>
+</center>
+</html>
+
+<script>
+    (function () {
+        'use strict';
+
+        angular.module('app', []);
+
+        angular.module('app')
+                .run(myConfig);
+
+        function myConfig($rootScope) {
+            $rootScope.myConfig = {
+                heroku: 'http://coolworld.herokuapp.com/',
+                local: 'http://localhost:3000/'
+            }
+        }
+
+        angular.module('app')
+                .controller('myCtrl', myCtrl);
+
+        myCtrl.$inject = ['$http', '$rootScope', '$filter'];
+
+        function myCtrl($http, $rootScope, $filter) {
+            var vm = this;
+            angular.extend(vm, {
+                init: init,
+                updateChange: updateChange,
+
+                getClients: getClients,
+                findClient: findClient,
+                addClient: addClient,
+                delClient: delClient,
+                updateClient: updateClient,
+
+                getUsers: getUsers,
+                findUser: findUser,
+                addUser: addUser,
+                updateUser: updateUser,
+                delUser: delUser,
+
+                getGoods: getGoods,
+                findGood: findGood,
+                addGood: addGood,
+                updateGood: updateGood,
+                delGood: delGood,
+
+                getInputs: getInputs,
+                findInput: findInput,
+                addInput: addInput,
+                updateInput: updateInput,
+                delInput: delInput,
+				
+                getOutputs: getOutputs,
+                findOutput: findOutput,
+                addOutput: addOutput,
+                updateOutput: updateOutput,
+                delOutput: delOutput,
+				
+				getInvoiceIn: getInvoiceIn,
+				findInvoiceIn: findInvoiceIn,
+				addInvoiceIn: addInvoiceIn,
+                updateInvoiceIn: updateInvoiceIn,
+                delInvoiceIn: delInvoiceIn,
+				
+				getInvoiceOut: getInvoiceOut,
+				findInvoiceOut: findInvoiceOut,
+				addInvoiceOut: addInvoiceOut,
+                updateInvoiceOut: updateInvoiceOut,
+                delInvoiceOut: delInvoiceOut
+            });
+
+            init();
+
+            function init() {
+                vm.name = 'CoolWorld';
+                vm.heroku = $rootScope.myConfig.heroku;
+                vm.local = $rootScope.myConfig.local;
+
+                vm.options = [
+                    {name: 'Select server'},
+                    {name: 'Heroku'},
+                    {name: 'Local'}
+                ];
+
+                vm.selectedItem = vm.options[0];
+
+                vm.options1 = [
+                    {name: 'Select table'},
+                    {name: 'Clients'},
+                    {name: 'Goods'},
+                    {name: 'Users'},
+                    {name: 'Inputs'},
+                    {name: 'Outputs'},
+                    {name: 'InvoiceIn'},
+                    {name: 'InvoiceOut'}
+                ];
+
+                vm.selectedItem1 = vm.options1[0];
+            }
+
+            function updateChange(val, id) {
+                switch (id) {
+                    case 'selectedItem':
+                        if (vm.selectedItem.name == 'Heroku') {
+                            vm.server = vm.heroku;
+                        } else {
+                            vm.server = vm.local;
+                        }
+                        break;
+                    case 'selectedItem1':
+                        if (vm.selectedItem1.name == 'Clients') {
+                            vm.name = 'Clients';
+                            vm.clients = true;
+                            vm.goods = false;
+                            vm.users = false;
+                            vm.inputs = false;
+							vm.outputs = false;
+                            vm.invoicein = false;
+                            vm.invoiceout = false;	
+                        }
+                        if (vm.selectedItem1.name == 'Goods') {
+                            vm.name = 'Goods';
+                            vm.clients = false;
+                            vm.goods = true;
+                            vm.users = false;
+                            vm.inputs = false;
+							vm.outputs = false;		
+                            vm.invoicein = false;
+                            vm.invoiceout = false;	
+                        }
+                        if (vm.selectedItem1.name == 'Users') {
+                            vm.name = 'Users';
+                            vm.clients = false;
+                            vm.goods = false;
+                            vm.users = true;
+                            vm.inputs = false;
+							vm.outputs = false;
+                            vm.invoicein = false;
+                            vm.invoiceout = false;		
+                        }
+                        if (vm.selectedItem1.name == 'Inputs') {
+                            vm.name = 'Inputs';
+                            vm.clients = false;
+                            vm.goods = false;
+                            vm.users = false;
+                            vm.inputs = true;
+							vm.outputs = false;
+                            vm.invoicein = false;
+                            vm.invoiceout = false;					
+                        }
+                        if (vm.selectedItem1.name == 'Outputs') {
+                            vm.name = 'Outputs';
+                            vm.clients = false;
+                            vm.goods = false;
+                            vm.users = false;
+                            vm.inputs = false;
+                            vm.outputs = true;
+                            vm.invoicein = false;
+                            vm.invoiceout = false;	
+                        }                        
+						if (vm.selectedItem1.name == 'InvoiceIn') {
+                            vm.name = 'InvoiceIn';
+                            vm.clients = false;
+                            vm.goods = false;
+                            vm.users = false;
+                            vm.inputs = false;
+                            vm.outputs = false;
+                            vm.invoicein = true;
+                            vm.invoiceout = false;
+                        }
+						if (vm.selectedItem1.name == 'InvoiceOut') {
+                            vm.name = 'InvoiceOut';
+                            vm.clients = false;
+                            vm.goods = false;
+                            vm.users = false;
+                            vm.inputs = false;
+                            vm.outputs = false;
+                            vm.invoicein = false;
+                            vm.invoiceout = true;
+                        }
+                        vm.items = null;
+                        break;
+                }
+            }
+
+            function getClients() {
+                vm.loading = true;
+                vm.error = false;
+                var url = vm.server + 'api/clients/get';
+
+                $http.get(url)
+                        .then(function (data) {
+                            vm.loading = false;
+                            vm.items = data.data;
+                            vm.msg = data.status;
+                            vm.name = ' Clients - ' + data.data.length;
+                        })
+                        .catch(function (data) {
+                            vm.loading = false;
+                            vm.error = true;
+                            vm.name = 'Error';
+                            console.log('catch - ' + data.status);
+                            console.log(data);
+                        });
+            }
+
+            function findClient(item) {
+                var url = vm.server + 'api/clients/find';
+
+                var client = {
+                    "id": item.id
+                };
+                $http.post(url, client)
+                        .then(function (data) {
+                            vm.name = data.data.name;
+                        })
+                        .catch(function (data) {
+                            console.log('catch - ' + data.status);
+                        });
+            }
+
+            function addClient() {
+                var url = vm.server + 'api/clients/add';
+
+                var r = (Math.random(1000000) * 100000).toFixed();
+                var client = {
+                    "id": r,
+                    "name": "client_" + r,
+                    "address": "address",
+                    "phone": "phone",
+                    "description": "description",
+                    "sum": r
+                };
+                $http.post(url, client)
+                        .then(function (data) {
+                            console.log(data);
+                            getClients();
+                        })
+                        .catch(function (data) {
+                            console.log('catch - ' + data.status);
+                            console.log(data);
+                        });
+            }
+
+            function delClient(item) {
+                var url = vm.server + 'api/clients/delete';
+
+                var client = {
+                    "id": item.id
+                };
+                $http.post(url, client)
+                        .then(function (data) {
+                            vm.name = data.data;
+                            getClients();
+                        })
+                        .catch(function (data) {
+                            console.log('catch - ' + data.status);
+                        });
+            }
+
+            function updateClient(item) {
+                var url = vm.server + 'api/clients/update';
+
+                var client = {
+                    "id": item.id,
+                    "name": "Wintermute",
+                    "address": "address",
+                    "phone": "phone",
+                    "description": "Wintermute",
+                    "sum": (Math.random(1000000) * 100000).toFixed()
+                };
+                $http.post(url, client)
+                        .then(function (data) {
+                            vm.name = data.data.name;
+                            getClients();
+                        })
+                        .catch(function (data) {
+                            console.log('catch - ' + data.status);
+                        });
+            }
+
+//-----------------------------------------------------------------------------------------------
+
+            function getUsers() {
+                vm.loading = true;
+                vm.error = false;
+                var url = vm.server + 'api/users/get';
+
+                $http.get(url)
+                        .then(function (data) {
+                            vm.loading = false;
+                            vm.items = data.data;
+                            vm.msg = data.status;
+                            vm.name = ' Users - ' + data.data.length;
+                        })
+                        .catch(function (data) {
+                            vm.loading = false;
+                            vm.error = true;
+                            vm.name = 'Error';
+                            console.log('catch - ' + data.status);
+                            console.log(data);
+                        });
+            }
+
+            function findUser(item) {
+                var url = vm.server + 'api/users/find';
+
+                var user = {
+                    "id": item.id
+                };
+                $http.post(url, user)
+                        .then(function (data) {
+                            vm.name = data.data.name;
+                        })
+                        .catch(function (data) {
+                            console.log('catch - ' + data.status);
+                        });
+            }
+
+            function addUser() {
+                var url = vm.server + 'api/users/add';
+
+                var r = (Math.random(1000000) * 100000).toFixed();
+                var user = {
+                    "id": r,
+                    "name": "user_" + r,
+                    "pass": r,
+                    "description": "description"
+                };
+                $http.post(url, user)
+                        .then(function (data) {
+                            console.log(data);
+                            getUsers();
+                        })
+                        .catch(function (data) {
+                            console.log('catch - ' + data.status);
+                            console.log(data);
+                        });
+            }
+
+            function updateUser(item) {
+                var url = vm.server + 'api/users/update';
+
+                var user = {
+                    "id": item.id,
+                    "name": "Wintermute",
+                    "pass": "pass",
+                    "description": "Wintermute"
+                };
+                $http.post(url, user)
+                        .then(function (data) {
+                            vm.name = data.data.name;
+                            getUsers();
+                        })
+                        .catch(function (data) {
+                            console.log('catch - ' + data.status);
+                        });
+            }
+
+            function delUser(item) {
+                var url = vm.server + 'api/users/delete';
+
+                var user = {
+                    "id": item.id
+                };
+                $http.post(url, user)
+                        .then(function (data) {
+                            vm.name = data.data;
+                            getUsers();
+                        })
+                        .catch(function (data) {
+                            console.log('catch - ' + data.status);
+                        });
+            }
+
+//-----------------------------------------------------------------------------------------------
+
+            function getGoods() {
+                vm.loading = true;
+                vm.error = false;
+                var url = vm.server + 'api/goods/get';
+
+                $http.get(url)
+                        .then(function (data) {
+                            vm.loading = false;
+                            vm.items = data.data;
+                            vm.msg = data.status;
+                            vm.name = ' Goods - ' + data.data.length;
+                        })
+                        .catch(function (data) {
+                            vm.loading = false;
+                            vm.error = true;
+                            vm.name = 'Error';
+                            console.log('catch - ' + data.status);
+                            console.log(data);
+                        });
+            }
+
+            function findGood(item) {
+                var url = vm.server + 'api/goods/find';
+
+                var good = {
+                    "id": item.id
+                };
+                $http.post(url, good)
+                        .then(function (data) {
+                            vm.name = data.data.name;
+                        })
+                        .catch(function (data) {
+                            console.log('catch - ' + data.status);
+                        });
+            }
+
+            function addGood() {
+                var url = vm.server + 'api/goods/add';
+
+                var r = (Math.random(1000000) * 100000).toFixed();
+                var good = {
+                    "id": r,
+                    "name": "item_" + r,
+                    "price": r,
+                    "store": true,
+                    "description": "description"
+                };
+                $http.post(url, good)
+                        .then(function (data) {
+                            console.log(data);
+                            getGoods();
+                        })
+                        .catch(function (data) {
+                            console.log('catch - ' + data.status);
+                            console.log(data);
+                        });
+            }
+
+            function updateGood(item) {
+                var url = vm.server + 'api/goods/update';
+
+                var good = {
+                    "id": item.id,
+                    "name": "Wintermute",
+                    "price": 0,
+                    "description": "Wintermute"
+                };
+                $http.post(url, good)
+                        .then(function (data) {
+                            vm.name = data.data.name;
+                            getGoods();
+                        })
+                        .catch(function (data) {
+                            console.log('catch - ' + data.status);
+                        });
+            }
+
+            function delGood(item) {
+                var url = vm.server + 'api/goods/delete';
+
+                var good = {
+                    "id": item.id
+                };
+                $http.post(url, good)
+                        .then(function (data) {
+                            vm.name = data.data;
+                            getGoods();
+                        })
+                        .catch(function (data) {
+                            console.log('catch - ' + data.status);
+                        });
+            }
+
+//-----------------------------------------------------------------------------------------------
+
+            function getInputs() {
+                vm.loading = true;
+                vm.error = false;
+                var url = vm.server + 'api/inputs/get';
+
+                $http.get(url)
+                        .then(function (data) {
+                            vm.loading = false;
+                            vm.items = data.data;
+                            vm.msg = data.status;
+                            vm.name = ' Inputs - ' + data.data.length;
+                        })
+                        .catch(function (data) {
+                            vm.loading = false;
+                            vm.error = true;
+                            vm.name = 'Error';
+                            console.log('catch - ' + data.status);
+                            console.log(data);
+                        });
+            }
+
+            function findInput(item) {
+                var url = vm.server + 'api/inputs/find';
+
+                var good = {
+                    "id": item.id
+                };
+                $http.post(url, good)
+                        .then(function (data) {
+                            vm.name = data.data.name;
+                        })
+                        .catch(function (data) {
+                            console.log('catch - ' + data.status);
+                        });
+            }
+
+            function addInput() {
+                var url = vm.server + 'api/inputs/add';
+                var now = new Date();
+                var r = (Math.random(1000000) * 100000).toFixed();
+                var good = {
+                    "id": r,
+                    "number": "_"+r * r,
+                    "client": "client_" + r,
+                    "clientID": "id_"+r * r,
+                    "date": $filter('date')(now, 'dd/MM/yyyy H:mm:ss '),
+                    "total": "0",
+                    "description": "description"
+                };
+                $http.post(url, good)
+                        .then(function (data) {
+                            console.log(data);
+                            getInputs();
+                        })
+                        .catch(function (data) {
+                            console.log('catch - ' + data.status);
+                            console.log(data);
+                        });
+            }
+
+            function updateInput(item) {
+                var url = vm.server + 'api/inputs/update';
+
+                var good = {
+                    "id": item.id,
+                    "number": item.number,
+                    "client": "CoolWorld",
+                    "clientID": item.clientID,
+                    "date": item.date,
+                    "total": "555",
+                    "description": item.description
+                };
+                $http.post(url, good)
+                        .then(function (data) {
+                            vm.name = data.data.name;
+                            getInputs();
+                        })
+                        .catch(function (data) {
+                            console.log('catch - ' + data.status);
+                        });
+            }
+
+            function delInput(item) {
+                var url = vm.server + 'api/inputs/delete';
+
+                var good = {
+                    "id": item.id
+                };
+                $http.post(url, good)
+                        .then(function (data) {
+                            vm.name = data.data;
+                            getInputs();
+                        })
+                        .catch(function (data) {
+                            console.log('catch - ' + data.status);
+                        });
+            }
+			
+//-----------------------------------------------------------------------------------------------
+
+            function getOutputs() {
+                vm.loading = true;
+                vm.error = false;
+                var url = vm.server + 'api/outputs/get';
+
+                $http.get(url)
+                        .then(function (data) {
+                            vm.loading = false;
+                            vm.items = data.data;
+                            vm.msg = data.status;
+                            vm.name = ' Outputs - ' + data.data.length;
+                        })
+                        .catch(function (data) {
+                            vm.loading = false;
+                            vm.error = true;
+                            vm.name = 'Error';
+                            console.log('catch - ' + data.status);
+                            console.log(data);
+                        });
+            }
+
+            function findOutput(item) {
+                var url = vm.server + 'api/outputs/find';
+
+                var good = {
+                    "id": item.id
+                };
+                $http.post(url, good)
+                        .then(function (data) {
+                            vm.name = data.data.name;
+                        })
+                        .catch(function (data) {
+                            console.log('catch - ' + data.status);
+                        });
+            }
+
+            function addOutput() {
+                var url = vm.server + 'api/outputs/add';
+                var now = new Date();
+                var r = (Math.random(1000000) * 100000).toFixed();
+                var good = {
+                    "id": r,
+                    "number": "_"+r * r,
+                    "client": "client_" + r,
+                    "clientID": "id_"+r * r,
+                    "date": $filter('date')(now, 'dd/MM/yyyy H:mm:ss '),
+                    "total": "0",
+                    "description": "description"
+                };
+                $http.post(url, good)
+                        .then(function (data) {
+                            console.log(data);
+                            getOutputs();
+                        })
+                        .catch(function (data) {
+                            console.log('catch - ' + data.status);
+                            console.log(data);
+                        });
+            }
+
+            function updateOutput(item) {
+                var url = vm.server + 'api/outputs/update';
+
+                var good = {
+                    "id": item.id,
+                    "number": item.number,
+                    "client": "CoolWorld",
+                    "clientID": item.clientID,
+                    "date": item.date,
+                    "total": "555",
+                    "description": item.description
+                };
+                $http.post(url, good)
+                        .then(function (data) {
+                            vm.name = data.data.name;
+                            getOutputs();
+                        })
+                        .catch(function (data) {
+                            console.log('catch - ' + data.status);
+                        });
+            }
+
+            function delOutput(item) {
+                var url = vm.server + 'api/outputs/delete';
+
+                var good = {
+                    "id": item.id
+                };
+                $http.post(url, good)
+                        .then(function (data) {
+                            vm.name = data.data;
+                            getOutputs();
+                        })
+                        .catch(function (data) {
+                            console.log('catch - ' + data.status);
+                        });
+            }	
+
+//-----------------------------------------------------------------------------------------------
+
+            function getInvoiceIn() {
+                vm.loading = true;
+                vm.error = false;
+                var url = vm.server + 'api/invoicein/get';
+
+                $http.get(url)
+                        .then(function (data) {
+                            vm.loading = false;
+                            vm.items = data.data;
+                            vm.msg = data.status;
+                            vm.name = ' Invoices - ' + data.data.length;
+                        })
+                        .catch(function (data) {
+                            vm.loading = false;
+                            vm.error = true;
+                            vm.name = 'Error';
+                            console.log('catch - ' + data.status);
+                            console.log(data);
+                        });
+            }
+
+            function findInvoiceIn(item) {
+                var url = vm.server + 'api/invoicein/find';
+
+                var invoice = {
+                    "id": item.id
+                };
+                $http.post(url, invoice)
+                        .then(function (data) {
+                            vm.name = data.data.id;
+                        })
+                        .catch(function (data) {
+                            console.log('catch - ' + data.status);
+                        });
+            }
+
+            function addInvoiceIn() {
+                var url = vm.server + 'api/invoicein/add';
+                var r = (Math.random(1000000) * 100000).toFixed();
+                var invoice = {
+                    "id": r,
+                    "invoiceID": "_"+r * r,
+                    "goods": "goods_" + r,
+                    "goodsID": "id_"+r * r,
+                    "price": "0",
+                    "quantity": "0",
+                    "total": "0",
+                    "description": "description"
+                };
+                $http.post(url, invoice)
+                        .then(function (data) {
+                            console.log(data);
+                            getInvoiceIn();
+                        })
+                        .catch(function (data) {
+                            console.log('catch - ' + data.status);
+                            console.log(data);
+                        });
+            }
+
+            function updateInvoiceIn(item) {
+                var url = vm.server + 'api/invoicein/update';
+
+                var invoice = {
+                    "id": item.id,
+                    "invoiceID": item.invoiceID,
+                    "goods": "item_xxx",
+                    "goodsID": item.goodsID,
+                    "price": item.price,
+                    "quantity": item.quantity,
+                    "total": "555",
+                    "description": item.description
+                };
+                $http.post(url, invoice)
+                        .then(function (data) {
+                            vm.name = data.data.name;
+                            getInvoiceIn();
+                        })
+                        .catch(function (data) {
+                            console.log('catch - ' + data.status);
+                        });
+            }
+
+            function delInvoiceIn(item) {
+                var url = vm.server + 'api/invoicein/delete';
+
+                var invoice = {
+                    "id": item.id
+                };
+                $http.post(url, invoice)
+                        .then(function (data) {
+                            vm.name = data.data;
+                            getInvoiceIn();
+                        })
+                        .catch(function (data) {
+                            console.log('catch - ' + data.status);
+                        });
+            }
+			
+        
+		
+//-----------------------------------------------------------------------------------------------
+
+            function getInvoiceOut() {
+                vm.loading = true;
+                vm.error = false;
+                var url = vm.server + 'api/invoiceout/get';
+
+                $http.get(url)
+                        .then(function (data) {
+                            vm.loading = false;
+                            vm.items = data.data;
+                            vm.msg = data.status;
+                            vm.name = ' Invoices - ' + data.data.length;
+                        })
+                        .catch(function (data) {
+                            vm.loading = false;
+                            vm.error = true;
+                            vm.name = 'Error';
+                            console.log('catch - ' + data.status);
+                            console.log(data);
+                        });
+            }
+
+            function findInvoiceOut(item) {
+                var url = vm.server + 'api/invoiceout/find';
+
+                var invoice = {
+                    "id": item.id
+                };
+                $http.post(url, invoice)
+                        .then(function (data) {
+                            vm.name = data.data.id;
+                        })
+                        .catch(function (data) {
+                            console.log('catch - ' + data.status);
+                        });
+            }
+
+            function addInvoiceOut() {
+                var url = vm.server + 'api/invoiceout/add';
+                var r = (Math.random(1000000) * 100000).toFixed();
+                var invoice = {
+                    "id": r,
+                    "invoiceID": "_"+r * r,
+                    "goods": "goods_" + r,
+                    "goodsID": "id_"+r * r,
+                    "price": "0",
+                    "quantity": "0",
+                    "total": "0",
+                    "description": "description"
+                };
+                $http.post(url, invoice)
+                        .then(function (data) {
+                            console.log(data);
+                            getInvoiceOut();
+                        })
+                        .catch(function (data) {
+                            console.log('catch - ' + data.status);
+                            console.log(data);
+                        });
+            }
+
+            function updateInvoiceOut(item) {
+                var url = vm.server + 'api/invoiceout/update';
+
+                var invoice = {
+                    "id": item.id,
+                    "invoiceID": item.invoiceID,
+                    "goods": "item_xxx",
+                    "goodsID": item.goodsID,
+                    "price": item.price,
+                    "quantity": item.quantity,
+                    "total": "555",
+                    "description": item.description
+                };
+                $http.post(url, invoice)
+                        .then(function (data) {
+                            vm.name = data.data.name;
+                            getInvoiceOut();
+                        })
+                        .catch(function (data) {
+                            console.log('catch - ' + data.status);
+                        });
+            }
+
+            function delInvoiceOut(item) {
+                var url = vm.server + 'api/invoiceout/delete';
+
+                var invoice = {
+                    "id": item.id
+                };
+                $http.post(url, invoice)
+                        .then(function (data) {
+                            vm.name = data.data;
+                            getInvoiceOut();
+                        })
+                        .catch(function (data) {
+                            console.log('catch - ' + data.status);
+                        });
+            }
+			
+        }
+		
+    })();
+</script>
