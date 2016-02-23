@@ -43,30 +43,8 @@
 			
 			$rootScope.myError = false;
 			$rootScope.loading = false;
-			/*
-            if ($rootScope.mode == 'ON-LINE (Heroku)') {
-                vm.clients = clients;
-				//getClientsOn();
-            } else {
-                vm.clients = ClientsLocalStorage.getClients();
-				$rootScope.myError = false;
-				$rootScope.loading = false;
-            }
-			*/
 		}
 		
-		function getClientsOn() {	
-            ClientsService.getClients()
-				.then(function(data){
-					$scope.filteredClients = [];
-					vm.clients = data.data;
-					currentPage();
-					$rootScope.myError = false;
-					$rootScope.loading = false;
-				})
-				.catch(errorHandler);
-        }
-		 	
         function currentPage() {
             if (Object.prototype.toString.call(vm.clients) == '[object Array]') {
 				var begin = (($scope.currentPage - 1) * $scope.numPerPage);
@@ -102,7 +80,10 @@
         }
 
         function clientsBack() {
-            $state.go('main');
+            $rootScope.loading = true;
+            $timeout(function () {
+                $state.go('main');
+            }, 100);
         }
 		
 		function errorHandler() {

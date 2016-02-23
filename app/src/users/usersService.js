@@ -11,6 +11,7 @@
 		var webUrl = $rootScope.myConfig.webUrl;
 		
         return {
+            users: [],
 			getUsers: getUsers,
             addItem: addItem,
             editItem: editItem,
@@ -21,6 +22,7 @@
             var url = webUrl + 'api/users/get';
             return $http.get(url)
                 .then(function (result) {
+                    result.data.sort();
                     result.data.sort();
                     return result;
                 });

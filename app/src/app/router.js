@@ -11,30 +11,35 @@
 
         function resolveResource(url, state, sort) {
             resolver.$inject = ['$http', '$q', '$rootScope', 'ClientsLocalStorage', 'ClientsService',
-                'GoodsLocalStorage', 'GoodsService'];
+                'GoodsLocalStorage', 'GoodsService', 'UsersLocalStorage', 'UsersService'];
             function resolver($http, $q, $rootScope, ClientsLocalStorage, ClientsService,
-                              GoodsLocalStorage, GoodsService) {
+                              GoodsLocalStorage, GoodsService, UsersLocalStorage, UsersService) {
 
                 var data;
                 var webUrl = $rootScope.myConfig.webUrl;
 
                 if ($rootScope.mode == 'OFF-LINE (LocalStorage)') {
-                        switch (state) {
-                            case 'store':
-                                data = GoodsLocalStorage.getGoods();
-                                return data;
-                                break;
+                    switch (state) {
+                        case 'store':
+                            data = GoodsLocalStorage.getGoods();
+                            return data;
+                            break;
 
-                            case 'goods':
-                                data = GoodsLocalStorage.getGoods();
-                                return data;
-                                break;
+                        case 'goods':
+                            data = GoodsLocalStorage.getGoods();
+                            return data;
+                            break;
 
-                            case 'clients':
-                                data = ClientsLocalStorage.getClients();
-                                return data;
-                                break;
-                        }
+                        case 'clients':
+                            data = ClientsLocalStorage.getClients();
+                            return data;
+                            break;
+
+                        case 'users':
+                            data = UsersLocalStorage.getUsers();
+                            return data;
+                            break;
+                    }
                 } else {
                     switch (state) {
                         case 'goods':
@@ -74,75 +79,30 @@
                                 return ClientsService.clients.sort(sort);
                             }
                             break;
+
+                        case 'users':
+                            if ($rootScope.users === undefined) {
+                                return $http.get(webUrl + url)
+                                    .then(function (result) {
+                                        UsersService.users = result.data;
+                                        $rootScope.users = true;
+                                        $rootScope.loading = false;
+                                        return UsersService.users.sort(sort);
+                                    })
+                                    .catch(function (reject) {
+                                        $rootScope.loading = false;
+                                        $rootScope.myError = true;
+                                        return $q.reject(reject);
+                                    });
+                            } else {
+                                return UsersService.users.sort(sort);
+                            }
+                            break;
                     }
 
-
-                    //var webUrl = $rootScope.myConfig.webUrl + url;
-                    //return $http.get(webUrl)
-                    //    .then(function (result) {
-                    //        $rootScope.loading = false;
-                    //        return result.data.sort(sort);
-                    //    })
-                    //    .catch(function (reject) {
-                    //        $rootScope.loading = false;
-                    //        $rootScope.myError = true;
-                    //        return $q.reject(reject);
-                    //    });
                 }
             }
-
-                //if ($rootScope.mode == 'OFF-LINE (LocalStorage)') {
-                //    switch (state) {
-                //        case 'store':
-                //            data = GoodsLocalStorage.getGoods();
-                //            return data;
-                //            break;
-                //
-                //        case 'goods':
-                //            data = GoodsLocalStorage.getGoods();
-                //            return data;
-                //            break;
-                //
-                //        case 'clients':
-                //            data = ClientsLocalStorage.getClients();
-                //            return data;
-                //            break;
-                //    }
-                //} else {
-                    //switch (state) {
-                    //    case 'store':
-                    //        data = GoodsLocalStorage.getGoods();
-                    //        return data;
-                    //        break;
-                    //
-                    //    case 'goods':
-                    //        data = GoodsLocalStorage.getGoods();
-                    //        return data;
-                    //        break;
-                    //
-                    //    case 'clients':
-                    //        if ($rootScope.clients === undefined) {
-                    //            var webUrl = $rootScope.myConfig.webUrl + url;
-                    //            return $http.get(webUrl)
-                    //                .then(function (result) {
-                    //                    ClientsService.clients = result.data;
-                    //                    $rootScope.clients = true;
-                    //                    $rootScope.loading = false;
-                    //                    return ClientsService.clients.sort(sort);
-                    //                })
-                    //                .catch(function (reject) {
-                    //                    $rootScope.loading = false;
-                    //                    $rootScope.myError = true;
-                    //                    return $q.reject(reject);
-                    //                });
-                    //        } else {
-                    //            return ClientsService.clients.sort(sort);
-                    //        }
-                    //        break;
-                    //}
-                //}
-
-                return resolver;
+            return resolver;
         }
 
         function sort(a, b) {
@@ -591,6 +551,9 @@
                 },
                 data: {
                     requireLogin: true
+                },
+                resolve: {
+                    users: resolveResource('api/users/get', 'users', sort)
                 }
             })
 

@@ -5,9 +5,9 @@
         .module('app')
         .controller('UsersCtrl', UsersCtrl);
 
-    UsersCtrl.$inject = ['$scope', '$rootScope', '$state', '$timeout', 'UsersService', 'UsersLocalStorage'];
+    UsersCtrl.$inject = ['$scope', '$rootScope', '$state', '$timeout', 'users', 'UsersService', 'UsersLocalStorage'];
 
-    function UsersCtrl($scope, $rootScope, $state, $timeout, UsersService, UsersLocalStorage) {
+    function UsersCtrl($scope, $rootScope, $state, $timeout, users, UsersService, UsersLocalStorage) {
         $scope.$watch('numPerPage', currentPage);			
         $scope.$watch('currentPage', currentPage);
         var vm = this;
@@ -34,34 +34,17 @@
         function init() {
             vm.title = 'Users';
             vm.sort = 'name';
-			vm.users = [];
+			vm.users = users;
 			vm.usersFilter = [];
 			
             $scope.currentPage = 1;
             $scope.numPerPage = 10;
             $scope.maxSize = 5;
-			
-            if ($rootScope.mode == 'ON-LINE (Heroku)') {
-                getUsersOn();
-            } else {
-                vm.users = UsersLocalStorage.getUsers();
-				$rootScope.myError = false;
-				$rootScope.loading = false;
-            }
+
+            $rootScope.myError = false;
+            $rootScope.loading = false;
 		}
-		
-        function getUsersOn() {
-            UsersService.getUsers()
-				.then(function(data){
-					$scope.filteredUsers = [];
-					vm.users = data.data;
-					currentPage();
-					$rootScope.myError = false;
-					$rootScope.loading = false;
-				})
-				.catch(errorHandler);
-        }
-		
+
         function currentPage() {
             if (Object.prototype.toString.call(vm.users) == '[object Array]') {
                 var begin = (($scope.currentPage - 1) * $scope.numPerPage);
@@ -97,7 +80,10 @@
         }	
 				
         function usersBack() {
-            $state.go('main');
+            $rootScope.loading = true;
+            $timeout(function () {
+                $state.go('main');
+            }, 100);
         }
 		
         function errorHandler() {
