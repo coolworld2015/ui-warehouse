@@ -7,6 +7,7 @@ var UsersModel = require('./mongo').UsersModel;
 
 var Users = {
     getUsers: getUsers,
+    findByName: findByName,
 	findPostUser: findPostUser,
 	updateUser: updateUser,
 	
@@ -25,6 +26,18 @@ function getUsers(req, res) {
             res.statusCode = 500;
             return res.send({error: 'Server error'});
         }
+    });
+}
+
+function findByName(req, res) {
+    UsersModel.findOne({
+        name: req.params.name
+    }, function (err, user) {
+        if (err) {
+            res.send({error: err.message});
+        }
+        console.log(user);
+        res.send(user);
     });
 }
 

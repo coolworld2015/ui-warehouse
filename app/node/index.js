@@ -67,6 +67,7 @@ var Users = require('./users').Users;
 
 app.get('/api/users/get', Users.getUsers);
 app.post('/api/users/find', Users.findPostUser);
+app.get('/api/users/findByName/:name', Users.findByName);
 
 app.post('/api/users/add', Users.addUser);
 app.post('/api/users/update', Users.updateUser);
