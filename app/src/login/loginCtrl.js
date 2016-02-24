@@ -17,7 +17,9 @@
 			_check: check,
 			_errorHandler: errorHandler
         });
-			
+
+        init();
+
 		function init() {
 			$rootScope.loading = false;
             $rootScope.currentUser = undefined;

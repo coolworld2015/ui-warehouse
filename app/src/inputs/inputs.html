@@ -1,36 +1,47 @@
-<center ng-init="inputsCtrl.init()">
-	<div class="header" ng-click="inputsCtrl.goToBack()">{{inputsCtrl.title}}</div>
-	<input type="text" class="form-control" ng-model="inputsCtrl.query.name" 
-			placeholder="Search here"
-	scroll-there>
-		<table class="table table-striped input">
-			<th ng-click="inputsCtrl.inputsSort('id1')" style="width:10%">ID</th>
-			<th ng-click="inputsCtrl.inputsSort('name')" style="width:40%">Customer</th>
-			<th ng-click="inputsCtrl.inputsSort('date')" style="width:40%">Date</th>
-			<th ng-click="inputsCtrl.inputsSort('sum')" style="width:10%">Total</th>
-			<tr ng-repeat="item in filteredInputs | orderBy:inputsCtrl.sort:inputsCtrl.rev |
-				filter:inputsCtrl.query as inputsFilter track by $index"
-				ng-click="inputsCtrl.inputsEditForm(item)">
-				<td>{{item.number}}</td>
-				<td>{{item.client}}</td>
-				<td>{{item.date}}</td>
-				<td>{{item.total | number:2}}</td>
-			</tr>
-		</table>
-	<hr>
-	<h4>
-		<div class="label label-default" style="font-size:17px; background-color:#337ab7" ng-click="inputsCtrl.goToHead()">
-			Records count: {{inputsFilter.length}} ({{inputsCtrl.inputs.length}})
-		</div>
-	</h4>
-	<hr>
-	<h2 class="label label-primary" style="font-size:17px;">Items per page:
-		<input style="border:none; width: 30px; font-size:17px; background-color:#337ab7"
-		type="text" ng-model="numPerPage" value={{numPerPage}}>
-	</h2>
-	<div><pagination total-items="totalItems" ng-model="currentPage" max-size="maxSize" class="pagination-sm" boundary-links="true"></pagination></div>
+<center>
+    <div class="header">Warehouse</div>
+    <br><br>
+    <img ng-src="logo.jpg" class="logo" ng-click="inputsCtrl.goToBack()">
+    <hr>
 
-	<button class="btn btn-primary button" ng-click="inputsCtrl.inputsAdd()">Add</button>&nbsp
-	<button class="btn btn-primary button" ng-click="inputsCtrl.inputsBack()" scroll-here>Back</button>
-	<br><br>
+    <div class="header" ng-click="inputsCtrl.goToBack()">
+        {{inputsCtrl.title}} ({{inputsFilter.length}} / {{inputsCtrl.inputs.length}})
+    </div>
+
+    <div>
+        <input type="text" class="form-control input"
+               placeholder="Search here"
+               ng-model="inputsCtrl.query.name">
+    </div>
+
+    <table class="table table-striped input">
+        <tr ng-repeat="item in filteredInputs | orderBy:inputsCtrl.sort:inputsCtrl.rev |
+            filter:inputsCtrl.query as inputsFilter track by $index"
+            ng-click="inputsCtrl.inputsEditForm(item)">
+
+            <td class="input">
+                <div class="name-div">
+                    ID: {{item.number}} <br>
+                    Customer: {{item.client}} <br>
+                    Date: {{item.date}} <br>
+                    Total: {{item.total | number:2}}
+                </div>
+            </td>
+
+        </tr>
+    </table>
+
+    <hr class="fix-hr">
+		<span class="label label-primary per-page">Items per page:
+			<input class="per-page-input" type="text" ng-model="numPerPage" value={{numPerPage}}>
+		</span>
+
+    <div>
+        <pagination total-items="totalItems" ng-model="currentPage" max-size="maxSize" class="pagination-sm"
+                    boundary-links="true"></pagination>
+    </div>
+
+    <button class="btn btn-primary button" ng-click="inputsCtrl.inputsAdd()">Add</button>&nbsp
+    <button class="btn btn-primary button" ng-click="inputsCtrl.inputsBack()" scroll-here>Back</button>
+    <br><br>
 </center>

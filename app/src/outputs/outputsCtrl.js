@@ -26,8 +26,10 @@
         });
 
         $timeout(function () {
-            $scope.$broadcast('_scrollHere');
+            window.scrollTo(0, 0);
         });
+
+        init();
 
         function init() {
             $scope.currentPage = 1;
@@ -99,7 +101,10 @@
         }
 
         function outputsBack() {
-            $state.go('main');
+            $rootScope.loading = true;
+            $timeout(function () {
+                $state.go('main');
+            }, 100);
         }
 		
 		function errorHandler() {
