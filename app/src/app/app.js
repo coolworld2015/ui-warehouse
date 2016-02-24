@@ -11,7 +11,7 @@
 	runHandler.$inject = ['$rootScope','$state'];
 	
     function runHandler($rootScope, $state) {
-        $rootScope.$on('$stateChangeStart1', function (event, toState, toParams) {
+        $rootScope.$on('$stateChangeStart1', function (event, toState) {
             var requireLogin = toState.data.requireLogin;
             if (requireLogin && typeof $rootScope.currentUser === 'undefined') {
                 event.preventDefault();
@@ -41,9 +41,8 @@
 		}
 		
         $rootScope.myConfig = {
-            //webUrl: 'http://ui-warehouse.herokuapp.com/' //TODO Heroku MongoDB
-            webUrl: 'http://localhost:3000/' //TODO Local MongoDB
+            webUrl: 'http://ui-warehouse.herokuapp.com/' //TODO Heroku MongoDB
+            //webUrl: 'http://localhost:3000/' //TODO Local MongoDB
         };
     }
-
 })();
