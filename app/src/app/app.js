@@ -11,7 +11,7 @@
     redirectOn404.$inject = ['$httpProvider'];
 
     function redirectOn404($httpProvider) {
-        $httpProvider.interceptors.push(function ($q, $injector, $log, $rootScope) {
+        $httpProvider.interceptors.push(['$q', '$injector', '$log', '$rootScope', function ($q, $injector, $log, $rootScope) {
             return {
                 'responseError': function (rejection) {
                     if (rejection.status === -1) {
@@ -22,7 +22,7 @@
                     return $q.reject(rejection);
                 }
             };
-        });
+        }]);
     }
 
     angular

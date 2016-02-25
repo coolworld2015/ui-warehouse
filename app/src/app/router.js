@@ -5,9 +5,9 @@
         .module('app')
         .config(routeConfig);
 
-    routeConfig.$inject = ['$stateProvider', '$urlRouterProvider', '$httpProvider'];
+    routeConfig.$inject = ['$stateProvider', '$urlRouterProvider'];
 
-    function routeConfig($stateProvider, $urlRouterProvider, $httpProvider) {
+    function routeConfig($stateProvider, $urlRouterProvider) {
 
         function resolveResource(url, state, sort) {
             resolver.$inject = ['$http', '$q', '$rootScope', 'ClientsLocalStorage', 'ClientsService',
