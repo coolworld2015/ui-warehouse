@@ -143,6 +143,18 @@ body {
     background-color: transparent;
 }
 
+.message {
+    position: fixed;
+    top: 20px;
+    height: 85px;
+    width: 40%;
+    right: 20px;
+    padding: 20px;
+    opacity: .9;
+    color: dodgerblue;
+    background-color: transparent;
+}
+
 .error {
     position: fixed;
     top: 20px;

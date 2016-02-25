@@ -5,9 +5,9 @@
         .module('app')
         .controller('LoginCtrl', LoginCtrl);
 
-    LoginCtrl.$inject = ['$rootScope', '$state', 'UsersService', 'UsersLocalStorage'];
+    LoginCtrl.$inject = ['$rootScope', '$state', '$timeout', 'UsersService', 'UsersLocalStorage'];
 
-    function LoginCtrl($rootScope, $state, UsersService, UsersLocalStorage) {
+    function LoginCtrl($rootScope, $state, $timeout, UsersService, UsersLocalStorage) {
         var vm = this;
 
         angular.extend(vm, {
@@ -21,8 +21,12 @@
         init();
 
         function init() {
-            $rootScope.loading = false;
             $rootScope.currentUser = undefined;
+            $rootScope.loading = false;
+            $rootScope.myError = false;
+            $timeout(function () {
+                $rootScope.message = false;
+            }, 1000);
         }
 
         function toLogin() {

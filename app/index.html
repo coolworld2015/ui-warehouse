@@ -23,7 +23,11 @@
     <span>Loading...</span>
 </div>
 
-<div ng-cloak ng-show="myError" class="header error">
+<div ng-show="message" class="header message">
+    <span>Please try again...</span>
+</div>
+
+<div ng-show="myError" class="header error">
     <span>Something went wrong</span>
 </div>
 </body>
