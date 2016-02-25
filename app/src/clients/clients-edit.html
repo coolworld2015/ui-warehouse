@@ -1,4 +1,9 @@
-<center ng-init="clientsEditCtrl.init()">
+<center>
+	<div class="header">Warehouse</div>
+	<br><br>
+	<img ng-src="logo.jpg" class="logo">
+	<hr>
+
 	<form ng-submit="clientsEditCtrl.clientsSubmit()" novalidate name="clientsEditCtrl.form">
 		<div class="header">{{clientsEditCtrl.name}}&nbsp</div>
 		<br><br>
@@ -53,10 +58,9 @@
 
 			<tr>
 				<td>
-					<input type="text" class="form-control input"
-						   readonly
-						   style="background-color:white"
-						   value={{clientsEditCtrl.total}}>
+					<input readonly type="text" class="form-control readonly"
+						   placeholder="Category"
+						   ng-model="clientsEditCtrl.total">
 				</td>
 			</tr>
 		</table>

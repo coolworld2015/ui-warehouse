@@ -20,7 +20,12 @@
 
         angular.extend(vm, $stateParams.item);
 
+        init();
+
         function init() {
+            if ($stateParams.item.name == undefined) {
+                $state.go('main.clients');
+            }
             vm.total = $filter('number')(vm.sum, 2);
         }
 
@@ -46,7 +51,7 @@
 						$rootScope.myError = false;
 						$state.go('main.clients');
 					})
-					.catch(errorHandler);;
+					.catch(errorHandler);
 			} else {
 				ClientsLocalStorage.editItem(item);
 				$state.go('main.clients');
