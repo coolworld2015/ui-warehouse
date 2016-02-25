@@ -1,8 +1,16 @@
 <center>
-	<div class="header">Users</div>
-		<br><br>
-			<h3>Are you sure you want to delete user {{usersDialogCtrl.name}}?</h3>
-		<br><br>
-	<button class="btn btn-primary button" ng-click="usersDialogCtrl.usersDelete()">Yes</button>
+	<div class="header">Warehouse</div>
+	<br><br>
+	<img ng-src="logo.jpg" class="logo">
+	<hr>
+
+	<br>
+		<span class="dialog">
+				Are you sure you want to delete {{usersDialogCtrl.name}}?
+		</span>
+	<br><br>
+	<hr>
+	<br><br>
+	<button class="btn btn-primary button" ng-click="usersDialogCtrl.usersDelete()">Yes</button>&nbsp
 	<button class="btn btn-primary button" ng-click="usersDialogCtrl.usersEditBack()">No</button>
 </center>

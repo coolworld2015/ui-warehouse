@@ -20,7 +20,12 @@
 
         angular.extend(vm, $stateParams.item);
 
+        init();
+
         function init() {
+            if ($stateParams.item.name == undefined) {
+                $state.go('main.users');
+            }
             vm.total = $filter('number')(vm.sum, 2);
         }
 

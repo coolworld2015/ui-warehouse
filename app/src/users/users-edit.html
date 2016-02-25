@@ -1,47 +1,52 @@
-<center ng-init="usersEditCtrl.init()">
-	<form ng-submit="usersEditCtrl.usersSubmit()" novalidate name="usersEditCtrl.form">
-		<div class="header">User: {{usersEditCtrl.name}}</div>
-		<br><br>
-		<table class="table table-bordered">
-			<tr>
-				<td>
-					<input type="text" class="form-control input" required
-						   placeholder="User login" name="name"
-						   ng-model="usersEditCtrl.name">
+<center>
+    <div class="header">Warehouse</div>
+    <br><br>
+    <img ng-src="logo.jpg" class="logo">
+    <hr>
+    <form ng-submit="usersEditCtrl.usersSubmit()" novalidate name="usersEditCtrl.form">
+        <div class="header">User: {{usersEditCtrl.name}}</div>
+        <br><br>
+        <table class="table table-bordered">
+            <tr>
+                <td>
+                    <input type="text" class="form-control input" required
+                           placeholder="User login" name="name"
+                           ng-model="usersEditCtrl.name">
 
-					<div ng-if="usersEditCtrl.form.$submitted">
-						<div ng-show="usersEditCtrl.form.name.$error.required" class="valid">Value required</div>
-					</div>
-				</td>
-			</tr>
+                    <div ng-if="usersEditCtrl.form.$submitted">
+                        <div ng-show="usersEditCtrl.form.name.$error.required" class="valid">Value required</div>
+                    </div>
+                </td>
+            </tr>
 
-			<tr>
-				<td>
-					<input type="text" class="form-control input" required
-						   placeholder="User password" name="pass"
-						   ng-model="usersEditCtrl.pass">
+            <tr>
+                <td>
+                    <input type="text" class="form-control input" required
+                           placeholder="User password" name="pass"
+                           ng-model="usersEditCtrl.pass">
 
-					<div ng-if="usersEditCtrl.form.$submitted">
-						<div ng-show="usersEditCtrl.form.pass.$error.required" class="valid">Value required</div>
-					</div>
-				</td>
-			</tr>
+                    <div ng-if="usersEditCtrl.form.$submitted">
+                        <div ng-show="usersEditCtrl.form.pass.$error.required" class="valid">Value required</div>
+                    </div>
+                </td>
+            </tr>
 
-			<tr>
-				<td>
-					<input type="text" class="form-control input" required
-						   placeholder="User description" name="description"
-						   ng-model="usersEditCtrl.description">
+            <tr>
+                <td>
+                    <input type="text" class="form-control input" required
+                           placeholder="User description" name="description"
+                           ng-model="usersEditCtrl.description">
 
-					<div ng-if="usersEditCtrl.form.$submitted">
-						<div ng-show="usersEditCtrl.form.description.$error.required" class="valid">Value required</div>
-					</div>
-				</td>
-			</tr>
-		</table>
+                    <div ng-if="usersEditCtrl.form.$submitted">
+                        <div ng-show="usersEditCtrl.form.description.$error.required" class="valid">Value required</div>
+                    </div>
+                </td>
+            </tr>
+        </table>
 
-		<button type="submit" class="btn btn-primary button">Submit</button>&nbsp
-		<button type="button" class="btn btn-primary button" ng-click="usersEditCtrl.usersDialog()">Delete</button><br><br>
-		<button type="button" class="btn btn-primary button" ng-click="usersEditCtrl.usersEditBack()">Back</button>
-	</form>
+        <button type="submit" class="btn btn-primary button">Submit</button>&nbsp
+        <button type="button" class="btn btn-primary button" ng-click="usersEditCtrl.usersDialog()">Delete</button>
+        <br><br>
+        <button type="button" class="btn btn-primary button" ng-click="usersEditCtrl.usersEditBack()">Back</button>
+    </form>
 </center>
