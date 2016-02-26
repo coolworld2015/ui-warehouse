@@ -20,6 +20,8 @@
 
         angular.extend(vm, $stateParams.item);
 
+        init();
+
         function init() {
             vm.total = $filter('number')(vm.sum, 2);
         }

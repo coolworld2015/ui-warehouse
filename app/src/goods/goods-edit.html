@@ -1,4 +1,9 @@
-<center ng-init="goodsEditCtrl.init()">
+<center>
+	<div class="header">Warehouse</div>
+	<br><br>
+	<img ng-src="logo.jpg" class="logo">
+	<hr>
+
 	<form ng-submit="goodsEditCtrl.goodsSubmit()" novalidate name="goodsEditCtrl.form">
 		<div class="header">{{goodsEditCtrl.name}}&nbsp</div>
 		<br><br>
@@ -6,7 +11,7 @@
 			<tr>
 				<td>
 					<input type="text" class="form-control input" required
-						   placeholder="Commodities name" name="name"
+						   placeholder="Name" name="name"
 						   ng-model="goodsEditCtrl.name">
 
 					<div ng-if="goodsEditCtrl.form.$submitted">
@@ -18,7 +23,7 @@
 			<tr>
 				<td>
 					<input type="text" class="form-control input" required
-						   placeholder="Commodities price" name="price"
+						   placeholder="Price" name="price"
 						   ng-model="goodsEditCtrl.price">
 
 					<div ng-if="goodsEditCtrl.form.$submitted">
@@ -30,7 +35,7 @@
 			<tr>
 				<td>
 					<input type="text" class="form-control input" required
-						   placeholder="Commodities description" name="description"
+						   placeholder="Description" name="description"
 						   ng-model="goodsEditCtrl.description">
 
 					<div ng-if="goodsEditCtrl.form.$submitted">
