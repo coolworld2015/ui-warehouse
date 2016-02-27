@@ -5,9 +5,9 @@
         .module('app')
         .controller('InputsCtrl', InputsCtrl);
 
-    InputsCtrl.$inject = ['$scope', '$rootScope', '$state', '$timeout', 'InputsService', 'InputsLocalStorage'];
+    InputsCtrl.$inject = ['$scope', '$rootScope', '$state', '$timeout', 'inputs', 'InputsLocalStorage'];
 
-    function InputsCtrl($scope, $rootScope, $state, $timeout, InputsService, InputsLocalStorage) {
+    function InputsCtrl($scope, $rootScope, $state, $timeout, inputs, InputsLocalStorage) {
         $scope.$watch('numPerPage', currentPage);
         $scope.$watch('currentPage', currentPage);
         var vm = this;
@@ -32,14 +32,18 @@
         init();
 
         function init() {
+			vm.title = 'Purchase Invoices';
+            vm.sort = 'name';
+			vm.inputs = inputs;
+			vm.inputsFilter = [];
+			
             $scope.currentPage = 1;
             $scope.numPerPage = 10;
             $scope.maxSize = 5;
-			vm.inputs = [];
-			vm.inputsFilter = [];
-			
-            vm.title = 'Purchase Invoices';
-            vm.sort = 'name';
+	
+			$rootScope.myError = false;
+			$rootScope.loading = false;
+			/*
             
             if ($rootScope.mode == 'ON-LINE (Heroku)') {
                 getInputsOn();
@@ -48,6 +52,7 @@
 				$rootScope.myError = false;
 				$rootScope.loading = false;
             }
+			*/
 		}
 		
         function getInputsOn() {

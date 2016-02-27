@@ -1,11 +1,16 @@
-<center ng-init="inputsAddCtrl.init()">
+<center>
+    <div class="header">Warehouse</div>
+    <br><br>
+    <img ng-src="logo.jpg" class="logo">
+    <hr>
+	
 	<form ng-submit="inputsAddCtrl.inputsAddSubmit()" novalidate name="inputsAddCtrl.form">
 		<div class="header">New record</div>
 		<br><br>
 		<table class="table table-bordered">
 			<tr>
 				<td>
-					<input type="text" class="form-control input"
+					<input type="text" class="form-control readonly"
 						   readonly style="width:130px"
 						   value="ID:">
 				</td>
@@ -21,12 +26,12 @@
 			</tr>
 			<tr>
 				<td>
-					<input type="text" class="form-control input"
+					<input type="text" class="form-control readonly"
 						   readonly style="width:130px"
 						   value="Customer:">
 				</td>
 				<td style="width:100%">
-					<select required class="form-control input"
+					<select required class="form-control select"
 							ng-model="inputsAddCtrl.selectedItem"
 							ng-options="clientsOption.name for clientsOption in inputsAddCtrl.clientsOptions
 							track by clientsOption.name"
@@ -38,7 +43,7 @@
 			</tr>
 			<tr>
 				<td>
-					<input type="text" class="form-control input"
+					<input type="text" class="form-control readonly"
 						   readonly style="width:130px"
 						   value="Date:">
 				</td>
@@ -55,7 +60,7 @@
 
 			<tr>
 				<td>
-					<input type="text" class="form-control input"
+					<input type="text" class="form-control readonly"
 						   readonly style="width:130px"
 						   value="Description:">
 				</td>
@@ -74,4 +79,5 @@
 		<button type="submit" class="btn btn-primary button">Submit</button>&nbsp
 		<button type="button" class="btn btn-primary button" ng-click="inputsAddCtrl.inputsAddBack()">Back</button>
 	</form>
+	<div class="blanker"></div>	
 </center>

@@ -11,9 +11,11 @@
 
         function resolveResource(url, state, sort) {
             resolver.$inject = ['$http', '$q', '$rootScope', 'ClientsLocalStorage', 'ClientsService',
-                'GoodsLocalStorage', 'GoodsService', 'UsersLocalStorage', 'UsersService'];
+                'GoodsLocalStorage', 'GoodsService', 'UsersLocalStorage', 'UsersService',
+				'InputsLocalStorage', 'InputsService'];
             function resolver($http, $q, $rootScope, ClientsLocalStorage, ClientsService,
-                              GoodsLocalStorage, GoodsService, UsersLocalStorage, UsersService) {
+                              GoodsLocalStorage, GoodsService, UsersLocalStorage, UsersService,
+							  InputsLocalStorage, InputsService) {
 
                 var data;
                 var webUrl = $rootScope.myConfig.webUrl;
@@ -37,6 +39,11 @@
 
                         case 'users':
                             data = UsersLocalStorage.getUsers();
+                            return data;
+                            break;                        
+							
+						case 'inputs':
+                            data = InputsLocalStorage.getInputs();
                             return data;
                             break;
                     }
@@ -98,6 +105,25 @@
                                 return UsersService.users.sort(sort);
                             }
                             break;
+							
+                        case 'inputs':
+                            if ($rootScope.inputs === undefined) {
+                                return $http.get(webUrl + url)
+                                    .then(function (result) {
+                                        InputsService.inputs = result.data;
+                                        $rootScope.inputs = true;
+                                        $rootScope.loading = false;
+                                        return InputsService.inputs;
+                                    })
+                                    .catch(function (reject) {
+                                        $rootScope.loading = false;
+                                        $rootScope.myError = true;
+                                        return $q.reject(reject);
+                                    });
+                            } else {
+                                return InputsService.inputs;
+                            }
+                            break;							
                     }
 
                 }
@@ -322,6 +348,9 @@
                 },
                 data: {
                     requireLogin: true
+                },
+                resolve: {
+                    inputs: resolveResource('api/inputs/get', 'inputs', sort)
                 }
             })
 
@@ -337,6 +366,9 @@
                 },
                 data: {
                     requireLogin: true
+                },
+                resolve: {
+                    clients: resolveResource('api/clients/get', 'clients', sort)
                 }
             })
 

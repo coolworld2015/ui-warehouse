@@ -6,10 +6,10 @@
         .controller('InputsAddCtrl', InputsAddCtrl);
 
     InputsAddCtrl.$inject = ['$state', '$rootScope', '$filter', 'InputsService', 'InputsLocalStorage', '$stateParams',
-        'ClientsService', 'ClientsLocalStorage'];
+        'clients', 'ClientsLocalStorage'];
 
     function InputsAddCtrl($state, $rootScope, $filter, InputsService, InputsLocalStorage, $stateParams,
-        ClientsService, ClientsLocalStorage) {
+        clients, ClientsLocalStorage) {
         var vm = this;
 		
         var optionalClient = {name: 'Select customer'};
@@ -23,22 +23,20 @@
             inputsAddBack: inputsAddBack,
 			_errorHandler: errorHandler
         });
-
-        function init() {
+		
+		init();
+        
+		function init() {
             var now = new Date();
             vm.date = $filter('date')(now, 'MM/dd/yyyy H:mm:ss ');
-            vm.date = $filter('date')(now, 'dd/MM/yyyy H:mm:ss '); //russian style
+            //vm.date = $filter('date')(now, 'dd/MM/yyyy H:mm:ss '); //TODO Russian style
             vm.number = vm.count;
 			
-            if ($rootScope.mode == 'ON-LINE (Heroku)') {
-                getClientsOn();
-            } else {
-                vm.clients = ClientsLocalStorage.getClients();
-				vm.clientsOptions = [].concat(vm.clients);
-				vm.clientsOptions.unshift(optionalClient);
-				$rootScope.myError = false;
-				$rootScope.loading = false;
-            }
+			vm.clients = clients;
+			vm.clientsOptions = [].concat(vm.clients);
+			vm.clientsOptions.unshift(optionalClient);
+			$rootScope.myError = false;
+			$rootScope.loading = false;
         }
 		
         function getClientsOn() {

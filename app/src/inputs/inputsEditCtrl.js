@@ -18,8 +18,10 @@
         });
 
         angular.extend(vm, $stateParams.item);
-
-        function init() {
+		
+		init();
+        
+		function init() {
             $rootScope.myError = false;
             $rootScope.loading = false;
             vm.total = $filter('number')(vm.total, 2);

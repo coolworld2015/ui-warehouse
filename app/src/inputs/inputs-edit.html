@@ -1,11 +1,16 @@
-<center ng-init="inputsEditCtrl.init()">
+<center>
+    <div class="header">Warehouse</div>
+    <br><br>
+    <img ng-src="logo.jpg" class="logo">
+    <hr>
+	
 	<form ng-submit="inputsEditCtrl.inputsSubmit()" novalidate name="inputsEditCtrl.form">
 		<div class="header" ng-click="inputsEditCtrl.goInputs()">Purchase InvoicesID: {{inputsEditCtrl.number}}</div>
 		<br><br>
 		<table class="table table-bordered">
 			<tr>
 				<td>
-					<input type="text" class="form-control input"
+					<input type="text" class="form-control readonly"
 						   readonly style="width:130px"
 						   value="ID:">
 				</td>
@@ -21,18 +26,18 @@
 			</tr>
 			<tr>
 				<td>
-					<input type="text" class="form-control input"
+					<input type="text" class="form-control readonly"
 						   readonly style="width:130px"
 						   value="Customer:">
 				</td>
 				<td style="width:100%">
-					<input type="text" class="form-control input" required readonly
+					<input type="text" class="form-control readonly" required readonly
 						   ng-model="inputsEditCtrl.client">
 				</td>
 			</tr>
 			<tr>
 				<td>
-					<input type="text" class="form-control input"
+					<input type="text" class="form-control readonly"
 						   readonly style="width:130px"
 						   value="Date:">
 				</td>
@@ -48,7 +53,7 @@
 			</tr>
 			<tr>
 				<td>
-					<input type="text" class="form-control input"
+					<input type="text" class="form-control readonly"
 						   readonly style="width:130px"
 						   value="Description:">
 				</td>
@@ -64,12 +69,12 @@
 			</tr>
 			<tr>
 				<td>
-					<input type="text" class="form-control input"
+					<input type="text" class="form-control readonly"
 						   readonly style="width:130px"
 						   value="Total:">
 				</td>
 				<td style="width:100%">
-					<input type="text" class="form-control input" required readonly
+					<input type="text" class="form-control readonly" required readonly
 						   ng-model="inputsEditCtrl.total">
 				</td>
 			</tr>
@@ -80,4 +85,5 @@
 		<br><br>
 		<button type="button" class="btn btn-primary button" ng-click="inputsEditCtrl.inputsEditBack()">Back</button>
 	</form>
+	<div class="blanker"></div>
 </center>
