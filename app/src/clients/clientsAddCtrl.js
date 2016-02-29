@@ -5,9 +5,9 @@
         .module('app')
         .controller('ClientsAddCtrl', ClientsAddCtrl);
 
-    ClientsAddCtrl.$inject = ['$state', '$rootScope', 'ClientsService', 'ClientsLocalStorage'];
+    ClientsAddCtrl.$inject = ['$state', '$rootScope', '$timeout', 'ClientsService', 'ClientsLocalStorage'];
 
-    function ClientsAddCtrl($state, $rootScope, ClientsService, ClientsLocalStorage) {
+    function ClientsAddCtrl($state, $rootScope, $timeout, ClientsService, ClientsLocalStorage) {
         var vm = this;
 
         angular.extend(vm, {
@@ -50,12 +50,18 @@
 					.catch(errorHandler);
 			} else {
                 ClientsLocalStorage.addItem(item);
-                $state.go('main.clients');
+                $rootScope.loading = true;
+                $timeout(function () {
+                    $state.go('main.clients');
+                }, 100);
             }
          }
 
         function clientsAddBack() {
-            $state.go('main.clients');
+            $rootScope.loading = true;
+            $timeout(function () {
+                $state.go('main.clients');
+            }, 100);
         }
 		
 		function errorHandler() {

@@ -5,9 +5,9 @@
         .module('app')
         .controller('ClientsCtrl', ClientsCtrl);
 
-    ClientsCtrl.$inject = ['$scope', '$rootScope', '$state', '$timeout', 'ClientsService', 'ClientsLocalStorage', 'clients'];
+    ClientsCtrl.$inject = ['$scope', '$rootScope', '$state', '$timeout', 'clients'];
 
-    function ClientsCtrl($scope, $rootScope, $state, $timeout, ClientsService, ClientsLocalStorage, clients) {
+    function ClientsCtrl($scope, $rootScope, $state, $timeout, clients) {
         $scope.$watch('numPerPage', currentPage);
         $scope.$watch('currentPage', currentPage);
         var vm = this;
@@ -16,7 +16,6 @@
             init: init,
             currentPage: currentPage,
             numPages: numPages,
-            clientsSort: clientsSort,
             clientsEditForm: clientsEditForm,
             clientsAdd: clientsAdd,
             goToBack: goToBack,
@@ -26,7 +25,7 @@
         });
 
         $timeout(function () {
-            $scope.$broadcast('_scrollHere');
+            window.scrollTo(0, 0);
         });
 
         init();
@@ -58,13 +57,11 @@
             return Math.ceil(vm.clients.length / $scope.numPerPage);
         }
 
-        function clientsSort(val) {
-            vm.sort = val;
-            vm.rev = !vm.rev;
-        }
-
         function clientsEditForm(item) {
-            $state.go('main.clients-edit', {item: item});
+            $rootScope.loading = true;
+            $timeout(function () {
+                $state.go('main.clients-edit', {item: item});
+            }, 100);
         }
 
         function clientsAdd() {

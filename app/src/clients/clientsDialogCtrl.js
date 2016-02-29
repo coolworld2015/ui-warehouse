@@ -5,18 +5,25 @@
         .module('app')
         .controller('ClientsDialogCtrl', ClientsDialogCtrl);
 
-    ClientsDialogCtrl.$inject = ['$state', '$rootScope', 'ClientsService', 'ClientsLocalStorage', '$stateParams'];
+    ClientsDialogCtrl.$inject = ['$state', '$rootScope', '$timeout', 'ClientsService', 'ClientsLocalStorage', '$stateParams'];
 
-    function ClientsDialogCtrl($state, $rootScope, ClientsService, ClientsLocalStorage, $stateParams) {
+    function ClientsDialogCtrl($state, $rootScope, $timeout, ClientsService, ClientsLocalStorage, $stateParams) {
         var vm = this;
 
         angular.extend(vm, {
+            init: init,
             clientsDelete: clientsDelete,
             clientsEditBack: clientsEditBack,
 			_errorHandler: errorHandler
         });
 
         angular.extend(vm, $stateParams.item);
+
+        init();
+
+        function init() {
+            $rootScope.loading = false;
+        }
 
         function clientsDelete() {
 			$rootScope.loading = true;
@@ -31,12 +38,18 @@
 					.catch(errorHandler);
 			} else {
                 ClientsLocalStorage.deleteItem(vm.id);
-                $state.go('main.clients');
+                $rootScope.loading = true;
+                $timeout(function () {
+                    $state.go('main.clients');
+                }, 100);
             }
         }
 
         function clientsEditBack() {
-            $state.go('main.clients');
+            $rootScope.loading = true;
+            $timeout(function () {
+                $state.go('main.clients');
+            }, 100);
         }
 		
 		function errorHandler() {
