@@ -1,50 +1,51 @@
-<center ng-init="inputsInvoiceEditCtrl.init()">
+<center>
+	<div class="header">Warehouse</div>
+	<br><br>
+	<img ng-src="logo.jpg" class="logo" ng-click="inputsCtrl.goToBack()">
+	<hr>
+
 	<form ng-submit="inputsInvoiceEditCtrl.invoiceSubmit()" novalidate name="inputsInvoiceEditCtrl.form">
 		<div class="header" ng-click="inputsInvoiceEditCtrl.goInputs()">
-			{{inputsInvoiceEditCtrl.goods}}
+			{{inputsInvoiceEditCtrl.goods}}&nbsp
 		</div>
 		<br><br>
 		<table class="table table-bordered">
 			<tr>
 				<td>
-					<input type="text" class="form-control input"
-						   readonly style="width:130px"
-						   value="Commoditie:">
+					<input type="text" class="form-control readonly caption"
+						   readonly value="Commodite:">
 				</td>
-				<td style="width:100%">
-					<input type="text" class="form-control input" readonly
+				<td>
+					<input type="text" class="form-control readonly" readonly
 						   ng-model="inputsInvoiceEditCtrl.goods">
 				</td>
 			</tr>
 			<tr>
 				<td>
-					<input type="text" class="form-control input"
-						   readonly style="width:130px"
-						   value="Price:">
+					<input type="text" class="form-control readonly caption"
+						   readonly value="Price:">
 				</td>
-				<td style="width:100%">
-					<input type="text" class="form-control input" readonly
+				<td>
+					<input type="text" class="form-control readonly" readonly
 						   ng-model="inputsInvoiceEditCtrl.price">
 				</td>
 			</tr>
 			<tr>
 				<td>
-					<input type="text" class="form-control input"
-						   readonly style="width:130px"
-						   value="Quantity:">
+					<input type="text" class="form-control readonly caption"
+						   readonly value="Quantity:">
 				</td>
-				<td style="width:100%">
-					<input type="text" class="form-control input" readonly
+				<td>
+					<input type="text" class="form-control readonly" readonly
 						   ng-model="inputsInvoiceEditCtrl.quantity">
 				</td>
 			</tr>
 			<tr>
 				<td>
-					<input type="text" class="form-control input"
-						   readonly style="width:130px"
-						   value="Description:">
+					<input type="text" class="form-control readonly caption"
+						   readonly value="Description:">
 				</td>
-				<td style="width:100%">
+				<td>
 					<input type="text" class="form-control input" required
 						   placeholder="Transaction description" name="description"
 						   ng-model="inputsInvoiceEditCtrl.description">
@@ -56,12 +57,11 @@
 			</tr>
 			<tr>
 				<td>
-					<input type="text" class="form-control input"
-						   readonly style="width:130px"
-						   value="Total:">
+					<input type="text" class="form-control readonly caption"
+						   readonly value="Total:">
 				</td>
-				<td style="width:100%">
-					<input type="text" class="form-control input" readonly
+				<td>
+					<input type="text" class="form-control readonly" readonly
 						   ng-model="inputsInvoiceEditCtrl.total">
 				</td>
 			</tr>

@@ -5,10 +5,10 @@
         .module('app')
         .controller('InputsDialogCtrl', InputsDialogCtrl);
 
-    InputsDialogCtrl.$inject = ['$state', '$q', '$rootScope', 'InputsService', 'InputsLocalStorage', 
+    InputsDialogCtrl.$inject = ['$state', '$q', '$rootScope', '$timeout', 'InputsService', 'InputsLocalStorage',
 		'InputsInvoiceService', 'InputsInvoiceLocalStorage', 'GoodsService', 'ClientsService', '$stateParams'];
 
-    function InputsDialogCtrl($state, $q, $rootScope, InputsService, InputsLocalStorage, 
+    function InputsDialogCtrl($state, $q, $rootScope, $timeout, InputsService, InputsLocalStorage,
 		InputsInvoiceService, InputsInvoiceLocalStorage, GoodsService, ClientsService, $stateParams) {
         var vm = this;
 
@@ -71,7 +71,10 @@
                 });
 
                 //InputInvoiceService.deleteItemInvoice($scope.id);
-                $state.go('main.inputs');
+                $rootScope.loading = true;
+                $timeout(function () {
+                    $state.go('main.inputs');
+                }, 100);
 				return;
             }
 			
@@ -148,7 +151,10 @@
         }
 										
         function inputsEditBack() {
-            $state.go('main.inputs');
+            $rootScope.loading = true;
+            $timeout(function () {
+                $state.go('main.inputs');
+            }, 100);
         }
 
         function errorHandler() {

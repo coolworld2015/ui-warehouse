@@ -5,10 +5,10 @@
         .module('app')
         .controller('InputsInvoiceEditCtrl', InputsInvoiceEditCtrl);
 
-    InputsInvoiceEditCtrl.$inject = ['$state', '$rootScope', '$filter', 'InputsInvoiceService',
+    InputsInvoiceEditCtrl.$inject = ['$state', '$rootScope', '$filter', '$timeout', 'InputsInvoiceService',
         'InputsInvoiceLocalStorage', '$stateParams'];
 
-    function InputsInvoiceEditCtrl($state, $rootScope, $filter, InputsInvoiceService,
+    function InputsInvoiceEditCtrl($state, $rootScope, $filter, $timeout, InputsInvoiceService,
         InputsInvoiceLocalStorage, $stateParams) {
         var vm = this;
 
@@ -23,10 +23,15 @@
 
         angular.extend(vm, $stateParams.invoice);
 
+        init();
+
         function init() {
+            if ($stateParams.item.id == undefined) {
+                $state.go('main.inputs');
+            }
+            vm.total = $filter('number')(vm.total, 2);
             $rootScope.myError = false;
             $rootScope.loading = false;
-            vm.total = $filter('number')(vm.total, 2);
         }
 
         function invoiceSubmit() {
@@ -57,24 +62,32 @@
                     .catch(errorHandler);
             } else {
                 InputsInvoiceLocalStorage.editItem(invoice);
-                $state.go('main.inputs-invoice', {item: $stateParams.item});
+                $rootScope.loading = true;
+                $timeout(function () {
+                    $state.go('main.inputs-invoice', {item: $stateParams.item});
+                }, 100);
             }
         }
 
         function invoiceDialog() {
-            $state.go('main.inputs-invoice-dialog', {item: $stateParams.item, invoice: $stateParams.invoice});
+            $rootScope.loading = true;
+            $timeout(function () {
+                $state.go('main.inputs-invoice-dialog', {item: $stateParams.item, invoice: $stateParams.invoice});
+            }, 100);
         }
 
         function goInputsInvoice() {
-            $rootScope.myError = false;
             $rootScope.loading = true;
-            $state.go('main.inputs-invoice', {item: $stateParams.item});
+            $timeout(function () {
+                $state.go('main.inputs-invoice', {item: $stateParams.item});
+            }, 100);
         }
 
         function goInputs() {
-            $rootScope.myError = false;
             $rootScope.loading = true;
-            $state.go('main.inputs');
+            $timeout(function () {
+                $state.go('main.inputs');
+            }, 100);
         }
 
         function errorHandler() {

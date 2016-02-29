@@ -5,9 +5,9 @@
         .module('app')
         .controller('InputsCtrl', InputsCtrl);
 
-    InputsCtrl.$inject = ['$scope', '$rootScope', '$state', '$timeout', 'inputs', 'InputsLocalStorage'];
+    InputsCtrl.$inject = ['$scope', '$rootScope', '$state', '$timeout', 'inputs'];
 
-    function InputsCtrl($scope, $rootScope, $state, $timeout, inputs, InputsLocalStorage) {
+    function InputsCtrl($scope, $rootScope, $state, $timeout, inputs) {
         $scope.$watch('numPerPage', currentPage);
         $scope.$watch('currentPage', currentPage);
         var vm = this;
@@ -16,7 +16,6 @@
             init: init,
             currentPage: currentPage,
             numPages: numPages,
-            inputsSort: inputsSort,
             inputsEditForm: inputsEditForm,
             inputsAdd: inputsAdd,
             goToBack: goToBack,
@@ -46,7 +45,6 @@
         }
 
         function currentPage() {
-            //debugger;
             if (Object.prototype.toString.call(vm.inputs) == '[object Array]') {
                 var begin = (($scope.currentPage - 1) * $scope.numPerPage);
                 var end = parseInt(begin) + parseInt($scope.numPerPage);
@@ -59,13 +57,11 @@
             return Math.ceil(vm.inputs.length / $scope.numPerPage);
         }
 
-        function inputsSort(val) {
-            vm.sort = val;
-            vm.rev = !vm.rev;
-        }
-
         function inputsEditForm(item) {
-            $state.go('main.inputs-edit', {item: item});
+            $rootScope.loading = true;
+            $timeout(function () {
+                $state.go('main.inputs-edit', {item: item});
+            }, 100);
         }
 
         function inputsAdd() {

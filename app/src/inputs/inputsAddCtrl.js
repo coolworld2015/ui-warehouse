@@ -5,10 +5,10 @@
         .module('app')
         .controller('InputsAddCtrl', InputsAddCtrl);
 
-    InputsAddCtrl.$inject = ['$state', '$rootScope', '$filter', 'InputsService', 'InputsLocalStorage', '$stateParams',
+    InputsAddCtrl.$inject = ['$state', '$rootScope', '$filter', '$timeout', 'InputsService', 'InputsLocalStorage', '$stateParams',
         'clients'];
 
-    function InputsAddCtrl($state, $rootScope, $filter, InputsService, InputsLocalStorage, $stateParams, clients) {
+    function InputsAddCtrl($state, $rootScope, $filter, $timeout, InputsService, InputsLocalStorage, $stateParams, clients) {
         var vm = this;
         var optionalClient = {name: 'Select customer'};
         angular.extend(vm, $stateParams.item);
@@ -25,6 +25,10 @@
         init();
 
         function init() {
+            if ($stateParams.item.count == undefined) {
+                $state.go('main.inputs');
+            }
+
             var now = new Date();
             vm.date = $filter('date')(now, 'dd/MM/yyyy H:mm:ss '); //TODO Russian style
             vm.date = $filter('date')(now, 'MM/dd/yyyy H:mm:ss ');
@@ -75,12 +79,18 @@
                     .catch(errorHandler);
             } else {
                 InputsLocalStorage.addItem(item);
-                $state.go('main.inputs-edit', {item: item});
+                $rootScope.loading = true;
+                $timeout(function () {
+                    $state.go('main.inputs-edit', {item: item});
+                }, 100);
             }
         }
 
         function inputsAddBack() {
-            $state.go('main.inputs');
+            $rootScope.loading = true;
+            $timeout(function () {
+                $state.go('main.inputs');
+            }, 100);
         }
 
         function errorHandler() {

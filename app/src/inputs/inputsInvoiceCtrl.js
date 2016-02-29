@@ -5,9 +5,9 @@
         .module('app')
         .controller('InputsInvoiceCtrl', InputsInvoiceCtrl);
 
-    InputsInvoiceCtrl.$inject = ['$state', '$rootScope', '$filter', 'InputsInvoiceService', 'InputsInvoiceLocalStorage', '$stateParams'];
+    InputsInvoiceCtrl.$inject = ['$state', '$rootScope', '$filter', '$timeout', 'InputsInvoiceService', 'InputsInvoiceLocalStorage', '$stateParams'];
 
-    function InputsInvoiceCtrl($state, $rootScope, $filter, InputsInvoiceService, InputsInvoiceLocalStorage, $stateParams) {
+    function InputsInvoiceCtrl($state, $rootScope, $filter, $timeout, InputsInvoiceService, InputsInvoiceLocalStorage, $stateParams) {
         var vm = this;
 
         angular.extend(vm, {
@@ -22,7 +22,13 @@
 
         angular.extend(vm, $stateParams.item);
 
+        init();
+
         function init() {
+            if ($stateParams.item.id == undefined) {
+                $state.go('main.inputs');
+            }
+
             $rootScope.myError = false;
             $rootScope.loading = false;
 
@@ -50,24 +56,33 @@
 		}
 		
         function editInvoice(invoice) {
-            $state.go('main.inputs-invoice-edit', {item: $stateParams.item, invoice: invoice});
+            $rootScope.loading = true;
+            $timeout(function () {
+                $state.go('main.inputs-invoice-edit', {item: $stateParams.item, invoice: invoice});
+            }, 100);
         }
 
         function addInvoice() {
             $rootScope.myError = false;
             $rootScope.loading = true;
-
-            $state.go('main.inputs-invoice-add', {item: $stateParams.item});
+            $timeout(function () {
+                $state.go('main.inputs-invoice-add', {item: $stateParams.item});
+            }, 100);
         }
 
         function inputEditExitInvoice() {
-            $state.go('main.inputs-edit', {item: $stateParams.item});
+            $rootScope.loading = true;
+            $timeout(function () {
+                $state.go('main.inputs-edit', {item: $stateParams.item});
+            }, 100);
         }
 
         function goInputs() {
             $rootScope.myError = false;
             $rootScope.loading = true;
-            $state.go('main.inputs');
+            $timeout(function () {
+                $state.go('main.inputs');
+            }, 100);
         }
 		
         function errorHandler() {

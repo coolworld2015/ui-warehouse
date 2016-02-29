@@ -13,6 +13,19 @@ body {
     text-align: center;
 }
 
+.header-invoice {
+    width: 100%;
+    display: inline-block;
+    font-size: 20px;
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: #337ab7;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+}
+
 .button {
     font-weight: bold;
     font-size: 17px;
@@ -27,6 +40,10 @@ body {
     border-style: none;
 }
 
+.caption {
+    width:140px;
+}
+
 .readonly {
     font-weight: bold;
     font-size: 20px;
@@ -36,7 +53,7 @@ body {
 
 .dialog {
     font-weight: bold;
-    font-size:24px;
+    font-size: 24px;
     color: white;
 }
 
@@ -68,8 +85,8 @@ body {
 }
 
 .img-large {
-    width:200px;
-    height:210px;
+    width: 200px;
+    height: 210px;
 }
 
 .img-large-border {
@@ -168,11 +185,11 @@ body {
 }
 
 .error-conf {
-    margin-bottom:-8px
+    margin-bottom: -8px
 }
 
 .conf {
-    font-size:25px;
+    font-size: 25px;
 }
 
 .blanker {

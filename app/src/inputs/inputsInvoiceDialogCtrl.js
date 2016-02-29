@@ -5,10 +5,10 @@
         .module('app')
         .controller('InputsInvoiceDialogCtrl', InputsInvoiceDialogCtrl);
 
-    InputsInvoiceDialogCtrl.$inject = ['$state', '$rootScope', 'InputsInvoiceService', 'InputsService',
+    InputsInvoiceDialogCtrl.$inject = ['$state', '$rootScope', '$timeout', 'InputsInvoiceService', 'InputsService',
         'InputsInvoiceLocalStorage', 'GoodsService', 'ClientsService', '$stateParams'];
 
-    function InputsInvoiceDialogCtrl($state, $rootScope, InputsInvoiceService, InputsService,
+    function InputsInvoiceDialogCtrl($state, $rootScope, $timeout, InputsInvoiceService, InputsService,
          InputsInvoiceLocalStorage, GoodsService, ClientsService, $stateParams) {
         var vm = this;
 
@@ -19,6 +19,15 @@
         });
 
         angular.extend(vm, $stateParams.invoice);
+
+        init();
+
+        function init() {
+            if ($stateParams.item.id == undefined) {
+                $state.go('main.inputs');
+            }
+            $rootScope.loading = false;
+        }
 
         function itemDelete() {
             $rootScope.loading = true;
@@ -86,12 +95,18 @@
 //                $scope.sum = parseFloat($scope.total).toFixed(2);
 //                $rootScope.view = 'inputEditForm';
 
-                $state.go('main.inputs-invoice', {item: $stateParams.item});
+                $rootScope.loading = true;
+                $timeout(function () {
+                    $state.go('main.inputs-invoice', {item: $stateParams.item});
+                }, 100);
             }
         }
 
         function goInputsInvoice() {
-            $state.go('main.inputs-invoice', {item: $stateParams.item});
+            $rootScope.loading = true;
+            $timeout(function () {
+                $state.go('main.inputs-invoice', {item: $stateParams.item});
+            }, 100);
         }
 
         function errorHandler() {

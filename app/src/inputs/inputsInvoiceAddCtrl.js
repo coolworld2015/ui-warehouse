@@ -5,11 +5,11 @@
         .module('app')
         .controller('InputsInvoiceAddCtrl', InputsInvoiceAddCtrl);
 
-    InputsInvoiceAddCtrl.$inject = ['$state', '$rootScope', '$filter', 'InputsLocalStorage', 'InputsInvoiceService',
+    InputsInvoiceAddCtrl.$inject = ['$state', '$rootScope', '$filter', '$timeout', 'InputsLocalStorage', 'InputsInvoiceService',
         'InputsInvoiceLocalStorage', '$stateParams', 'GoodsService', 'GoodsLocalStorage', 'InputsTransactionService',
         'InputsTransactionLocalStorage'];
 
-    function InputsInvoiceAddCtrl($state, $rootScope, $filter, InputsLocalStorage, InputsInvoiceService,
+    function InputsInvoiceAddCtrl($state, $rootScope, $filter, $timeout, InputsLocalStorage, InputsInvoiceService,
         InputsInvoiceLocalStorage, $stateParams, GoodsService, GoodsLocalStorage, InputsTransactionService,
         InputsTransactionLocalStorage) {
         var vm = this;
@@ -29,7 +29,14 @@
 
         angular.extend(vm, $stateParams.item);
 
+        init();
+
         function init() {
+            if ($stateParams.item.id == undefined) {
+                $state.go('main.inputs');
+            }
+
+            $rootScope.loading = false;
             var now = new Date();
             vm.date = $filter('date')(now, 'MM/dd/yyyy H:mm:ss ');
             vm.date = $filter('date')(now, 'dd/MM/yyyy H:mm:ss '); //russian style
@@ -129,7 +136,10 @@
                         return el;
                     }
                 });
-                $state.go('main.inputs-invoice', {item: $stateParams.item});
+                $rootScope.loading = true;
+                $timeout(function () {
+                    $state.go('main.inputs-invoice', {item: $stateParams.item});
+                }, 100);
             }
         }
 
@@ -149,12 +159,16 @@
 
         function goInputsInvoice() {
             loading();
-            $state.go('main.inputs-invoice', {item: $stateParams.item});
+            $timeout(function () {
+                $state.go('main.inputs-invoice', {item: $stateParams.item});
+            }, 100);
         }
 
         function goInputs() {
             loading();
-            $state.go('main.inputs');
+            $timeout(function () {
+                $state.go('main.inputs');
+            }, 100);
         }
 
         function errorHandler() {

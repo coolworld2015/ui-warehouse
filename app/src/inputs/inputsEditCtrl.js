@@ -5,9 +5,9 @@
         .module('app')
         .controller('InputsEditCtrl', InputsEditCtrl);
 
-    InputsEditCtrl.$inject = ['$state', '$rootScope', '$filter', 'InputsService', 'InputsLocalStorage', '$stateParams'];
+    InputsEditCtrl.$inject = ['$state', '$rootScope', '$filter', '$timeout', 'InputsService', 'InputsLocalStorage', '$stateParams'];
 
-    function InputsEditCtrl($state, $rootScope, $filter, InputsService, InputsLocalStorage, $stateParams) {
+    function InputsEditCtrl($state, $rootScope, $filter, $timeout, InputsService, InputsLocalStorage, $stateParams) {
         var vm = this;
 
         angular.extend(vm, {
@@ -22,9 +22,12 @@
 		init();
         
 		function init() {
+            if ($stateParams.item.id == undefined) {
+                $state.go('main.inputs');
+            }
+            vm.total = $filter('number')(vm.total, 2);
             $rootScope.myError = false;
             $rootScope.loading = false;
-            vm.total = $filter('number')(vm.total, 2);
         }
 
         function inputsSubmit() {
@@ -57,7 +60,10 @@
 					});
 			} else {
                 InputsLocalStorage.editItem(item);
-                $state.go('main.inputs-invoice', {item: item});
+                $rootScope.loading = true;
+                $timeout(function () {
+                    $state.go('main.inputs-invoice', {item: item});
+                }, 100);
             }
         }
 
@@ -71,11 +77,17 @@
                 total: vm.total,
                 description: vm.description
             };
-            $state.go('main.inputs-dialog', {item: item});
+            $rootScope.loading = true;
+            $timeout(function () {
+                $state.go('main.inputs-dialog', {item: item});
+            }, 100);
         }
 
         function inputsEditBack() {
-            $state.go('main.inputs');
+            $rootScope.loading = true;
+            $timeout(function () {
+                $state.go('main.inputs');
+            }, 100);
         }
     }
 })();
