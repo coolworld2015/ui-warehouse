@@ -22,7 +22,7 @@
             goToBack: goToBack,
             goToHead: goToHead,
             inputsBack: inputsBack,
-			_errorHandler: errorHandler
+            _errorHandler: errorHandler
         });
 
         $timeout(function () {
@@ -32,42 +32,21 @@
         init();
 
         function init() {
-			vm.title = 'Purchase Invoices';
+            vm.title = 'Purchase Invoices';
             vm.sort = 'name';
-			vm.inputs = inputs;
-			vm.inputsFilter = [];
-			
+            vm.inputs = [].concat(inputs);
+            vm.inputsFilter = [];
+
             $scope.currentPage = 1;
             $scope.numPerPage = 10;
             $scope.maxSize = 5;
-	
-			$rootScope.myError = false;
-			$rootScope.loading = false;
-			/*
-            
-            if ($rootScope.mode == 'ON-LINE (Heroku)') {
-                getInputsOn();
-            } else {
-                vm.inputs = [].concat(InputsLocalStorage.getInputs());
-				$rootScope.myError = false;
-				$rootScope.loading = false;
-            }
-			*/
-		}
-		
-        function getInputsOn() {
-            InputsService.getInputs()
-				.then(function(data){
-					$scope.filteredInputs = [];
-					vm.inputs = data.data;
-					currentPage();
-					$rootScope.myError = false;
-					$rootScope.loading = false;
-				})
-				.catch(errorHandler);
+
+            $rootScope.myError = false;
+            $rootScope.loading = false;
         }
 
         function currentPage() {
+            //debugger;
             if (Object.prototype.toString.call(vm.inputs) == '[object Array]') {
                 var begin = (($scope.currentPage - 1) * $scope.numPerPage);
                 var end = parseInt(begin) + parseInt($scope.numPerPage);
@@ -90,11 +69,13 @@
         }
 
         function inputsAdd() {
-			$rootScope.loading = true;
+            $rootScope.loading = true;
             var obj = {
                 count: ++vm.inputs.length
             };
-            $state.go('main.inputs-add', {item: obj});
+            $timeout(function () {
+                $state.go('main.inputs-add', {item: obj});
+            }, 100);
         }
 
         function goToBack() {
@@ -111,8 +92,8 @@
                 $state.go('main');
             }, 100);
         }
-		
-		function errorHandler() {
+
+        function errorHandler() {
             $rootScope.loading = false;
             $rootScope.myError = true;
         }

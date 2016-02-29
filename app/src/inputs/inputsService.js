@@ -5,9 +5,9 @@
         .module('app')
         .factory('InputsService', InputsService);
 
-    InputsService.$inject = ['$rootScope', '$http', '$q'];
+    InputsService.$inject = ['$rootScope', '$http'];
 
-    function InputsService($rootScope, $http, $q) {
+    function InputsService($rootScope, $http) {
         var webUrl = $rootScope.myConfig.webUrl;
 
         return {

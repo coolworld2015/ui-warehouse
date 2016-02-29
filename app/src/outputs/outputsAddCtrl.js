@@ -21,10 +21,12 @@
 			_errorHandler: errorHandler
         });
 
+        init();
+
         function init() {
             var now = new Date();
+            vm.date = $filter('date')(now, 'dd/MM/yyyy H:mm:ss '); //TODO Russian style
             vm.date = $filter('date')(now, 'MM/dd/yyyy H:mm:ss ');
-            vm.date = $filter('date')(now, 'dd/MM/yyyy H:mm:ss '); //russian style
             vm.number = vm.count;
 			
             if ($rootScope.mode == 'ON-LINE (Heroku)') {

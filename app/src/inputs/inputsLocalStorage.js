@@ -4,15 +4,10 @@
     angular
         .module('app')
         .factory('InputsLocalStorage', InputsLocalStorage);
-		
-    InputsLocalStorage.$inject = ['$rootScope'];    
-	
-	function InputsLocalStorage($rootScope) {
-        var webUrl = $rootScope.myConfig.webUrl;
-		
+
+    function InputsLocalStorage() {
         return {
             inputs: [],
-
             getInputs: getInputs,
             addItem: addItem,
             editItem: editItem,
@@ -22,7 +17,7 @@
             uploadInput: uploadInput,
             _sort: sort
         };
-		
+
         function getInputs() {
             if (InputsLocalStorage.inputs === undefined) {
                 var inputs = localStorage.getItem('warehouse_inputs');
@@ -36,12 +31,12 @@
 
             return InputsLocalStorage.inputs.sort(sort);
         }
-		
+
         function addItem(item) {
             InputsLocalStorage.inputs.push(item);
             setInput();
         }
-		
+
         function editItem(item) {
             var inputs = InputsLocalStorage.inputs;
             for (var i = 0; i < inputs.length; i++) {
@@ -52,7 +47,7 @@
                 }
             }
         }
-		
+
         function deleteItem(id) {
             var inputs = InputsLocalStorage.inputs;
             for (var i = 0; i < inputs.length; i++) {
