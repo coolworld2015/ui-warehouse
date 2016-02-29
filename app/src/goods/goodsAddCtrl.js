@@ -5,16 +5,23 @@
         .module('app')
         .controller('GoodsAddCtrl', GoodsAddCtrl);
 
-    GoodsAddCtrl.$inject = ['$state', '$rootScope', 'GoodsService', 'GoodsLocalStorage'];
+    GoodsAddCtrl.$inject = ['$state', '$rootScope', '$timeout', 'GoodsService', 'GoodsLocalStorage'];
 
-    function GoodsAddCtrl($state, $rootScope, GoodsService, GoodsLocalStorage) {
+    function GoodsAddCtrl($state, $rootScope, $timeout, GoodsService, GoodsLocalStorage) {
         var vm = this;
 
         angular.extend(vm, {
+            init: init,
             goodsAddSubmit: goodsAddSubmit,
             goodsAddBack: goodsAddBack,
 			_errorHandler: errorHandler
         });
+
+        init();
+
+        function init() {
+            $rootScope.loading = false;
+        }
 
         function goodsAddSubmit() {
             if (vm.form.$invalid) {
@@ -43,12 +50,18 @@
 					.catch(errorHandler);
 			} else {
                 GoodsLocalStorage.addItem(item);
-				$state.go('main.goods');
+                $rootScope.loading = true;
+                $timeout(function () {
+                    $state.go('main.goods');
+                }, 100);
             }
         }
 
         function goodsAddBack() {
-            $state.go('main.goods');
+            $rootScope.loading = true;
+            $timeout(function () {
+                $state.go('main.goods');
+            }, 100);
         }		
 		
 		function errorHandler() {

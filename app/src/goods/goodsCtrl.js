@@ -16,7 +16,6 @@
             init: init,
             currentPage: currentPage,
             numPages: numPages,
-            goodsSort: goodsSort,
             goodsEditForm: goodsEditForm,
             goodsAdd: goodsAdd,
             goToBack: goToBack,
@@ -58,13 +57,11 @@
             return Math.ceil(vm.goods.length / $scope.numPerPage);
         }
 
-        function goodsSort(val) {
-            vm.sort = val;
-            vm.rev = !vm.rev;
-        }
-
         function goodsEditForm(item) {
-            $state.go('main.goods-edit', {item: item});
+            $rootScope.loading = true;
+            $timeout(function () {
+                $state.go('main.goods-edit', {item: item});
+            }, 100);
         }
 
         function goodsAdd() {
@@ -73,7 +70,10 @@
                 price: '',
                 description: ''
             };
-            $state.go('main.goods-add', {item: obj});
+            $rootScope.loading = true;
+            $timeout(function () {
+                $state.go('main.goods-add', {item: obj});
+            }, 100);
         }
 
         function goToBack() {
