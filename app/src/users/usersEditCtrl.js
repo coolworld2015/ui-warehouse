@@ -5,9 +5,9 @@
         .module('app')
         .controller('UsersEditCtrl', UsersEditCtrl);
 
-    UsersEditCtrl.$inject = ['$state', '$rootScope', '$filter', 'UsersService', 'UsersLocalStorage', '$stateParams'];
+    UsersEditCtrl.$inject = ['$state', '$rootScope', '$filter', '$timeout', 'UsersService', 'UsersLocalStorage', '$stateParams'];
 
-    function UsersEditCtrl($state, $rootScope, $filter, UsersService, UsersLocalStorage, $stateParams) {
+    function UsersEditCtrl($state, $rootScope, $filter, $timeout, UsersService, UsersLocalStorage, $stateParams) {
         var vm = this;
 
         angular.extend(vm, {
@@ -27,6 +27,7 @@
                 $state.go('main.users');
             }
             vm.total = $filter('number')(vm.sum, 2);
+            $rootScope.loading = false;
         }
 
         function usersSubmit() {
@@ -53,7 +54,10 @@
 					.catch(errorHandler);
 			} else {
 				UsersLocalStorage.editItem(item);
-				$state.go('main.users');
+                $rootScope.loading = true;
+                $timeout(function () {
+                    $state.go('main.users');
+                }, 100);
 			}
         }
 
@@ -62,11 +66,17 @@
                 id: vm.id,
                 name: vm.name
             };
-            $state.go('main.users-dialog', {item: obj});
+            $rootScope.loading = true;
+            $timeout(function () {
+                $state.go('main.users-dialog', {item: obj});
+            }, 100);
         }
 
         function usersEditBack() {
-            $state.go('main.users');
+            $rootScope.loading = true;
+            $timeout(function () {
+                $state.go('main.users');
+            }, 100);
         }
 		
         function errorHandler() {

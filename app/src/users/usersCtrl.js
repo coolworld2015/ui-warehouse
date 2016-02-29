@@ -5,9 +5,9 @@
         .module('app')
         .controller('UsersCtrl', UsersCtrl);
 
-    UsersCtrl.$inject = ['$scope', '$rootScope', '$state', '$timeout', 'users', 'UsersService', 'UsersLocalStorage'];
+    UsersCtrl.$inject = ['$scope', '$rootScope', '$state', '$timeout', 'users'];
 
-    function UsersCtrl($scope, $rootScope, $state, $timeout, users, UsersService, UsersLocalStorage) {
+    function UsersCtrl($scope, $rootScope, $state, $timeout, users) {
         $scope.$watch('numPerPage', currentPage);			
         $scope.$watch('currentPage', currentPage);
         var vm = this;
@@ -64,11 +64,17 @@
         }
 
         function usersEditForm(item) {
-            $state.go('main.users-edit', {item: item});
+            $rootScope.loading = true;
+            $timeout(function () {
+                $state.go('main.users-edit', {item: item});
+            }, 100);
         }
 
         function usersAdd() {
-            $state.go('main.users-add');
+            $rootScope.loading = true;
+            $timeout(function () {
+                $state.go('main.users-add');
+            }, 100);
         }
 
         function goToBack() {

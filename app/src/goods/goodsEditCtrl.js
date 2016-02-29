@@ -23,6 +23,9 @@
         init();
 
         function init() {
+            if ($stateParams.item.name == undefined) {
+                $state.go('main.goods');
+            }
             vm.total = $filter('number')(vm.sum, 2);
             $rootScope.loading = false;
         }
