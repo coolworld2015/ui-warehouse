@@ -81,7 +81,10 @@
         }
 
         function outputsEditForm(item) {
-            $state.go('main.outputs-edit', {item: item});
+            $rootScope.loading = true;
+            $timeout(function () {
+                $state.go('main.outputs-edit', {item: item});
+            }, 100);
         }
 
         function outputsAdd() {
@@ -89,7 +92,9 @@
             var obj = {
                 count: ++vm.outputs.length
             };
-            $state.go('main.outputs-add', {item: obj});
+            $timeout(function () {
+                $state.go('main.outputs-add', {item: obj});
+            }, 100);
         }
 
         function goToBack() {

@@ -5,10 +5,10 @@
         .module('app')
         .controller('OutputsDialogCtrl', OutputsDialogCtrl);
 
-    OutputsDialogCtrl.$inject = ['$state', '$q', '$rootScope', 'OutputsService', 'OutputsLocalStorage', 
+    OutputsDialogCtrl.$inject = ['$state', '$q', '$rootScope', '$timeout', 'OutputsService', 'OutputsLocalStorage',
 	'OutputsInvoiceService', 'OutputsInvoiceLocalStorage', 'GoodsService', 'ClientsService', '$stateParams'];
 
-    function OutputsDialogCtrl($state, $q, $rootScope, OutputsService, OutputsLocalStorage,
+    function OutputsDialogCtrl($state, $q, $rootScope, $timeout, OutputsService, OutputsLocalStorage,
 	OutputsInvoiceService, OutputsInvoiceLocalStorage, GoodsService, ClientsService, $stateParams) {
         var vm = this;
 
@@ -71,7 +71,10 @@
                 });
 
                 //InputInvoiceService.deleteItemInvoice($scope.id);
-                $state.go('main.outputs');
+                $rootScope.loading = true;
+                $timeout(function () {
+                    $state.go('main.outputs');
+                }, 100);
 				return;
             }
 			
@@ -147,7 +150,10 @@
         }
 		
         function outputsEditBack() {
-            $state.go('main.outputs');
+            $rootScope.loading = true;
+            $timeout(function () {
+                $state.go('main.outputs');
+            }, 100);
         }
 		
         function errorHandler() {

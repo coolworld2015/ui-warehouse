@@ -5,10 +5,10 @@
         .module('app')
         .controller('OutputsInvoiceEditCtrl', OutputsInvoiceEditCtrl);
 
-    OutputsInvoiceEditCtrl.$inject = ['$state', '$rootScope', '$filter', 'OutputsInvoiceService',
+    OutputsInvoiceEditCtrl.$inject = ['$state', '$rootScope', '$filter', '$timeout', 'OutputsInvoiceService',
         'OutputsInvoiceLocalStorage', '$stateParams'];
 
-    function OutputsInvoiceEditCtrl($state, $rootScope, $filter, OutputsInvoiceService,
+    function OutputsInvoiceEditCtrl($state, $rootScope, $filter, $timeout, OutputsInvoiceService,
         OutputsInvoiceLocalStorage, $stateParams) {
         var vm = this;
 
@@ -17,7 +17,8 @@
             invoiceSubmit: invoiceSubmit,
             invoiceDialog: invoiceDialog,
             goOutputsInvoice: goOutputsInvoice,
-            goOutputs: goOutputs
+            goOutputs: goOutputs,
+            _errorHandler: errorHandler
         });
 
         angular.extend(vm, $stateParams.invoice);
@@ -25,9 +26,12 @@
         init();
 
         function init() {
+            if ($stateParams.item.id == undefined) {
+                $state.go('main.outputs');
+            }
+            vm.total = $filter('number')(vm.total, 2);
             $rootScope.myError = false;
             $rootScope.loading = false;
-            vm.total = $filter('number')(vm.total, 2);
         }
 
         function invoiceSubmit() {
@@ -55,30 +59,42 @@
                         $rootScope.myError = false;
                         $state.go('main.outputs-invoice', {item: $stateParams.item});
                     })
-                    .catch(function () {
-                        $rootScope.loading = false;
-                        $rootScope.myError = true;
-                    });
+                    .catch(errorHandler);
             } else {
                 OutputsInvoiceLocalStorage.editItem(invoice);
-                $state.go('main.outputs-invoice', {item: $stateParams.item});
+                $rootScope.loading = true;
+                $timeout(function () {
+                    $state.go('main.outputs-invoice', {item: $stateParams.item});
+                }, 100);
             }
         }
 
         function invoiceDialog() {
-            $state.go('main.outputs-invoice-dialog', {item: $stateParams.item, invoice: $stateParams.invoice});
+            $rootScope.loading = true;
+            $timeout(function () {
+                $state.go('main.outputs-invoice-dialog', {item: $stateParams.item, invoice: $stateParams.invoice});
+            }, 100);
         }
 
         function goOutputsInvoice() {
-            $rootScope.myError = false;
             $rootScope.loading = true;
-            $state.go('main.outputs-invoice', {item: $stateParams.item});
+            $timeout(function () {
+                $state.go('main.outputs-invoice', {item: $stateParams.item});
+            }, 100);
         }
 
         function goOutputs() {
             $rootScope.myError = false;
             $rootScope.loading = true;
-            $state.go('main.outputs');
+            $rootScope.loading = true;
+            $timeout(function () {
+                $state.go('main.outputs');
+            }, 100);
+        }
+
+        function errorHandler() {
+            $rootScope.loading = false;
+            $rootScope.myError = true;
         }
     }
 })();

@@ -5,9 +5,9 @@
         .module('app')
         .controller('OutputsEditCtrl', OutputsEditCtrl);
 
-    OutputsEditCtrl.$inject = ['$state', '$rootScope', '$filter', 'OutputsService', 'OutputsLocalStorage', '$stateParams'];
+    OutputsEditCtrl.$inject = ['$state', '$rootScope', '$filter', '$timeout', 'OutputsService', 'OutputsLocalStorage', '$stateParams'];
 
-    function OutputsEditCtrl($state, $rootScope, $filter, OutputsService, OutputsLocalStorage, $stateParams) {
+    function OutputsEditCtrl($state, $rootScope, $filter, $timeout, OutputsService, OutputsLocalStorage, $stateParams) {
         var vm = this;
 
         angular.extend(vm, {
@@ -57,7 +57,10 @@
 					});
 			} else {
                 OutputsLocalStorage.editItem(item);
-                $state.go('main.outputs-invoice', {item: item});
+                $rootScope.loading = true;
+                $timeout(function () {
+                    $state.go('main.outputs-invoice', {item: item});
+                }, 100);
             }
         }
 
@@ -71,11 +74,17 @@
                 total: vm.total,
                 description: vm.description
             };
-            $state.go('main.outputs-dialog', {item: item});
+            $rootScope.loading = true;
+            $timeout(function () {
+                $state.go('main.outputs-dialog', {item: item});
+            }, 100);
         }
 
         function outputsEditBack() {
-            $state.go('main.outputs');
+            $rootScope.loading = true;
+            $timeout(function () {
+                $state.go('main.outputs');
+            }, 100);
         }
     }
 })();

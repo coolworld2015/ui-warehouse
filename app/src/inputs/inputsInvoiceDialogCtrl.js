@@ -13,6 +13,7 @@
         var vm = this;
 
         angular.extend(vm, {
+            init: init,
             itemDelete: itemDelete,
             goInputsInvoice: goInputsInvoice,
             _errorHandler: errorHandler

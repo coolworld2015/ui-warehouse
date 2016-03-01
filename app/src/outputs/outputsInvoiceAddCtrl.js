@@ -5,10 +5,10 @@
         .module('app')
         .controller('OutputsInvoiceAddCtrl', OutputsInvoiceAddCtrl);
 		
-    OutputsInvoiceAddCtrl.$inject = ['$state', '$rootScope', '$filter', 'OutputsLocalStorage', 'OutputsInvoiceService', 'OutputsInvoiceLocalStorage',
+    OutputsInvoiceAddCtrl.$inject = ['$state', '$rootScope', '$filter', '$timeout', 'OutputsLocalStorage', 'OutputsInvoiceService', 'OutputsInvoiceLocalStorage',
         '$stateParams', 'GoodsService', 'GoodsLocalStorage', 'OutputsTransactionService', 'OutputsTransactionLocalStorage'];
 		
-    function OutputsInvoiceAddCtrl($state, $rootScope, $filter, OutputsLocalStorage, OutputsInvoiceService, OutputsInvoiceLocalStorage,
+    function OutputsInvoiceAddCtrl($state, $rootScope, $filter, $timeout, OutputsLocalStorage, OutputsInvoiceService, OutputsInvoiceLocalStorage,
         $stateParams, GoodsService, GoodsLocalStorage, OutputsTransactionService, OutputsTransactionLocalStorage) {
         var vm = this;
         var optionalGoods = {name: 'Select commodities'};
@@ -129,8 +129,11 @@
 						return el;
 					}
 				});
-                $state.go('main.outputs-invoice', {item: $stateParams.item});
-            }		
+                $rootScope.loading = true;
+                $timeout(function () {
+                    $state.go('main.outputs-invoice', {item: $stateParams.item});
+                }, 100);
+            }
         }
 		
         function outputSubmitTotal() {
@@ -149,12 +152,16 @@
 		
         function goOutputsInvoice() {
             loading();
-            $state.go('main.outputs-invoice', {item: $stateParams.item});
+            $timeout(function () {
+                $state.go('main.outputs-invoice', {item: $stateParams.item});
+            }, 100);
         }
 
         function goOutputs() {
             loading();
-            $state.go('main.outputs');
+            $timeout(function () {
+                $state.go('main.outputs');
+            }, 100);
         }
 
         function errorHandler() {

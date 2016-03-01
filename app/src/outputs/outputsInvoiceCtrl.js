@@ -5,9 +5,9 @@
         .module('app')
         .controller('OutputsInvoiceCtrl', OutputsInvoiceCtrl);
 
-    OutputsInvoiceCtrl.$inject = ['$state', '$rootScope', '$filter', 'OutputsInvoiceService', 'OutputsInvoiceLocalStorage', '$stateParams'];
+    OutputsInvoiceCtrl.$inject = ['$state', '$rootScope', '$filter', '$timeout', 'OutputsInvoiceService', 'OutputsInvoiceLocalStorage', '$stateParams'];
 
-    function OutputsInvoiceCtrl($state, $rootScope, $filter, OutputsInvoiceService, OutputsInvoiceLocalStorage, $stateParams) {
+    function OutputsInvoiceCtrl($state, $rootScope, $filter, $timeout, OutputsInvoiceService, OutputsInvoiceLocalStorage, $stateParams) {
         var vm = this;
 
         angular.extend(vm, {
@@ -52,24 +52,33 @@
 		}
 		
         function editInvoice(invoice) {
-            $state.go('main.outputs-invoice-edit', {item: $stateParams.item, invoice: invoice});
+            $rootScope.loading = true;
+            $timeout(function () {
+                $state.go('main.outputs-invoice-edit', {item: $stateParams.item, invoice: invoice});
+            }, 100);
         }
 
         function addInvoice() {
             $rootScope.myError = false;
             $rootScope.loading = true;
-
-            $state.go('main.outputs-invoice-add', {item: $stateParams.item});
+            $timeout(function () {
+                $state.go('main.outputs-invoice-add', {item: $stateParams.item});
+            }, 100);
         }
 
         function outputEditExitInvoice() {
-            $state.go('main.outputs-edit', {item: $stateParams.item});
+            $rootScope.loading = true;
+            $timeout(function () {
+                $state.go('main.outputs-edit', {item: $stateParams.item});
+            }, 100);
         }
 
         function goOutputs() {
             $rootScope.myError = false;
             $rootScope.loading = true;
-            $state.go('main.outputs');
+            $timeout(function () {
+                $state.go('main.outputs');
+            }, 100);
         }
 		
         function errorHandler() {

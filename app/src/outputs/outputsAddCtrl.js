@@ -89,12 +89,18 @@
 					.catch(errorHandler);
 			} else {
 				OutputsLocalStorage.addItem(item);
-                $state.go('main.outputs-edit', {item: item});
+                $rootScope.loading = true;
+                $timeout(function () {
+                    $state.go('main.outputs-edit', {item: item});
+                }, 100);
 			}
         }
 
         function outputsAddBack() {
-            $state.go('main.outputs');
+            $rootScope.loading = true;
+            $timeout(function () {
+                $state.go('main.outputs');
+            }, 100);
         }
 		
 		function errorHandler() {

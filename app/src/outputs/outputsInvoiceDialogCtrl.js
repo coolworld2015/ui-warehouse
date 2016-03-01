@@ -5,20 +5,30 @@
         .module('app')
         .controller('OutputsInvoiceDialogCtrl', OutputsInvoiceDialogCtrl);
 
-    OutputsInvoiceDialogCtrl.$inject = ['$state', '$rootScope', 'OutputsInvoiceService', 'OutputsService',
+    OutputsInvoiceDialogCtrl.$inject = ['$state', '$rootScope', '$timeout', 'OutputsInvoiceService', 'OutputsService',
         'OutputsInvoiceLocalStorage', 'GoodsService', 'ClientsService', '$stateParams'];
 
-    function OutputsInvoiceDialogCtrl($state, $rootScope, OutputsInvoiceService, OutputsService,
+    function OutputsInvoiceDialogCtrl($state, $rootScope, $timeout, OutputsInvoiceService, OutputsService,
         OutputsInvoiceLocalStorage, GoodsService, ClientsService, $stateParams) {
         var vm = this;
 
         angular.extend(vm, {
+            init: init,
             itemDelete: itemDelete,
             goOutputsInvoice: goOutputsInvoice,
             _errorHandler: errorHandler
         });
 
         angular.extend(vm, $stateParams.invoice);
+
+        init();
+
+        function init() {
+            if ($stateParams.item.id == undefined) {
+                $state.go('main.outputs');
+            }
+            $rootScope.loading = false;
+        }
 
         function itemDelete() {
             $rootScope.loading = true;
@@ -86,12 +96,18 @@
 //                $scope.sum = parseFloat($scope.total).toFixed(2);
 //                $rootScope.view = 'inputEditForm';
 
-                $state.go('main.outputs-invoice', {item: $stateParams.item});
+                $rootScope.loading = true;
+                $timeout(function () {
+                    $state.go('main.outputs-invoice', {item: $stateParams.item});
+                }, 100);
             }
         }
 
         function goOutputsInvoice() {
-            $state.go('main.outputs-invoice', {item: $stateParams.item});
+            $rootScope.loading = true;
+            $timeout(function () {
+                $state.go('main.outputs-invoice', {item: $stateParams.item});
+            }, 100);
         }
 
         function errorHandler() {
