@@ -22,6 +22,10 @@
         init();
 
         function init() {
+            if ($stateParams.item.id == undefined) {
+                $state.go('main.outputs');
+            }
+
             $rootScope.myError = false;
             $rootScope.loading = false;
             vm.total = $filter('number')(vm.total, 2);

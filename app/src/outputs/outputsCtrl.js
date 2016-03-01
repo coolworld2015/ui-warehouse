@@ -5,9 +5,9 @@
         .module('app')
         .controller('OutputsCtrl', OutputsCtrl);
 
-    OutputsCtrl.$inject = ['$scope', '$rootScope', '$state', '$timeout', 'OutputsService', 'OutputsLocalStorage'];
+    OutputsCtrl.$inject = ['$scope', '$rootScope', '$state', '$timeout', 'outputs'];
 
-    function OutputsCtrl($scope, $rootScope, $state, $timeout, OutputsService, OutputsLocalStorage) {
+    function OutputsCtrl($scope, $rootScope, $state, $timeout, outputs) {
         $scope.$watch('numPerPage', currentPage);
         $scope.$watch('currentPage', currentPage);
         var vm = this;
@@ -16,7 +16,6 @@
             init: init,
             currentPage: currentPage,
             numPages: numPages,
-            outputsSort: outputsSort,
             outputsEditForm: outputsEditForm,
             outputsAdd: outputsAdd,
             goToBack: goToBack,
@@ -32,36 +31,19 @@
         init();
 
         function init() {
+            vm.title = 'Sales Invoices';
+            vm.sort = 'name';
+			vm.outputs = [].concat(outputs);
+			vm.outputsFilter = [];
+
             $scope.currentPage = 1;
             $scope.numPerPage = 10;
             $scope.maxSize = 5;
-			vm.outputs = [];
-			vm.outputsFilter = [];
-			
-            vm.title = 'Sales Invoices';
-            vm.sort = 'name';
-			
-            if ($rootScope.mode == 'ON-LINE (Heroku)') {
-                getOutputsOn();
-            } else {
-                vm.outputs = [].concat(OutputsLocalStorage.getOutputs());
-				$rootScope.myError = false;
-				$rootScope.loading = false;
-            }
+
+            $rootScope.myError = false;
+            $rootScope.loading = false;
 		}
 		
-        function getOutputsOn() {
-            OutputsService.getOutputs()
-				.then(function(data){
-					$scope.filteredOutputs = [];
-					vm.outputs = data.data;
-					currentPage();
-					$rootScope.myError = false;
-					$rootScope.loading = false;
-				})
-				.catch(errorHandler);
-        }
-
         function currentPage() {
             if (Object.prototype.toString.call(vm.outputs) == '[object Array]') {
                 var begin = (($scope.currentPage - 1) * $scope.numPerPage);
@@ -73,11 +55,6 @@
 
         function numPages() {
             return Math.ceil(vm.outputs.length / $scope.numPerPage);
-        }
-
-        function outputsSort(val) {
-            vm.sort = val;
-            vm.rev = !vm.rev;
         }
 
         function outputsEditForm(item) {

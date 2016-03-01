@@ -5,10 +5,11 @@
         .module('app')
         .controller('InputsAddCtrl', InputsAddCtrl);
 
-    InputsAddCtrl.$inject = ['$state', '$rootScope', '$filter', '$timeout', 'InputsService', 'InputsLocalStorage', '$stateParams',
-        'clients'];
+    InputsAddCtrl.$inject = ['$state', '$rootScope', '$filter', '$timeout', 'InputsService', 'InputsLocalStorage',
+        '$stateParams', 'clients'];
 
-    function InputsAddCtrl($state, $rootScope, $filter, $timeout, InputsService, InputsLocalStorage, $stateParams, clients) {
+    function InputsAddCtrl($state, $rootScope, $filter, $timeout, InputsService, InputsLocalStorage,
+                           $stateParams, clients) {
         var vm = this;
         var optionalClient = {name: 'Select customer'};
         angular.extend(vm, $stateParams.item);

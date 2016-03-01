@@ -25,6 +25,7 @@
             if ($stateParams.item.id == undefined) {
                 $state.go('main.inputs');
             }
+
             vm.total = $filter('number')(vm.total, 2);
             $rootScope.myError = false;
             $rootScope.loading = false;

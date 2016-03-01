@@ -30,6 +30,10 @@
         init();
 
         function init() {
+            if ($stateParams.item.number == undefined) {
+                $state.go('main.outputs');
+            }
+
             vm.webUrl = $rootScope.myConfig.webUrl;
 			
 			if ($rootScope.mode == 'ON-LINE (Heroku)') {

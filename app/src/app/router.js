@@ -12,10 +12,12 @@
         function resolveResource(url, state, sort) {
             resolver.$inject = ['$http', '$q', '$rootScope', 'ClientsLocalStorage', 'ClientsService',
                 'GoodsLocalStorage', 'GoodsService', 'UsersLocalStorage', 'UsersService',
-				'InputsLocalStorage', 'InputsService'];
+				'InputsLocalStorage', 'InputsService',
+                'OutputsLocalStorage', 'OutputsService'];
             function resolver($http, $q, $rootScope, ClientsLocalStorage, ClientsService,
                               GoodsLocalStorage, GoodsService, UsersLocalStorage, UsersService,
-							  InputsLocalStorage, InputsService) {
+							  InputsLocalStorage, InputsService,
+                              OutputsLocalStorage, OutputsService) {
 
                 var data;
                 var webUrl = $rootScope.myConfig.webUrl;
@@ -44,6 +46,11 @@
 							
 						case 'inputs':
                             data = InputsLocalStorage.getInputs();
+                            return data;
+                            break;
+
+                        case 'outputs':
+                            data = OutputsLocalStorage.getOutputs();
                             return data;
                             break;
                     }
@@ -123,7 +130,26 @@
                             } else {
                                 return InputsService.inputs;
                             }
-                            break;							
+                            break;
+
+                        case 'outputs':
+                            if ($rootScope.outputs === undefined) {
+                                return $http.get(webUrl + url)
+                                    .then(function (result) {
+                                        OutputsService.outputs = result.data;
+                                        $rootScope.outputs = true;
+                                        $rootScope.loading = false;
+                                        return OutputsService.outputs;
+                                    })
+                                    .catch(function (reject) {
+                                        $rootScope.loading = false;
+                                        $rootScope.myError = true;
+                                        return $q.reject(reject);
+                                    });
+                            } else {
+                                return OutputsService.outputs;
+                            }
+                            break;
                     }
 
                 }
@@ -467,6 +493,9 @@
                 },
                 data: {
                     requireLogin: true
+                },
+                resolve: {
+                    outputs: resolveResource('api/outputs/get', 'outputs', sort)
                 }
             })
 
@@ -482,6 +511,9 @@
                 },
                 data: {
                     requireLogin: true
+                },
+                resolve: {
+                    clients: resolveResource('api/clients/get', 'clients', sort)
                 }
             })
 

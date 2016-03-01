@@ -30,6 +30,11 @@
         init();
 
         function init() {
+            if ($stateParams.item.id == undefined) {
+                $state.go('main.outputs');
+            }
+
+            $rootScope.loading = false;
             var now = new Date();
             vm.date = $filter('date')(now, 'MM/dd/yyyy H:mm:ss ');
             vm.date = $filter('date')(now, 'dd/MM/yyyy H:mm:ss '); //russian style
