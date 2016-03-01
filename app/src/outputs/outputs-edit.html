@@ -1,4 +1,9 @@
-<center ng-init="outputsEditCtrl.init()">
+<center>
+    <div class="header">Warehouse</div>
+    <br><br>
+    <img ng-src="logo.jpg" class="logo">
+    <hr>
+
     <form ng-submit="outputsEditCtrl.outputsSubmit()" novalidate name="outputsEditCtrl.form">
         <div class="header" ng-click="outputsEditCtrl.goInputs()">
             Sales InvoicesID: {{outputsEditCtrl.number}}
@@ -7,11 +12,10 @@
         <table class="table table-bordered">
             <tr>
                 <td>
-                    <input type="text" class="form-control input"
-                           readonly style="width:130px"
-                           value="ID:">
+                    <input type="text" class="form-control readonly caption"
+                           readonly value="ID:">
                 </td>
-                <td style="width:100%">
+                <td class="width100">
                     <input type="text" class="form-control input" required digits-only
                            placeholder="Transaction ID" name="number"
                            ng-model="outputsEditCtrl.number">
@@ -23,22 +27,20 @@
             </tr>
             <tr>
                 <td>
-                    <input type="text" class="form-control input"
-                           readonly style="width:130px"
-                           value="Customer:">
+                    <input type="text" class="form-control readonly caption"
+                           readonly value="Customer:">
                 </td>
-                <td style="width:100%">
-                    <input type="text" class="form-control input" required readonly
+                <td>
+                    <input type="text" class="form-control readonly" required readonly
                            ng-model="outputsEditCtrl.client">
                 </td>
             </tr>
             <tr>
                 <td>
-                    <input type="text" class="form-control input"
-                           readonly style="width:130px"
-                           value="Date:">
+                    <input type="text" class="form-control readonly caption"
+                           readonly value="Date:">
                 </td>
-                <td style="width:100%">
+                <td>
                     <input type="text" class="form-control input" required
                            placeholder="Transaction date" name="date"
                            ng-model="outputsEditCtrl.date">
@@ -50,28 +52,27 @@
             </tr>
             <tr>
                 <td>
-                    <input type="text" class="form-control input"
-                           readonly style="width:130px"
-                           value="Description:">
+                    <input type="text" class="form-control readonly caption"
+                           readonly value="Description:">
                 </td>
-                <td style="width:100%">
+                <td>
                     <input type="text" class="form-control input" required
                            placeholder="Transaction description" name="description"
                            ng-model="outputsEditCtrl.description">
 
                     <div ng-if="outputsEditCtrl.form.$submitted">
-                        <div ng-show="outputsEditCtrl.form.description.$error.required" class="valid">Value required</div>
+                        <div ng-show="outputsEditCtrl.form.description.$error.required" class="valid">Value required
+                        </div>
                     </div>
                 </td>
             </tr>
             <tr>
                 <td>
-                    <input type="text" class="form-control input"
-                           readonly style="width:130px"
-                           value="Total:">
+                    <input type="text" class="form-control readonly caption"
+                           readonly value="Total:">
                 </td>
-                <td style="width:100%">
-                    <input type="text" class="form-control input" required readonly
+                <td>
+                    <input type="text" class="form-control readonly" required readonly
                            ng-model="outputsEditCtrl.total">
                 </td>
             </tr>

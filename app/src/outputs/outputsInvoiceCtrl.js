@@ -22,6 +22,8 @@
 
         angular.extend(vm, $stateParams.item);
 
+        init();
+
         function init() {
             $rootScope.myError = false;
             $rootScope.loading = false;

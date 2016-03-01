@@ -1,8 +1,16 @@
-<center ng-init="outputsDialogCtrl.init()">
-	<div class="header">Sales Invoices</div>
-		<br><br>
-			<h3>Are you sure you want to delete invoice {{outputsDialogCtrl.number}}?</h3>
-		<br><br>
-	<button class="btn btn-primary button" ng-click="outputsDialogCtrl.outputsDelete()">Yes</button>
+<center>
+	<div class="header">Warehouse</div>
+	<br><br>
+	<img ng-src="logo.jpg" class="logo">
+	<hr>
+
+	<br>
+		<span class="dialog">
+				Are you sure you want to delete {{outputsDialogCtrl.number}}?
+		</span>
+	<br><br>
+	<hr>
+	<br>
+	<button class="btn btn-primary button" ng-click="outputsDialogCtrl.outputsDelete()">Yes</button>&nbsp
 	<button class="btn btn-primary button" ng-click="outputsDialogCtrl.outputsEditBack()">No</button>
 </center>

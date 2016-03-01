@@ -1,84 +1,90 @@
-<center ng-init="outputsInvoiceCtrl.init()">
-	<div class="header" ng-click="outputsInvoiceCtrl.goOutputs()">
-		Sales InvoicesID: {{outputsInvoiceCtrl.number}}
-	</div>
-	<br><br>
-	<table class="table table-bordered">
-		<tr>
-			<td>
-				<input type="text" class="form-control input"
-					   readonly style="width:130px"
-					   value="ID:">
-			</td>
-			<td style="width:100%">
-				<input type="text" class="form-control input" required readonly
-					   ng-model="outputsInvoiceCtrl.number">
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<input type="text" class="form-control input"
-					   readonly style="width:130px"
-					   value="Customer:">
-			</td>
-			<td style="width:100%">
-				<input type="text" class="form-control input" required readonly
-					   ng-model="outputsInvoiceCtrl.client">
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<input type="text" class="form-control input"
-					   readonly style="width:130px"
-					   value="Date:">
-			</td>
-			<td style="width:100%">
-				<input type="text" class="form-control input" required readonly
-					   ng-model="outputsInvoiceCtrl.date">
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<input type="text" class="form-control input"
-					   readonly style="width:130px"
-					   value="Description:">
-			</td>
-			<td style="width:100%">
-				<input type="text" class="form-control input" required readonly
-					   ng-model="outputsInvoiceCtrl.description">
+<center>
+    <div class="header">Warehouse</div>
+    <br><br>
+    <img ng-src="logo.jpg" class="logo" ng-click="inputsCtrl.goToBack()">
+    <hr>
 
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<input type="text" class="form-control input"
-					   readonly style="width:130px"
-					   value="Total:">
-			</td>
-			<td style="width:100%">
-				<input type="text" class="form-control input" required readonly
-					   ng-model="outputsInvoiceCtrl.total">
-			</td>
-		</tr>
-	</table>
+    <div class="header" ng-click="outputsInvoiceCtrl.goOutputs()">
+        Sales InvoicesID: {{outputsInvoiceCtrl.number}}
+    </div>
+    <br><br>
+    <table class="table table-bordered">
+        <tr>
+            <td>
+                <input type="text" class="form-control readonly caption"
+                       readonly value="ID:">
+            </td>
+            <td class="width100">
+                <input type="text" class="form-control readonly" required readonly
+                       ng-model="outputsInvoiceCtrl.number">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <input type="text" class="form-control readonly caption"
+                       readonly value="Customer:">
+            </td>
+            <td>
+                <input type="text" class="form-control readonly" required readonly
+                       ng-model="outputsInvoiceCtrl.client">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <input type="text" class="form-control readonly caption"
+                       readonly value="Date:">
+            </td>
+            <td>
+                <input type="text" class="form-control readonly" required readonly
+                       ng-model="outputsInvoiceCtrl.date">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <input type="text" class="form-control readonly caption"
+                       readonly value="Description:">
+            </td>
+            <td>
+                <input type="text" class="form-control readonly" required readonly
+                       ng-model="outputsInvoiceCtrl.description">
 
-	<table class="table table-striped input" id="grid">
-		<th>Commodities</th>
-		<th>Price</th>
-		<th>Quantity</th>
-		<th>Total</th>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <input type="text" class="form-control readonly caption"
+                       readonly value="Total:">
+            </td>
+            <td>
+                <input type="text" class="form-control readonly" required readonly
+                       ng-model="outputsInvoiceCtrl.total">
+            </td>
+        </tr>
+    </table>
 
-		<tr ng-repeat="item in outputsInvoiceCtrl.outputInvoices | orderBy:outputsInvoiceCtrl.sortInvoice
+    <div class="header-invoice">
+        Records in invoice: {{invoiceData.length}}
+    </div>
+
+    <table class="table table-striped input" id="grid">
+        <tr ng-repeat="item in outputsInvoiceCtrl.outputInvoices | orderBy:outputsInvoiceCtrl.sortInvoice
 				| filter:outputsInvoiceCtrl.invoiceFilter as invoiceData track by $index"
-			ng-click="outputsInvoiceCtrl.editInvoice(item)">
-			<td style="width:50%">{{item.goods}}</td>
-			<td style="width:20%">{{item.price}}</td>
-			<td style="width:20%">{{item.quantity}}</td>
-			<td style="width:10%">{{item.total | number:2}}</td>
-		</tr>
-	</table>
-	<hr><h4><div class="label label-default" style="font-size:17px; background-color:#337ab7">Records count: {{invoiceData.length}}</div></h4><hr>
+            ng-click="outputsInvoiceCtrl.editInvoice(item)">
 
-	<button class="btn btn-primary button" ng-click="outputsInvoiceCtrl.addInvoice()">Add</button>&nbsp
-	<button class="btn btn-primary button" ng-click="outputsInvoiceCtrl.outputEditExitInvoice()">Back</button>
+            <td class="input">
+                <div class="name-div">
+                    ID: {{item.goods}} <br>
+                    Customer: {{item.price}} <br>
+                    Date: {{item.quantity}} <br>
+                    Total: {{item.total | number:2}}
+                </div>
+            </td>
+
+        </tr>
+    </table>
+
+    <hr>
+
+    <button class="btn btn-primary button" ng-click="outputsInvoiceCtrl.addInvoice()">Add</button>&nbsp
+    <button class="btn btn-primary button" ng-click="outputsInvoiceCtrl.outputEditExitInvoice()">Back</button>
 </center>
