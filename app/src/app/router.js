@@ -455,6 +455,9 @@
                 },
                 data: {
                     requireLogin: true
+                },
+                resolve: {
+                    goods: resolveResource('api/goods/get', 'goods', sort)
                 }
             })
 
@@ -571,6 +574,9 @@
                 },
                 data: {
                     requireLogin: true
+                },
+                resolve: {
+                    goods: resolveResource('api/goods/get', 'goods', sort)
                 }
             })
 

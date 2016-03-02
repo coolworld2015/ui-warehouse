@@ -6,18 +6,17 @@
         .controller('InputsInvoiceAddCtrl', InputsInvoiceAddCtrl);
 
     InputsInvoiceAddCtrl.$inject = ['$state', '$rootScope', '$filter', '$timeout', 'InputsLocalStorage', 'InputsInvoiceService',
-        'InputsInvoiceLocalStorage', '$stateParams', 'GoodsService', 'GoodsLocalStorage', 'InputsTransactionService',
-        'InputsTransactionLocalStorage'];
+        'InputsInvoiceLocalStorage', '$stateParams', 'goods',
+        'InputsTransactionService', 'InputsTransactionLocalStorage'];
 
     function InputsInvoiceAddCtrl($state, $rootScope, $filter, $timeout, InputsLocalStorage, InputsInvoiceService,
-        InputsInvoiceLocalStorage, $stateParams, GoodsService, GoodsLocalStorage, InputsTransactionService,
-        InputsTransactionLocalStorage) {
+                                  InputsInvoiceLocalStorage, $stateParams, goods,
+                                  InputsTransactionService, InputsTransactionLocalStorage) {
         var vm = this;
         var optionalGoods = {name: 'Select commodities'};
 
         angular.extend(vm, {
             init: init,
-            _getGoodsOn: getGoodsOn,
             updateChange: updateChange,
             selectedItem: optionalGoods,
             addSubmit: addSubmit,
@@ -36,32 +35,16 @@
                 $state.go('main.inputs');
             }
 
-            $rootScope.loading = false;
             var now = new Date();
             vm.date = $filter('date')(now, 'MM/dd/yyyy H:mm:ss ');
             vm.date = $filter('date')(now, 'dd/MM/yyyy H:mm:ss '); //russian style
             vm.description = '';
 
-            if ($rootScope.mode == 'ON-LINE (Heroku)') {
-                getGoodsOn();
-            } else {
-                vm.goods = GoodsLocalStorage.getGoods();
-                vm.goodsOptions = [].concat(vm.goods);
-                vm.goodsOptions.unshift(optionalGoods);
-                $rootScope.myError = false;
-                $rootScope.loading = false;
-            }
-        }
-
-        function getGoodsOn() {
-            GoodsService.getGoods()
-                .then(function (data) {
-                    vm.goodsOptions = [].concat(data.data);
-                    vm.goodsOptions.unshift(optionalGoods);
-                    $rootScope.myError = false;
-                    $rootScope.loading = false;
-                })
-                .catch(errorHandler);
+            vm.goods = goods;
+            vm.goodsOptions = [].concat(vm.goods);
+            vm.goodsOptions.unshift(optionalGoods);
+            $rootScope.myError = false;
+            $rootScope.loading = false;
         }
 
         function updateChange(item) {
