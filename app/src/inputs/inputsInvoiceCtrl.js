@@ -5,19 +5,18 @@
         .module('app')
         .controller('InputsInvoiceCtrl', InputsInvoiceCtrl);
 
-    InputsInvoiceCtrl.$inject = ['$state', '$rootScope', '$filter', '$timeout', 'InputsInvoiceService', 'InputsInvoiceLocalStorage', '$stateParams'];
+    InputsInvoiceCtrl.$inject = ['$state', '$rootScope', '$filter', '$timeout', '$stateParams', 'inputInvoices'];
 
-    function InputsInvoiceCtrl($state, $rootScope, $filter, $timeout, InputsInvoiceService, InputsInvoiceLocalStorage, $stateParams) {
+    function InputsInvoiceCtrl($state, $rootScope, $filter, $timeout, $stateParams, inputInvoices) {
         var vm = this;
 
         angular.extend(vm, {
             init: init,
-			_getInputInvoicesOn: getInputInvoicesOn,
             addInvoice: addInvoice,
             editInvoice: editInvoice,
             inputEditExitInvoice: inputEditExitInvoice,
             goInputs: goInputs,
-            _errorHandler: errorHandler			
+            _errorHandler: errorHandler
         });
 
         angular.extend(vm, $stateParams.item);
@@ -29,32 +28,16 @@
                 $state.go('main.inputs');
             }
 
-            $rootScope.myError = false;
-            $rootScope.loading = false;
+            vm.inputInvoices = [].concat(inputInvoices);
 
-			if ($rootScope.mode == 'ON-LINE (Heroku)') {
-                getInputInvoicesOn();
-            } else {
-                vm.inputInvoices = [].concat(InputsInvoiceLocalStorage.getInputInvoice());
-				$rootScope.myError = false;
-				$rootScope.loading = false;
-            }
-			
             vm.total = $filter('number')(vm.total, 2);
             vm.sortInvoice = 'invoiceID';
             vm.invoiceFilter = {invoiceID: $stateParams.item.id};
+
+            $rootScope.myError = false;
+            $rootScope.loading = false;
         }
-		
-        function getInputInvoicesOn() {
-			InputsInvoiceService.getInvoices()
-				.then(function(data){
-					vm.inputInvoices = data.data;
-					$rootScope.myError = false;
-					$rootScope.loading = false;
-				})
-				.catch(errorHandler);
-		}
-		
+
         function editInvoice(invoice) {
             $rootScope.loading = true;
             $timeout(function () {
@@ -84,10 +67,10 @@
                 $state.go('main.inputs');
             }, 100);
         }
-		
+
         function errorHandler() {
             $rootScope.loading = false;
             $rootScope.myError = true;
-        }		
+        }
     }
 })();

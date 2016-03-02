@@ -5,11 +5,7 @@
         .module('app')
         .factory('InputsInvoiceLocalStorage', InputsInvoiceLocalStorage);
 
-    InputsInvoiceLocalStorage.$inject = ['$rootScope'];
-
-    function InputsInvoiceLocalStorage($rootScope) {
-        var webUrl = $rootScope.myConfig.webUrl;
-
+    function InputsInvoiceLocalStorage() {
         return {
             invoices: [],
 

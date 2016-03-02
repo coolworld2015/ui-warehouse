@@ -1,7 +1,7 @@
 <center>
     <div class="header">Warehouse</div>
     <br><br>
-    <img ng-src="logo.jpg" class="logo" ng-click="inputsCtrl.goToBack()">
+    <img ng-src="logo.jpg" class="logo">
     <hr>
 
     <div class="header" ng-click="inputsInvoiceCtrl.goInputs()">
@@ -73,9 +73,9 @@
 
             <td class="input">
                 <div class="name-div">
-                    ID: {{item.goods}} <br>
-                    Customer: {{item.price}} <br>
-                    Date: {{item.quantity}} <br>
+                    Commodity: {{item.goods}} <br>
+                    Price: {{item.price}} <br>
+                    Quantity: {{item.quantity}} <br>
                     Total: {{item.total | number:2}}
                 </div>
             </td>

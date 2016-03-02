@@ -12,12 +12,14 @@
         function resolveResource(url, state, sort) {
             resolver.$inject = ['$http', '$q', '$rootScope', 'ClientsLocalStorage', 'ClientsService',
                 'GoodsLocalStorage', 'GoodsService', 'UsersLocalStorage', 'UsersService',
-				'InputsLocalStorage', 'InputsService',
-                'OutputsLocalStorage', 'OutputsService'];
+                'InputsLocalStorage', 'InputsService', 'OutputsLocalStorage', 'OutputsService',
+                'InputsInvoiceLocalStorage', 'InputsInvoiceService',
+                'OutputsInvoiceLocalStorage', 'OutputsInvoiceService'];
             function resolver($http, $q, $rootScope, ClientsLocalStorage, ClientsService,
                               GoodsLocalStorage, GoodsService, UsersLocalStorage, UsersService,
-							  InputsLocalStorage, InputsService,
-                              OutputsLocalStorage, OutputsService) {
+                              InputsLocalStorage, InputsService, OutputsLocalStorage, OutputsService,
+                              InputsInvoiceLocalStorage, InputsInvoiceService,
+                              OutputsInvoiceLocalStorage, OutputsInvoiceService) {
 
                 var data;
                 var webUrl = $rootScope.myConfig.webUrl;
@@ -42,15 +44,25 @@
                         case 'users':
                             data = UsersLocalStorage.getUsers();
                             return data;
-                            break;                        
-							
-						case 'inputs':
+                            break;
+
+                        case 'inputs':
                             data = InputsLocalStorage.getInputs();
                             return data;
                             break;
 
                         case 'outputs':
                             data = OutputsLocalStorage.getOutputs();
+                            return data;
+                            break;
+
+                        case 'inputInvoices':
+                            data = InputsInvoiceLocalStorage.getInputInvoice();
+                            return data;
+                            break;
+
+                        case 'outputInvoices':
+                            data = OutputsInvoiceLocalStorage.getOutputInvoice();
                             return data;
                             break;
                     }
@@ -112,7 +124,7 @@
                                 return UsersService.users.sort(sort);
                             }
                             break;
-							
+
                         case 'inputs':
                             if ($rootScope.inputs === undefined) {
                                 return $http.get(webUrl + url)
@@ -150,10 +162,49 @@
                                 return OutputsService.outputs;
                             }
                             break;
+
+                        case 'inputInvoices':
+                            if ($rootScope.inputInvoices === undefined) {
+                                return $http.get(webUrl + url)
+                                    .then(function (result) {
+                                        InputsInvoiceService.inputInvoices = result.data;
+                                        $rootScope.inputInvoices = true;
+                                        $rootScope.loading = false;
+                                        return InputsInvoiceService.inputInvoices;
+                                    })
+                                    .catch(function (reject) {
+                                        $rootScope.loading = false;
+                                        $rootScope.myError = true;
+                                        return $q.reject(reject);
+                                    });
+                            } else {
+                                return InputsInvoiceService.inputInvoices;
+                            }
+                            break;
+
+                        case 'outputInvoices':
+                            if ($rootScope.outputInvoices === undefined) {
+                                return $http.get(webUrl + url)
+                                    .then(function (result) {
+                                        OutputsInvoiceService.outputInvoices = result.data;
+                                        $rootScope.outputInvoices = true;
+                                        $rootScope.loading = false;
+                                        return OutputsInvoiceService.outputInvoices;
+                                    })
+                                    .catch(function (reject) {
+                                        $rootScope.loading = false;
+                                        $rootScope.myError = true;
+                                        return $q.reject(reject);
+                                    });
+                            } else {
+                                return OutputsInvoiceService.outputInvoices;
+                            }
+                            break;
                     }
 
                 }
             }
+
             return resolver;
         }
 
@@ -440,6 +491,9 @@
                 },
                 data: {
                     requireLogin: true
+                },
+                resolve: {
+                    inputInvoices: resolveResource('api/invoicein/get', 'inputInvoices', sort)
                 }
             })
 
@@ -559,6 +613,9 @@
                 },
                 data: {
                     requireLogin: true
+                },
+                resolve: {
+                    outputInvoices: resolveResource('api/invoiceout/get', 'outputInvoices', sort)
                 }
             })
 
