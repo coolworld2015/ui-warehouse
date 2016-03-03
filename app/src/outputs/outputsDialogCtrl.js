@@ -6,23 +6,24 @@
         .controller('OutputsDialogCtrl', OutputsDialogCtrl);
 
     OutputsDialogCtrl.$inject = ['$state', '$q', '$rootScope', '$timeout', 'OutputsService', 'OutputsLocalStorage',
-	'OutputsInvoiceService', 'OutputsInvoiceLocalStorage', 'GoodsService', 'ClientsService', '$stateParams'];
+        'OutputsInvoiceService', 'OutputsInvoiceLocalStorage', 'GoodsService', 'ClientsService', '$stateParams'];
 
     function OutputsDialogCtrl($state, $q, $rootScope, $timeout, OutputsService, OutputsLocalStorage,
-	OutputsInvoiceService, OutputsInvoiceLocalStorage, GoodsService, ClientsService, $stateParams) {
+                               OutputsInvoiceService, OutputsInvoiceLocalStorage, GoodsService, ClientsService, $stateParams) {
         var vm = this;
 
         angular.extend(vm, {
             init: init,
-			_getOutputInvoicesOn: getOutputInvoicesOn,
+            _getOutputInvoicesOn: getOutputInvoicesOn,
             outputsDelete: outputsDelete,
+            _deleteItem: deleteItem,
             _fillRequests: fillRequests,
             _modifyGoods: modifyGoods,
             _findGood: findGood,
             _editGood: editGood,
-			_deleteOutputsInvoiceItem: deleteOutputsInvoiceItem,
+            _deleteOutputsInvoiceItem: deleteOutputsInvoiceItem,
             outputsEditBack: outputsEditBack,
-			_errorHandler: errorHandler
+            _errorHandler: errorHandler
         });
 
         angular.extend(vm, $stateParams.item);
@@ -35,36 +36,61 @@
             }
 
             vm.webUrl = $rootScope.myConfig.webUrl;
-			
-			if ($rootScope.mode == 'ON-LINE (Heroku)') {
+
+            if ($rootScope.mode == 'ON-LINE (Heroku)') {
                 getOutputInvoicesOn();
             } else {
                 vm.outputInvoices = [].concat(OutputsInvoiceLocalStorage.getOutputInvoice());
-				$rootScope.myError = false;
-				$rootScope.loading = false;
+                $rootScope.myError = false;
+                $rootScope.loading = false;
             }
-			
+
             vm.requests = [];
             vm.index = [];
             vm.i = 0;
         }
-		
+
         function getOutputInvoicesOn() {
-			OutputsInvoiceService.getInvoices()
-				.then(function(data){
-					vm.outputInvoices = data.data;
-					$rootScope.myError = false;
-					$rootScope.loading = false;
-				})
-				.catch(errorHandler);
-		}
-		
+            OutputsInvoiceService.getInvoices()
+                .then(function (data) {
+                    vm.outputInvoices = data.data;
+                    $rootScope.myError = false;
+                    $rootScope.loading = false;
+                })
+                .catch(errorHandler);
+        }
+
         function outputsDelete() {
             $rootScope.loading = true;
             $rootScope.myError = false;
-			
-			if ($rootScope.mode != 'ON-LINE (Heroku)') {
-				OutputsLocalStorage.deleteItem(vm.id);
+
+            if ($rootScope.mode == 'ON-LINE (Heroku)') {
+                fillRequests();
+
+                $q.serial(vm.requests)
+                    .catch(errorHandler);
+
+                ClientsService.findClient($stateParams.item.clientID)
+                    .then(function (client) {
+                        client.data.sum = parseFloat(client.data.sum) + parseFloat($stateParams.item.total);
+
+                        ClientsService.editItem(client.data)
+                            .then(function () {
+
+                                OutputsService.deleteItem(vm.id)
+                                    .then(function () {
+                                        deleteItem(vm.id);
+                                        $rootScope.myError = false;
+                                        $state.go('main.outputs');
+                                    })
+                                    .catch(errorHandler);
+
+                            })
+                            .catch(errorHandler);
+                    })
+                    .catch(errorHandler);
+            } else {
+                OutputsLocalStorage.deleteItem(vm.id);
 
                 //inputTransaction.setClientSum($scope.clientID, -$scope.total);
 
@@ -79,33 +105,19 @@
                 $timeout(function () {
                     $state.go('main.outputs');
                 }, 100);
-				return;
             }
-			
-            fillRequests();
-
-            $q.serial(vm.requests)
-                .catch(errorHandler);
-
-            ClientsService.findClient($stateParams.item.clientID)
-                .then(function (client) {
-                    client.data.sum = parseFloat(client.data.sum) + parseFloat($stateParams.item.total);
-
-                    ClientsService.editItem(client.data)
-                        .then(function () {
-                        })
-                        .catch(errorHandler);
-                })
-                .catch(errorHandler);
-
-            OutputsService.deleteItem(vm.id)
-                .then(function () {
-                    $rootScope.myError = false;
-                    $state.go('main.outputs');
-                })
-                .catch(errorHandler);
         }
-		
+
+        function deleteItem(id) {
+            var outputs = OutputsService.outputs;
+            for (var i = 0; i < outputs.length; i++) {
+                if (outputs[i].id == id) {
+                    outputs.splice(i, 1);
+                    break;
+                }
+            }
+        }
+
         function fillRequests() {
             vm.outputInvoices.forEach(function (el) {
                 if (el.invoiceID == $stateParams.item.id) {
@@ -118,7 +130,7 @@
         function modifyGoods() {
             return findGood()
                 .then(editGood)
-                .then(deleteOutputsInvoiceItem)				
+                .then(deleteOutputsInvoiceItem)
                 .catch(errorHandler)
         }
 
@@ -133,7 +145,7 @@
                         quantity: quantity,
                         store: good.data.store,
                         description: good.data.description,
-						goodsID: vm.index[vm.i].id
+                        goodsID: vm.index[vm.i].id
                     };
                 });
         }
@@ -145,24 +157,24 @@
                 })
                 .catch(errorHandler);
         }
-		
-		function deleteOutputsInvoiceItem() {
-            return 	OutputsInvoiceService.deleteItem(vm.item.goodsID)
-				.then(function () {
-				})
-				.catch(errorHandler);
+
+        function deleteOutputsInvoiceItem() {
+            return OutputsInvoiceService.deleteItem(vm.item.goodsID)
+                .then(function () {
+                })
+                .catch(errorHandler);
         }
-		
+
         function outputsEditBack() {
             $rootScope.loading = true;
             $timeout(function () {
                 $state.go('main.outputs');
             }, 100);
         }
-		
+
         function errorHandler() {
             $rootScope.loading = false;
             $rootScope.myError = true;
-        }		
+        }
     }
 })();

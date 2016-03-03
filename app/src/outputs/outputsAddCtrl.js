@@ -19,6 +19,7 @@
             updateChange: updateChange,
             selectedItem: optionalClient,
             outputsAddSubmit: outputsAddSubmit,
+            _addItem: addItem,
             outputsAddBack: outputsAddBack,
             _errorHandler: errorHandler
         });
@@ -74,6 +75,7 @@
             if ($rootScope.mode == 'ON-LINE (Heroku)') {
                 OutputsService.addItem(item)
                     .then(function () {
+                        addItem(item);
                         $rootScope.myError = false;
                         $state.go('main.outputs-edit', {item: item});
                     })
@@ -85,6 +87,10 @@
                     $state.go('main.outputs-edit', {item: item});
                 }, 100);
             }
+        }
+
+        function addItem(item) {
+            OutputsService.outputs.push(item);
         }
 
         function outputsAddBack() {
