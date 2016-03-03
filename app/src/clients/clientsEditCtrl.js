@@ -13,6 +13,7 @@
         angular.extend(vm, {
             init: init,
             clientsSubmit: clientsSubmit,
+            _editItem: editItem,
             clientsDialog: clientsDialog,
             clientsEditBack: clientsEditBack,
             _errorHandler: errorHandler
@@ -49,6 +50,7 @@
             if ($rootScope.mode == 'ON-LINE (Heroku)') {
                 ClientsService.editItem(item)
                     .then(function () {
+                        editItem(item);
                         $rootScope.myError = false;
                         $state.go('main.clients');
                     })
@@ -59,6 +61,16 @@
                 $timeout(function () {
                     $state.go('main.clients');
                 }, 100);
+            }
+        }
+
+        function editItem(item) {
+            var clients = ClientsService.clients;
+            for (var i = 0; i < clients.length; i++) {
+                if (clients[i].id == item.id) {
+                    clients.splice(i, 1, item);
+                    break;
+                }
             }
         }
 

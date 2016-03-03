@@ -13,6 +13,7 @@
         angular.extend(vm, {
             init: init,
             clientsDelete: clientsDelete,
+            _deleteItem: deleteItem,
             clientsEditBack: clientsEditBack,
 			_errorHandler: errorHandler
         });
@@ -32,7 +33,8 @@
 			if ($rootScope.mode == 'ON-LINE (Heroku)') {
 				ClientsService.deleteItem(vm.id)
 					.then(function () {
-						$rootScope.myError = false;
+                        deleteItem(vm.id);
+                        $rootScope.myError = false;
 						$state.go('main.clients');
 					})
 					.catch(errorHandler);
@@ -42,6 +44,16 @@
                 $timeout(function () {
                     $state.go('main.clients');
                 }, 100);
+            }
+        }
+        
+        function deleteItem(id) {
+            var clients = ClientsService.clients;
+            for (var i = 0; i < clients.length; i++) {
+                if (clients[i].id == id) {
+                    clients.splice(i, 1);
+                    break;
+                }
             }
         }
 
