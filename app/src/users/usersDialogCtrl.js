@@ -13,6 +13,7 @@
         angular.extend(vm, {
             init: init,
             usersDelete: usersDelete,
+            _deleteItem: deleteItem,
             usersEditBack: usersEditBack,
             _errorHandler: errorHandler
         });
@@ -22,6 +23,9 @@
         init();
 
         function init() {
+            if ($stateParams.item.id == undefined) {
+                $state.go('main.users');
+            }
             $rootScope.loading = false;
         }
 
@@ -32,6 +36,7 @@
             if ($rootScope.mode == 'ON-LINE (Heroku)') {
                 UsersService.deleteItem(vm.id)
                     .then(function () {
+                        deleteItem(vm.id);
                         $rootScope.myError = false;
                         $state.go('main.users');
                     })
@@ -42,6 +47,16 @@
                 $timeout(function () {
                     $state.go('main.users');
                 }, 100);
+            }
+        }
+
+        function deleteItem(id) {
+            var users = UsersService.users;
+            for (var i = 0; i < users.length; i++) {
+                if (users[i].id == id) {
+                    users.splice(i, 1);
+                    break;
+                }
             }
         }
 

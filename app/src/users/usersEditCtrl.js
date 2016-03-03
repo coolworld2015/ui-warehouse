@@ -13,6 +13,7 @@
         angular.extend(vm, {
             init: init,
             usersSubmit: usersSubmit,
+            _editItem: editItem,
             usersDialog: usersDialog,
             usersEditBack: usersEditBack,
 			_errorHandler: errorHandler
@@ -48,6 +49,7 @@
             if ($rootScope.mode == 'ON-LINE (Heroku)') {
 				UsersService.editItem(item)
 					.then(function () {
+                        editItem(item);
 						$rootScope.myError = false;
 						$state.go('main.users');
 					})
@@ -59,6 +61,16 @@
                     $state.go('main.users');
                 }, 100);
 			}
+        }
+
+        function editItem(item) {
+            var users = UsersService.users;
+            for (var i = 0; i < users.length; i++) {
+                if (users[i].id == item.id) {
+                    users.splice(i, 1, item);
+                    break;
+                }
+            }
         }
 
         function usersDialog() {

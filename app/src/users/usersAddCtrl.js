@@ -13,6 +13,7 @@
         angular.extend(vm, {
             init: init,
             usersAddSubmit: usersAddSubmit,
+            _addItem: addItem,
             usersAddBack: usersAddBack,
 			_errorHandler: errorHandler
         });
@@ -42,6 +43,7 @@
             if ($rootScope.mode == 'ON-LINE (Heroku)') {
 				UsersService.addItem(item)
 					.then(function () {
+                        addItem(item);
 						$rootScope.myError = false;
 						$state.go('main.users');
 					})
@@ -53,6 +55,10 @@
                     $state.go('main.users');
                 }, 100);
 			}
+        }
+
+        function addItem(item) {
+            UsersService.users.push(item);
         }
 
         function usersAddBack() {
