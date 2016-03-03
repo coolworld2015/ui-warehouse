@@ -19,6 +19,7 @@
             updateChange: updateChange,
             selectedItem: optionalClient,
             inputsAddSubmit: inputsAddSubmit,
+            _addItem: addItem,
             inputsAddBack: inputsAddBack,
             _errorHandler: errorHandler
         });
@@ -74,6 +75,7 @@
             if ($rootScope.mode == 'ON-LINE (Heroku)') {
                 InputsService.addItem(item)
                     .then(function () {
+                        addItem(item);
                         $rootScope.myError = false;
                         $state.go('main.inputs-edit', {item: item});
                     })
@@ -85,6 +87,10 @@
                     $state.go('main.inputs-edit', {item: item});
                 }, 100);
             }
+        }
+
+        function addItem(item) {
+            InputsService.inputs.push(item);
         }
 
         function inputsAddBack() {

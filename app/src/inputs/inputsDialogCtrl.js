@@ -6,28 +6,29 @@
         .controller('InputsDialogCtrl', InputsDialogCtrl);
 
     InputsDialogCtrl.$inject = ['$state', '$q', '$rootScope', '$timeout', 'InputsService', 'InputsLocalStorage',
-		'InputsInvoiceService', 'InputsInvoiceLocalStorage', 'GoodsService', 'ClientsService', '$stateParams'];
+        'InputsInvoiceService', 'InputsInvoiceLocalStorage', 'GoodsService', 'ClientsService', '$stateParams'];
 
     function InputsDialogCtrl($state, $q, $rootScope, $timeout, InputsService, InputsLocalStorage,
-		InputsInvoiceService, InputsInvoiceLocalStorage, GoodsService, ClientsService, $stateParams) {
+                              InputsInvoiceService, InputsInvoiceLocalStorage, GoodsService, ClientsService, $stateParams) {
         var vm = this;
 
         angular.extend(vm, {
             init: init,
-			_getInputInvoicesOn: getInputInvoicesOn,
+            _getInputInvoicesOn: getInputInvoicesOn,
             inputsDelete: inputsDelete,
+            _deleteItem: deleteItem,
             _fillRequests: fillRequests,
             _modifyGoods: modifyGoods,
             _findGood: findGood,
             _editGood: editGood,
-			_deleteInputsInvoiceItem: deleteInputsInvoiceItem,
+            _deleteInputsInvoiceItem: deleteInputsInvoiceItem,
             inputsEditBack: inputsEditBack,
             _errorHandler: errorHandler
         });
 
         angular.extend(vm, $stateParams.item);
 
-		init();
+        init();
 
         function init() {
             if ($stateParams.item.number == undefined) {
@@ -35,36 +36,61 @@
             }
 
             vm.webUrl = $rootScope.myConfig.webUrl;
-			
-			if ($rootScope.mode == 'ON-LINE (Heroku)') {
+
+            if ($rootScope.mode == 'ON-LINE (Heroku)') {
                 getInputInvoicesOn();
             } else {
                 vm.inputInvoices = [].concat(InputsInvoiceLocalStorage.getInputInvoice());
-				$rootScope.myError = false;
-				$rootScope.loading = false;
+                $rootScope.myError = false;
+                $rootScope.loading = false;
             }
-			
+
             vm.requests = [];
             vm.index = [];
             vm.i = 0;
         }
 
         function getInputInvoicesOn() {
-			InputsInvoiceService.getInvoices()
-				.then(function(data){
-					vm.inputInvoices = data.data;
-					$rootScope.myError = false;
-					$rootScope.loading = false;
-				})
-				.catch(errorHandler);
-		}
-		
+            InputsInvoiceService.getInvoices()
+                .then(function (data) {
+                    vm.inputInvoices = data.data;
+                    $rootScope.myError = false;
+                    $rootScope.loading = false;
+                })
+                .catch(errorHandler);
+        }
+
         function inputsDelete() {
             $rootScope.loading = true;
             $rootScope.myError = false;
-			
-			if ($rootScope.mode != 'ON-LINE (Heroku)') {
-				InputsLocalStorage.deleteItem(vm.id);
+
+            if ($rootScope.mode == 'ON-LINE (Heroku)') {
+                fillRequests();
+
+                $q.serial(vm.requests)
+                    .catch(errorHandler);
+
+                ClientsService.findClient($stateParams.item.clientID)
+                    .then(function (client) {
+                        client.data.sum = parseFloat(client.data.sum) - parseFloat($stateParams.item.total);
+
+                        ClientsService.editItem(client.data)
+                            .then(function () {
+
+                                InputsService.deleteItem(vm.id)
+                                    .then(function () {
+                                        deleteItem(vm.id);
+                                        $rootScope.myError = false;
+                                        $state.go('main.inputs');
+                                    })
+                                    .catch(errorHandler);
+
+                            })
+                            .catch(errorHandler);
+                    })
+                    .catch(errorHandler);
+            } else {
+                InputsLocalStorage.deleteItem(vm.id);
 
                 //inputTransaction.setClientSum($scope.clientID, -$scope.total);
 
@@ -75,36 +101,22 @@
                 });
 
                 //InputInvoiceService.deleteItemInvoice($scope.id);
+
                 $rootScope.loading = true;
                 $timeout(function () {
                     $state.go('main.inputs');
                 }, 100);
-				return;
             }
-			
-            fillRequests();
+        }
 
-            $q.serial(vm.requests)
-                .catch(errorHandler);
-
-            ClientsService.findClient($stateParams.item.clientID)
-                .then(function (client) {
-                    client.data.sum = parseFloat(client.data.sum) - parseFloat($stateParams.item.total);
-
-                    ClientsService.editItem(client.data)
-                        .then(function () {
-							
-							InputsService.deleteItem(vm.id)
-								.then(function () {
-											$rootScope.myError = false;
-											$state.go('main.inputs');
-								})
-								.catch(errorHandler);
-								
-                        })
-                        .catch(errorHandler);
-                })
-                .catch(errorHandler);
+        function deleteItem(id) {
+            var inputs = InputsService.inputs;
+            for (var i = 0; i < inputs.length; i++) {
+                if (inputs[i].id == id) {
+                    inputs.splice(i, 1);
+                    break;
+                }
+            }
         }
 
         function fillRequests() {
@@ -134,7 +146,7 @@
                         quantity: quantity,
                         store: good.data.store,
                         description: good.data.description,
-						goodsID: vm.index[vm.i].id
+                        goodsID: vm.index[vm.i].id
                     };
                 });
         }
@@ -146,14 +158,14 @@
                 })
                 .catch(errorHandler);
         }
-		
-		function deleteInputsInvoiceItem() {
-            return 	InputsInvoiceService.deleteItem(vm.item.goodsID)
-				.then(function () {
-				})
-				.catch(errorHandler);
+
+        function deleteInputsInvoiceItem() {
+            return InputsInvoiceService.deleteItem(vm.item.goodsID)
+                .then(function () {
+                })
+                .catch(errorHandler);
         }
-										
+
         function inputsEditBack() {
             $rootScope.loading = true;
             $timeout(function () {
