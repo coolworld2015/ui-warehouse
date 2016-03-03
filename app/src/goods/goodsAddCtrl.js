@@ -13,6 +13,7 @@
         angular.extend(vm, {
             init: init,
             goodsAddSubmit: goodsAddSubmit,
+            _addItem: addItem,
             goodsAddBack: goodsAddBack,
 			_errorHandler: errorHandler
         });
@@ -44,6 +45,7 @@
 			if ($rootScope.mode == 'ON-LINE (Heroku)') {
 				GoodsService.addItem(item)
 					.then(function () {
+                        addItem(item);
 						$rootScope.myError = false;
 						$state.go('main.goods');
 					})
@@ -55,6 +57,10 @@
                     $state.go('main.goods');
                 }, 100);
             }
+        }
+
+        function addItem(item) {
+            GoodsService.goods.push(item);
         }
 
         function goodsAddBack() {

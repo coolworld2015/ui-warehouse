@@ -23,6 +23,9 @@
         init();
 
         function init() {
+            if ($stateParams.item.id == undefined) {
+                $state.go('main.clients');
+            }
             $rootScope.loading = false;
         }
 
@@ -46,7 +49,7 @@
                 }, 100);
             }
         }
-        
+
         function deleteItem(id) {
             var clients = ClientsService.clients;
             for (var i = 0; i < clients.length; i++) {

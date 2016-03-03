@@ -13,6 +13,7 @@
         angular.extend(vm, {
             init: init,
             goodsDelete: goodsDelete,
+            _deleteItem: deleteItem,
             goodsEditBack: goodsEditBack,
 			_errorHandler: errorHandler
         });
@@ -22,6 +23,9 @@
         init();
 
         function init() {
+            if ($stateParams.item.id == undefined) {
+                $state.go('main.goods');
+            }
             $rootScope.loading = false;
         }
 
@@ -32,6 +36,7 @@
 			if ($rootScope.mode == 'ON-LINE (Heroku)') {
 				GoodsService.deleteItem(vm.id)
 					.then(function () {
+                        deleteItem(vm.id);
 						$rootScope.myError = false;
 						$state.go('main.goods');
 					})
@@ -42,6 +47,16 @@
                 $timeout(function () {
                     $state.go('main.goods');
                 }, 100);
+            }
+        }
+
+        function deleteItem(id) {
+            var goods = GoodsService.goods;
+            for (var i = 0; i < goods.length; i++) {
+                if (goods[i].id == id) {
+                    goods.splice(i, 1);
+                    break;
+                }
             }
         }
 
