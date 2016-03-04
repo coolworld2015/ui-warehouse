@@ -102,7 +102,6 @@
 
                 //InputInvoiceService.deleteItemInvoice($scope.id);
 
-                $rootScope.loading = true;
                 $timeout(function () {
                     $state.go('main.inputs');
                 }, 100);
