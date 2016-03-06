@@ -20,7 +20,7 @@
 
         function getInputInvoice() {
             if (InputsInvoiceLocalStorage.invoices === undefined) {
-                var invoices = localStorage.getItem('warehouse_inputs_invoices');
+                var invoices = localStorage.getItem('ui-warehouse.inputs.invoices');
                 invoices = JSON.parse(invoices);
                 InputsInvoiceLocalStorage.invoices = invoices;
             }
@@ -78,11 +78,11 @@
         }
 
         function setInputInvoice() {
-            localStorage.setItem('warehouse_inputs_invoices', JSON.stringify(InputsInvoiceLocalStorage.invoices));
+            localStorage.setItem('ui-warehouse.inputs.invoices', JSON.stringify(InputsInvoiceLocalStorage.invoices));
         }
 
         function uploadInputInvoice(invoices) {
-            localStorage.setItem('warehouse_inputs_invoices', JSON.stringify(invoices));
+            localStorage.setItem('ui-warehouse.inputs.invoices', JSON.stringify(invoices));
             InputsInvoiceLocalStorage.invoices = undefined;
         }
     }

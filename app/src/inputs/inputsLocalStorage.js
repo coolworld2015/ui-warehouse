@@ -20,7 +20,7 @@
 
         function getInputs() {
             if (InputsLocalStorage.inputs === undefined) {
-                var inputs = localStorage.getItem('warehouse_inputs');
+                var inputs = localStorage.getItem('ui-warehouse.inputs');
                 inputs = JSON.parse(inputs);
                 InputsLocalStorage.inputs = inputs;
             }
@@ -60,11 +60,11 @@
         }
 
         function setInput() {
-            localStorage.setItem('warehouse_inputs', JSON.stringify(InputsLocalStorage.inputs));
+            localStorage.setItem('ui-warehouse.inputs', JSON.stringify(InputsLocalStorage.inputs));
         }
 
         function uploadInput(inputs) {
-            localStorage.setItem('warehouse_inputs', JSON.stringify(inputs));
+            localStorage.setItem('ui-warehouse.inputs', JSON.stringify(inputs));
             InputsLocalStorage.inputs = undefined;
         }
 

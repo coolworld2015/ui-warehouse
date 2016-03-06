@@ -23,7 +23,7 @@
 		
         function getOutputs() {
             if (OutputsLocalStorage.outputs === undefined) {
-                var outputs = localStorage.getItem('warehouse_outputs');
+                var outputs = localStorage.getItem('ui-warehouse.outputs');
                 outputs = JSON.parse(outputs);
                 OutputsLocalStorage.outputs = outputs;
             }
@@ -63,11 +63,11 @@
         }
 
         function setOutput() {
-            localStorage.setItem('warehouse_outputs', JSON.stringify(OutputsLocalStorage.outputs));
+            localStorage.setItem('ui-warehouse.outputs', JSON.stringify(OutputsLocalStorage.outputs));
         }
 
         function uploadOutput(outputs) {
-            localStorage.setItem('warehouse_outputs', JSON.stringify(outputs));
+            localStorage.setItem('ui-warehouse.outputs', JSON.stringify(outputs));
             OutputsLocalStorage.outputs = undefined;
         }
 
