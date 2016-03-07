@@ -16,6 +16,12 @@
             init: init,
             toggleMode: toggleMode,
             doAction: doAction,
+			_getClientsHeroku: getClientsHeroku,
+			_getGoodsHeroku: getGoodsHeroku,
+			_jsonClients: jsonClients,
+			_loading: loading,
+			_error: error,
+			_complete: complete,
             toMain: toMain
         });
 
@@ -30,7 +36,8 @@
             vm.options = [
                 {name: 'Select transaction', value: 'none'},
                 {name: 'Get clients (Heroku)', value: 'heroku.clients.get'},
-                {name: 'Get goods (Heroku)', value: 'heroku.goods.get'}
+                {name: 'Get goods (Heroku)', value: 'heroku.goods.get'},
+                {name: 'JSON Clients', value: 'json.clients'}
             ];
             vm.selectedItem = vm.options[0];
         }
@@ -68,6 +75,12 @@
                     getGoodsHeroku();
                     break;
                 }
+				
+				case 'json.clients':
+                {
+                    jsonClients();
+                    break;
+                }
             }
         }
 
@@ -94,7 +107,16 @@
                     error();
                 });
         }
-
+		
+        function jsonClients() {
+            var myWindow = window.open("_blank");
+			var clients = ClientsLocalStorage.getClients();
+ 
+			myWindow.document.write(JSON.stringify(clients));
+			myWindow.document.execCommand('SaveAs', false, "C:/iSpace/users/default.htm");
+			complete();
+        }
+		
         function loading() {
             $rootScope.loading = true;
             $rootScope.myError = false;
