@@ -6,10 +6,12 @@
         .controller('OutputsInvoiceDialogCtrl', OutputsInvoiceDialogCtrl);
 
     OutputsInvoiceDialogCtrl.$inject = ['$state', '$rootScope', '$timeout', 'OutputsInvoiceService', 'OutputsService',
-        'OutputsInvoiceLocalStorage', 'GoodsService', 'ClientsService', '$stateParams'];
+        'OutputsInvoiceLocalStorage', 'GoodsService', 'ClientsService', '$stateParams',
+        'OutputsLocalStorage', 'OutputsTransactionLocalStorage'];
 
     function OutputsInvoiceDialogCtrl($state, $rootScope, $timeout, OutputsInvoiceService, OutputsService,
-        OutputsInvoiceLocalStorage, GoodsService, ClientsService, $stateParams) {
+                                      OutputsInvoiceLocalStorage, GoodsService, ClientsService, $stateParams,
+                                      OutputsLocalStorage, OutputsTransactionLocalStorage) {
         var vm = this;
 
         angular.extend(vm, {
@@ -84,17 +86,9 @@
             } else {
                 OutputsInvoiceLocalStorage.deleteItem(vm.id);
 
-//                var id = $scope.invoiceRecordID;
-//                InputInvoiceService.deleteItem(id);
-//
-//                $scope.total = parseFloat($scope.total) - parseFloat($scope.invoiceTotal);
-//                $scope.inputSubmitTotal();
-//
-//                inputTransaction.setClientSum($scope.clientID, -$scope.invoiceTotal);
-//                inputTransaction.setStoreSum($scope.goodsID, -$scope.invoiceQuantity);
-//
-//                $scope.sum = parseFloat($scope.total).toFixed(2);
-//                $rootScope.view = 'inputEditForm';
+                OutputsTransactionLocalStorage.setClientSum($stateParams.item.clientID, -sum);
+                OutputsTransactionLocalStorage.setStoreSum($stateParams.invoice.goodsID, -vm.quantity);
+                OutputsLocalStorage.setOutput();
 
                 $rootScope.loading = true;
                 $timeout(function () {
