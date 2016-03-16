@@ -14,7 +14,7 @@
             editItem: editItem,
             deleteItem: deleteItem,
             deleteItemInvoice: deleteItemInvoice,
-
+            setInputInvoice: setInputInvoice,
             uploadInputInvoice: uploadInputInvoice
         };
 

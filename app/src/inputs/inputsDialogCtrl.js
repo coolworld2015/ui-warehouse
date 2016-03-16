@@ -6,10 +6,12 @@
         .controller('InputsDialogCtrl', InputsDialogCtrl);
 
     InputsDialogCtrl.$inject = ['$state', '$q', '$rootScope', '$timeout', 'InputsService', 'InputsLocalStorage',
-        'InputsInvoiceService', 'InputsInvoiceLocalStorage', 'GoodsService', 'ClientsService', '$stateParams'];
+        'InputsInvoiceService', 'InputsInvoiceLocalStorage', 'GoodsService', 'ClientsService', '$stateParams',
+        'InputsTransactionLocalStorage'];
 
     function InputsDialogCtrl($state, $q, $rootScope, $timeout, InputsService, InputsLocalStorage,
-                              InputsInvoiceService, InputsInvoiceLocalStorage, GoodsService, ClientsService, $stateParams) {
+                              InputsInvoiceService, InputsInvoiceLocalStorage, GoodsService, ClientsService, $stateParams,
+                              InputsTransactionLocalStorage) {
         var vm = this;
 
         angular.extend(vm, {
@@ -90,17 +92,17 @@
                     })
                     .catch(errorHandler);
             } else {
-                InputsLocalStorage.deleteItem(vm.id);
-
-                //inputTransaction.setClientSum($scope.clientID, -$scope.total);
+                var sum = parseFloat($stateParams.item.total);
+                InputsTransactionLocalStorage.setClientSum($stateParams.item.clientID, -sum);
 
                 vm.inputInvoices.forEach(function (el) {
                     if (el.invoiceID == vm.id) {
-                        //inputTransaction.setStoreSum(el.goodsID, -el.quantity);
+                        InputsTransactionLocalStorage.setStoreSum(el.goodsID, -el.quantity);
                     }
                 });
 
-                //InputInvoiceService.deleteItemInvoice($scope.id);
+                InputsInvoiceLocalStorage.deleteItemInvoice($stateParams.item.id);
+                InputsLocalStorage.deleteItem(vm.id);
 
                 $timeout(function () {
                     $state.go('main.inputs');
