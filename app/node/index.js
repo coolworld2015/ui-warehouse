@@ -76,6 +76,12 @@ app.post('/api/users/delete', Users.removeUser);
 app.get('/api/users/drop', Users.removeAllUsers);
 
 //------------------------------------------------------------------------
+var mongoAudit = require('./audit').Audit;
+
+app.get('/api/audit/get', mongoAudit.getAudit);
+app.post('/api/audit/add', mongoAudit.addAudit);
+
+//------------------------------------------------------------------------
 var Inputs = require('./inputs').Inputs;
 
 app.get('/api/inputs/get', Inputs.getInputs);

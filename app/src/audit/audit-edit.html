@@ -1,0 +1,51 @@
+<center>
+    <div class="header">UI-GAI</div>
+    <br><br>
+    <img ng-src="logo.jpg" class="logo" ng-click="auditEditCtrl.goToBack()">
+    <hr>
+    <form ng-submit="auditEditCtrl.auditSubmit()" novalidate name="auditEditCtrl.form">
+        <div class="header">&nbsp;{{auditEditCtrl.date}}</div>
+        <br><br>
+        <table class="table table-bordered">
+            <tr>
+                <td>
+                    <input type="text" class="form-control input" required
+                           placeholder="Name" name="name"
+                           ng-model="auditEditCtrl.name">
+
+                    <div ng-if="auditEditCtrl.form.$submitted">
+                        <div ng-show="auditEditCtrl.form.name.$error.required" class="valid">Value required</div>
+                    </div>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <input type="text" class="form-control input" required
+                           placeholder="IP" name="ip"
+                           ng-model="auditEditCtrl.ip">
+
+                    <div ng-if="auditEditCtrl.form.$submitted">
+                        <div ng-show="auditEditCtrl.form.ip.$error.required" class="valid">Value required</div>
+                    </div>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+					<textarea rows=5 type="text" class="form-control input" required
+                              placeholder="Description" name="description"
+                              ng-model="auditEditCtrl.description">
+					</textarea>
+
+                    <div ng-if="auditEditCtrl.form.$submitted">
+                        <div ng-show="auditEditCtrl.form.description.$error.required" class="valid">Value required</div>
+                    </div>
+                </td>
+            </tr>
+        </table>
+
+        <button type="button" class="btn btn-primary button" ng-click="auditEditCtrl.auditEditBack()">Back</button>
+    </form>
+    <br><br>
+</center>

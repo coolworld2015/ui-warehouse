@@ -200,6 +200,20 @@
                                 return OutputsInvoiceService.outputInvoices;
                             }
                             break;
+
+                        case 'audit':
+                            webUrl = $rootScope.myConfig.webUrl + url;
+                            return $http.get(webUrl)
+                                .then(function (result) {
+                                    $rootScope.loading = false;
+                                    return result.data;
+                                })
+                                .catch(function (reject) {
+                                    $rootScope.loading = false;
+                                    $rootScope.myError = true;
+                                    return $q.reject(reject);
+                                });
+                            break;
                     }
 
                 }
@@ -258,6 +272,30 @@
                 data: {
                     requireLogin: false
                 }
+            })
+//-------------------------------------------------------------------------------------------------------
+            .state('audit', {
+                url: '/audit',
+                data: {
+                    requireLogin: true
+                },
+                templateUrl: 'audit/audit.html',
+                controller: 'AuditCtrl',
+                controllerAs: 'auditCtrl',
+                resolve: {
+                    audit: resolveResource('api/audit/get', 'audit', sort)
+                }
+            })
+
+            .state('audit-edit', {
+                url: '/audit-edit',
+                data: {
+                    requireLogin: true
+                },
+                params: {item: {}},
+                templateUrl: 'audit/audit-edit.html',
+                controller: 'AuditEditCtrl',
+                controllerAs: 'auditEditCtrl'
             })
 //-------------------------------------------------------------------------------------------------------
             .state('main.config', {

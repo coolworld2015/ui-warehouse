@@ -1,0 +1,38 @@
+<center>
+    <div class="header">UI-GAI</div>
+    <br><br>
+    <img ng-src="logo.jpg" class="logo" ng-click="auditCtrl.goToBack()">
+    <hr>
+    <div class="header" ng-click="auditCtrl.goToBack()">
+        {{auditCtrl.title}} ({{auditFilter.length}} / {{auditCtrl.audit.length}})
+    </div>
+    <div>
+        <input type="text" class="form-control input"
+               placeholder="Search here"
+               ng-model="auditCtrl.query.name">
+    </div>
+    <table class="table table-striped input">
+        <tr ng-repeat="item in filteredAudit
+				| orderBy:auditCtrl.sort:auditCtrl.rev |
+				filter:auditCtrl.query as auditFilter
+				track by $index">
+            <td ng-click="auditCtrl.auditEditForm(item)" class="input">
+                <div class="name-div">
+                    {{item.date}}<br>
+                    {{item.name}}
+                </div>
+            </td>
+        </tr>
+    </table>
+    <hr class="fix-hr">
+		<span class="label label-primary per-page">Items per page:
+			<input class="per-page-input" type="text" ng-model="numPerPage" value={{numPerPage}}>
+		</span>
+
+    <div>
+        <pagination total-items="totalItems" ng-model="currentPage" max-size="maxSize" class="pagination-sm"
+                    boundary-links="true"></pagination>
+    </div>
+    <button class="btn btn-primary button" ng-click="auditCtrl.auditBack()" scroll-here>Back</button>
+    <br><br>
+</center>
