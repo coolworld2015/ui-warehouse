@@ -27,7 +27,11 @@
         });
 
         angular.extend(vm, $stateParams.item);
-
+		
+        $timeout(function () {
+            window.scrollTo(0, 0);
+        });
+		
         init();
 
         function init() {

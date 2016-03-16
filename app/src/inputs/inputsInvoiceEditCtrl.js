@@ -22,7 +22,11 @@
         });
 
         angular.extend(vm, $stateParams.invoice);
-
+		
+        $timeout(function () {
+            window.scrollTo(0, 0);
+        });
+		
         init();
 
         function init() {

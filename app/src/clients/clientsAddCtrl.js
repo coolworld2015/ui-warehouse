@@ -18,6 +18,10 @@
 			_errorHandler: errorHandler
         });
 
+		$timeout(function () {
+            window.scrollTo(0, 0);
+        });
+		
         init();
 
         function init() {
