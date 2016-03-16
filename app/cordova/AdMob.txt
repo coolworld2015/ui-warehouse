@@ -1,0 +1,52 @@
+<html ng-app="app">
+<head>
+    <title>UI-Warehouse</title>
+    <META name=viewport content="initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="shortcut icon" href="logo.jpg"/>
+    <link rel="stylesheet" href="styles.css"/>
+
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript">
+    var admobid = {};
+    document.addEventListener('deviceready', initApp, false);
+
+    if( /(android)/i.test(navigator.userAgent) ) {
+        admobid = {
+            //banner: 'ca-app-pub-4884500146569199/4949665866' // UI-Horoscope
+            //banner: 'ca-app-pub-4884500146569199/3277785061' // UI-Collection
+            //banner: 'ca-app-pub-4884500146569199/5596319463' // UI-Movies
+        };
+    }
+
+    function onDeviceReady() {
+        window.open = cordova.InAppBrowser.open;
+    }
+
+    function initApp() {
+        document.removeEventListener('deviceready', initApp, false);
+        if (AdMob) {
+        setTimeout(function() {
+            AdMob.createBanner({
+                adId : admobid.banner,
+                position : AdMob.AD_POSITION.BOTTOM_CENTER,
+                autoShow : true
+            });
+          }, 1000);
+        }
+    }
+    </script>
+</head>
+<body idly-user-logout1>
+    <div ui-view></div>
+    <script src="app.js"></script>
+	<script src="templates.js"></script>
+	
+	<div ng-show="loading" class="header loading">
+		<span>Loading...</span>
+	</div>
+
+	<div ng-cloak ng-show="myError" class="header error">
+		<span>Something went wrong</span>
+	</div>
+</body>
+</html>
