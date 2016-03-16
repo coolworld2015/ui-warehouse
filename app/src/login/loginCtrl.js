@@ -5,9 +5,9 @@
         .module('app')
         .controller('LoginCtrl', LoginCtrl);
 
-    LoginCtrl.$inject = ['$rootScope', '$state', '$timeout', 'UsersService', 'UsersLocalStorage'];
+    LoginCtrl.$inject = ['$rootScope', '$state', '$timeout', 'UsersService', 'UsersLocalStorage', 'AuditService'];
 
-    function LoginCtrl($rootScope, $state, $timeout, UsersService, UsersLocalStorage) {
+    function LoginCtrl($rootScope, $state, $timeout, UsersService, UsersLocalStorage, AuditService) {
         var vm = this;
 
         angular.extend(vm, {
@@ -62,7 +62,21 @@
                             name: name,
                             pass: pass
                         };
-                        $state.go('main');
+
+                        var id = (Math.random() * 1000000).toFixed();
+                        var description  = navigator.userAgent;
+                        var item = {
+                            id: id,
+                            name: vm.name,
+                            description: description
+                        };
+
+                        AuditService.addItem(item)
+                            .then(function () {
+                                $state.go('main');
+                            })
+                            .catch(errorHandler);
+
                     } else {
                         vm.error = true;
                     }
