@@ -11,6 +11,7 @@ body {
     color: white;
     font-weight: bold;
     text-align: center;
+	text-shadow: black 0.15em 0.15em 0.15em;
 }
 
 .header-invoice {
