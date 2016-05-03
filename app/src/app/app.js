@@ -32,7 +32,7 @@
     runHandler.$inject = ['$rootScope', '$state'];
 
     function runHandler($rootScope, $state) {
-        $rootScope.$on('$stateChangeStart1', function (event, toState) {
+        $rootScope.$on('$stateChangeStart', function (event, toState) {
             var requireLogin = toState.data.requireLogin;
             if (requireLogin && typeof $rootScope.currentUser === 'undefined') {
                 event.preventDefault();
@@ -67,7 +67,7 @@
             //webUrl: 'http://localhost:3000/file/' //TODO Local JSON DB
         };
 
-        $rootScope.mode = 'OFF-LINE (LocalStorage)'; //TODO !!! ONLY for Google Market
-        //$rootScope.mode = 'ON-LINE (Heroku)'; //TODO !!! ONLY for Web Site - change index.html (idly-user-logout) and $stateChangeStart
+        //$rootScope.mode = 'OFF-LINE (LocalStorage)'; //TODO !!! ONLY for Google Market
+        $rootScope.mode = 'ON-LINE (Heroku)'; //TODO !!! ONLY for Web Site - change index.html (idly-user-logout) and $stateChangeStart
     }
 })();

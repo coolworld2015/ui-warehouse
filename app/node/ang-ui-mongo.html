@@ -25,7 +25,7 @@
 
         function myConfig($rootScope) {
             $rootScope.myConfig = {
-                heroku: 'http://coolworld.herokuapp.com/',
+                heroku: 'http://ui-warehouse.herokuapp.com/',
                 local: 'http://localhost:3000/'
             }
 			var mode = localStorage.getItem('warehouse_mode');
@@ -267,7 +267,7 @@
                                 '</table>' +
                                 '</div>',
                                 resolve: {
-                                    results: resolveResource('http://coolworld.herokuapp.com/api/users/get1')
+                                    results: resolveResource('http://ui-warehouse.herokuapp.com/api/users/get')
                                 },
                                 controller: 'UsersCtrl',
                                 controllerAs: 'usersCtrl'
