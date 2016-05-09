@@ -7,11 +7,13 @@
 
     InputsInvoiceAddCtrl.$inject = ['$state', '$rootScope', '$filter', '$timeout', 'InputsLocalStorage', 'InputsInvoiceService',
         'InputsInvoiceLocalStorage', '$stateParams', 'goods',
-        'InputsTransactionService', 'InputsTransactionLocalStorage'];
+        'InputsTransactionService', 'InputsTransactionLocalStorage',
+		'ClientsService', 'GoodsService'];
 
     function InputsInvoiceAddCtrl($state, $rootScope, $filter, $timeout, InputsLocalStorage, InputsInvoiceService,
                                   InputsInvoiceLocalStorage, $stateParams, goods,
-                                  InputsTransactionService, InputsTransactionLocalStorage) {
+                                  InputsTransactionService, InputsTransactionLocalStorage,
+								  ClientsService, GoodsService) {
         var vm = this;
         var optionalGoods = {name: 'Select commodities'};
 
@@ -21,6 +23,7 @@
             selectedItem: optionalGoods,
             addSubmit: addSubmit,
 			_addItem: addItem,
+			_setClientSum: setClientSum,
 			_inputSubmitTotal: inputSubmitTotal,
             goInputsInvoice: goInputsInvoice,
             goInputs: goInputs,
@@ -108,7 +111,11 @@
                         InputsTransactionService.addItem(store, $stateParams.item, $stateParams.item.clientID, sum)
                             .then(function () {
 								$rootScope.myError = false;
+								
 								addItem(invoice);
+								setClientSum($stateParams.item.clientID, sum);
+								setStoreSum(vm.goodsID, vm.quantity);
+								
                                 $state.go('main.inputs-invoice', {item: $stateParams.item});
                             })
                             .catch(errorHandler);
@@ -123,7 +130,6 @@
 
                 vm.goods.filter(function (el) {
                     if (el.store === true) {
-                        //$rootScope.store.push(el);
                         return el;
                     }
                 });
@@ -136,6 +142,26 @@
 		
         function addItem(invoice) {
             InputsInvoiceService.inputInvoices.push(invoice);
+        }
+
+        function setClientSum(id, sum) {
+            var clients = ClientsService.clients;
+            for (var i = 0; i < clients.length; i++) {
+                if (clients[i].id == id) {
+                    clients[i].sum = parseFloat(clients[i].sum) + parseFloat(sum);
+                }
+            }
+        }
+
+        function setStoreSum(id, quantity) {
+            var goods = GoodsService.goods;
+            console.log(id + '  -  ' + quantity);
+            for (var i = 0; i < goods.length; i++) {
+                if (goods[i].id == id) {
+                    goods[i].quantity = parseFloat(goods[i].quantity) + parseFloat(quantity);
+                    goods[i].store = true;
+                }
+            }
         }
 		
         function inputSubmitTotal() {
