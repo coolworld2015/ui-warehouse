@@ -20,6 +20,8 @@
             updateChange: updateChange,
             selectedItem: optionalGoods,
             addSubmit: addSubmit,
+			_addItem: addItem,
+			_inputSubmitTotal: inputSubmitTotal,
             goInputsInvoice: goInputsInvoice,
             goInputs: goInputs,
             _errorHandler: errorHandler,
@@ -105,6 +107,8 @@
 
                         InputsTransactionService.addItem(store, $stateParams.item, $stateParams.item.clientID, sum)
                             .then(function () {
+								$rootScope.myError = false;
+								addItem(invoice);
                                 $state.go('main.inputs-invoice', {item: $stateParams.item});
                             })
                             .catch(errorHandler);
@@ -129,7 +133,11 @@
                 }, 100);
             }
         }
-
+		
+        function addItem(invoice) {
+            InputsInvoiceService.inputInvoices.push(invoice);
+        }
+		
         function inputSubmitTotal() {
             var item = {
                 id: $stateParams.item.id,
