@@ -5,15 +5,15 @@
         .module('app')
         .controller('OutputsInvoiceAddCtrl', OutputsInvoiceAddCtrl);
 
-    OutputsInvoiceAddCtrl.$inject = ['$state', '$rootScope', '$filter', '$timeout', 'OutputsLocalStorage',
-        'OutputsInvoiceService', 'OutputsInvoiceLocalStorage',
-        '$stateParams', 'goods',
-        'OutputsTransactionService', 'OutputsTransactionLocalStorage'];
+    OutputsInvoiceAddCtrl.$inject = ['$state', '$rootScope', '$filter', '$timeout', 'OutputsLocalStorage', 'OutputsInvoiceService', 
+		'OutputsInvoiceLocalStorage', '$stateParams', 'goods',
+        'OutputsTransactionService', 'OutputsTransactionLocalStorage',
+		'ClientsService', 'GoodsService'];
 
-    function OutputsInvoiceAddCtrl($state, $rootScope, $filter, $timeout, OutputsLocalStorage,
-                                   OutputsInvoiceService, OutputsInvoiceLocalStorage,
-                                   $stateParams, goods,
-                                   OutputsTransactionService, OutputsTransactionLocalStorage) {
+    function OutputsInvoiceAddCtrl($state, $rootScope, $filter, $timeout, OutputsLocalStorage, OutputsInvoiceService, 
+								   OutputsInvoiceLocalStorage, $stateParams, goods,
+                                   OutputsTransactionService, OutputsTransactionLocalStorage,
+								   ClientsService, GoodsService) {
         var vm = this;
         var optionalGoods = {name: 'Select commodities'};
 
@@ -22,6 +22,9 @@
             updateChange: updateChange,
             selectedItem: optionalGoods,
             addSubmit: addSubmit,
+			_addItem: addItem,
+			_setClientSum: setClientSum,
+			_outputSubmitTotal: outputSubmitTotal,			
             goOutputsInvoice: goOutputsInvoice,
             goOutputs: goOutputs,
             _errorHandler: errorHandler,
@@ -107,6 +110,12 @@
 
                         OutputsTransactionService.addItem(store, $stateParams.item, $stateParams.item.clientID, sum)
                             .then(function () {
+								$rootScope.myError = false;
+								
+								addItem(invoice);
+								setClientSum($stateParams.item.clientID, sum);
+								setStoreSum(vm.goodsID, vm.quantity);
+								
                                 $state.go('main.outputs-invoice', {item: $stateParams.item});
                             })
                             .catch(errorHandler);
@@ -121,7 +130,6 @@
 
                 vm.goods.filter(function (el) {
                     if (el.store === true) {
-                        //$rootScope.store.push(el);
                         return el;
                     }
                 });
@@ -132,6 +140,30 @@
             }
         }
 
+        function addItem(invoice) {
+            OutputsInvoiceService.outputInvoices.push(invoice);
+        }
+
+        function setClientSum(id, sum) {
+            var clients = ClientsService.clients;
+            for (var i = 0; i < clients.length; i++) {
+                if (clients[i].id == id) {
+                    clients[i].sum = parseFloat(clients[i].sum) - parseFloat(sum);
+                }
+            }
+        }
+
+        function setStoreSum(id, quantity) {
+            var goods = GoodsService.goods;
+            console.log(id + '  -  ' + quantity);
+            for (var i = 0; i < goods.length; i++) {
+                if (goods[i].id == id) {
+                    goods[i].quantity = parseFloat(goods[i].quantity) - parseFloat(quantity);
+                    goods[i].store = true;
+                }
+            }
+        }
+		
         function outputSubmitTotal() {
             var item = {
                 id: $stateParams.item.id,

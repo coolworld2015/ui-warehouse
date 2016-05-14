@@ -11,6 +11,7 @@
         var webUrl = $rootScope.myConfig.webUrl;
 
         return {
+			outputs_invoice: [],
 			getInvoices: getInvoices,
             addItem: addItem,
             editItem: editItem,
