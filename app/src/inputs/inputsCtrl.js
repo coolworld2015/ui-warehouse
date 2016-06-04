@@ -33,7 +33,7 @@
         function init() {
             vm.title = 'Purchase Invoices';
             vm.sort = 'name';
-            vm.inputs = [].concat(inputs);
+            vm.inputs = [].concat(inputs).reverse();
             vm.inputsFilter = [];
 
             $scope.currentPage = 1;
