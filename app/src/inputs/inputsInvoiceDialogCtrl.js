@@ -17,6 +17,7 @@
         angular.extend(vm, {
             init: init,
             itemDelete: itemDelete,
+			_deleteItem: deleteItem,
             goInputsInvoice: goInputsInvoice,
             _errorHandler: errorHandler
         });
@@ -54,6 +55,9 @@
             var sum = parseFloat($stateParams.invoice.total);
 
             if ($rootScope.mode == 'ON-LINE (Heroku)') {
+				
+				deleteItem(vm.id);
+				
                 InputsInvoiceService.deleteItem(vm.id)
                     .then(function () {
 
@@ -100,7 +104,18 @@
                 }, 100);
             }
         }
-
+		
+        function deleteItem(id) {
+            var invoices = InputsInvoiceService.inputInvoices;
+            for (var i = 0; i < invoices.length; i++) {
+                if (invoices[i].id == id) {
+					invoices.splice(i, 1);
+					debugger;
+					break;
+                }
+            }
+        }
+		
         function goInputsInvoice() {
             $rootScope.loading = true;
             $timeout(function () {
