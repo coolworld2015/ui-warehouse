@@ -17,7 +17,9 @@
         angular.extend(vm, {
             init: init,
             itemDelete: itemDelete,
-			_deleteItem: deleteItem,			
+			_deleteItem: deleteItem,		
+			_setClientSum: setClientSum,	
+			_setStoreSum: setStoreSum,					
             goOutputsInvoice: goOutputsInvoice,
             _errorHandler: errorHandler
         });
@@ -57,6 +59,8 @@
             if ($rootScope.mode == 'ON-LINE (Heroku)') {
 				
 				deleteItem(vm.id);
+				setClientSum($stateParams.item.clientID, sum);
+				setStoreSum($stateParams.invoice.goodsID, vm.quantity);
 				
                 OutputsInvoiceService.deleteItem(vm.id)
                     .then(function () {
@@ -115,6 +119,26 @@
                 }
             }
         }
+		
+        function setClientSum(id, sum) {
+            var clients = ClientsService.clients;
+            for (var i = 0; i < clients.length; i++) {
+                if (clients[i].id == id) {
+                    clients[i].sum = parseFloat(clients[i].sum) + parseFloat(sum);
+                }
+            }
+        }
+
+        function setStoreSum(id, quantity) {
+            var goods = GoodsService.goods;
+            console.log(id + '  -  ' + quantity);
+            for (var i = 0; i < goods.length; i++) {
+                if (goods[i].id == id) {
+                    goods[i].quantity = parseFloat(goods[i].quantity) + parseFloat(quantity);
+                    goods[i].store = true;
+                }
+            }
+        }		
 		
         function goOutputsInvoice() {
             $rootScope.loading = true;
