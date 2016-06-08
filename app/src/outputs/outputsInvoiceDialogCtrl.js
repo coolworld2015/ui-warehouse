@@ -114,7 +114,6 @@
             for (var i = 0; i < invoices.length; i++) {
                 if (invoices[i].id == id) {
 					invoices.splice(i, 1);
-					debugger;
 					break;
                 }
             }
