@@ -24,6 +24,7 @@
             addSubmit: addSubmit,
 			_addItem: addItem,
 			_setClientSum: setClientSum,
+			_setStoreSum: setStoreSum,
 			_inputSubmitTotal: inputSubmitTotal,
             goInputsInvoice: goInputsInvoice,
             goInputs: goInputs,
