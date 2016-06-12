@@ -18,6 +18,8 @@
             init: init,
             _getOutputInvoicesOn: getOutputInvoicesOn,
             outputsDelete: outputsDelete,
+			_setClientSum: setClientSum,
+			_setStoreSum: setStoreSum,					
             _deleteItem: deleteItem,
             _fillRequests: fillRequests,
             _modifyGoods: modifyGoods,
@@ -69,7 +71,8 @@
         function outputsDelete() {
             $rootScope.loading = true;
             $rootScope.myError = false;
-
+			var sum = parseFloat($stateParams.item.total);
+				
             if ($rootScope.mode == 'ON-LINE (Heroku)') {
                 fillRequests();
 
@@ -86,6 +89,9 @@
                                 OutputsService.deleteItem(vm.id)
                                     .then(function () {
                                         deleteItem(vm.id);
+										
+										setClientSum($stateParams.item.clientID, sum);
+																				
                                         $rootScope.myError = false;
                                         $state.go('main.outputs');
                                     })
@@ -96,7 +102,6 @@
                     })
                     .catch(errorHandler);
             } else {
-                var sum = parseFloat($stateParams.item.total);
                 OutputsTransactionLocalStorage.setClientSum($stateParams.item.clientID, -sum);
 
                 vm.outputInvoices.forEach(function (el) {
@@ -115,6 +120,26 @@
             }
         }
 
+		function setClientSum(id, sum) {
+            var clients = ClientsService.clients;
+            for (var i = 0; i < clients.length; i++) {
+                if (clients[i].id == id) {
+                    clients[i].sum = parseFloat(clients[i].sum) + parseFloat(sum);
+                }
+            }
+        }
+
+        function setStoreSum(id, quantity) {
+            var goods = GoodsService.goods;
+            console.log(id + '  -  ' + quantity);
+            for (var i = 0; i < goods.length; i++) {
+                if (goods[i].id == id) {
+                    goods[i].quantity = parseFloat(goods[i].quantity) + parseFloat(quantity);
+                    goods[i].store = true;
+                }
+            }
+        }
+		
         function deleteItem(id) {
             var outputs = OutputsService.outputs;
             for (var i = 0; i < outputs.length; i++) {
