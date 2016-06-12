@@ -133,7 +133,7 @@
             console.log(id + '  -  ' + quantity);
             for (var i = 0; i < goods.length; i++) {
                 if (goods[i].id == id) {
-                    goods[i].quantity = parseFloat(goods[i].quantity) + parseFloat(quantity);
+                    goods[i].quantity = parseFloat(goods[i].quantity) - parseFloat(quantity);
                     goods[i].store = true;
                 }
             }
@@ -178,6 +178,8 @@
                         description: good.data.description,
                         goodsID: vm.index[vm.i].id
                     };
+					
+					setStoreSum(vm.index[vm.i].goodsID, vm.index[vm.i].quantity);
                 });
         }
 

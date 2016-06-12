@@ -179,6 +179,8 @@
                         description: good.data.description,
                         goodsID: vm.index[vm.i].id
                     };
+					
+					setStoreSum(vm.index[vm.i].goodsID, vm.index[vm.i].quantity);					
                 });
         }
 
