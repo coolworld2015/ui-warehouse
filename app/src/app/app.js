@@ -32,7 +32,7 @@
     runHandler.$inject = ['$rootScope', '$state'];
 
     function runHandler($rootScope, $state) {
-        $rootScope.$on('$stateChangeStart1', function (event, toState) {
+        $rootScope.$on('$stateChangeStart', function (event, toState) {
             var requireLogin = toState.data.requireLogin;
             if (requireLogin && typeof $rootScope.currentUser === 'undefined') {
                 event.preventDefault();
