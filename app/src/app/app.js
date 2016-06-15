@@ -3,13 +3,13 @@
 
     angular
         .module('app', ['ui.router', 'ui.bootstrap']);
-
+/*
     angular
         .module('app')
         .config(redirectOn404);
 
     redirectOn404.$inject = ['$httpProvider'];
-
+*/
     function redirectOn404($httpProvider) {
         $httpProvider.interceptors.push(['$q', '$injector', '$log', '$rootScope', function ($q, $injector, $log, $rootScope) {
             return {
