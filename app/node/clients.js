@@ -101,6 +101,7 @@ function updateClient(req, res) {
         client.address = req.body.address;
         client.phone = req.body.phone;
         client.description = req.body.description;
+        client.cv = req.body.cv;
         client.sum = req.body.sum;
 
         client.save(function (err) {
@@ -120,6 +121,7 @@ function addClient(req, res) {
             address: req.body.address,
             phone: req.body.phone,
             description: req.body.description,
+            cv: req.body.cv,
             sum: req.body.sum
         },
         function (err, client) {
@@ -138,6 +140,7 @@ function saveClient(req, res) {
         address: req.body.address,
         phone: req.body.phone,
         description: req.body.description,
+        cv: req.body.cv,
         sum: req.body.sum
     });
     client.save(function (err) {
